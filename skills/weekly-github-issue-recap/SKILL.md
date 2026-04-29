@@ -10,6 +10,11 @@ specific user.
 
 ## Preparation
 
+Confirm the `gh` command line tool is installed and available in the `PATH`. If
+not, quote the user to install it and configure and provide the link to the
+documentation for installation and configuration at
+https://cli.github.com/manual/installation
+
 Confirm a few details with the specified defaults before you start. Format for
 the following list is
 
@@ -27,9 +32,9 @@ locate comments from this week, so anything from the prior Friday to today. Use
 `--state all` to include both open issues and closed issues that have been
 closed within the last week.
 
-Verify that today is a Friday. If that is not the case, confirm with me that you
-should proceed with the assembly of the weekly update, or if you should wait
-until Friday to do so.
+Verify that today is a Friday with the `date` command. If that is not the case,
+confirm with me that you should proceed with the assembly of the weekly update,
+or if you should wait until Friday to do so.
 
 ## Processing
 
