@@ -10,24 +10,33 @@ specific user.
 
 ## Preparation
 
+Ensure the following environment variables are available. If not already set,
+source `~/.env` or the appropriate secrets file for your environment. Do not
+display the values of secret variables.
+
+Required variables:
+- `RECAP_NAME` — your full name
+- `RECAP_GITHUB_USER` — your GitHub username
+- `RECAP_GITHUB_REPO` — the target repository URL
+
 Confirm the `gh` command line tool is installed and available in the `PATH`. If
-not, quote the user to install it and configure and provide the link to the
+not, quote the user to install and configure it. Provide the link to the
 documentation for installation and configuration at
 https://cli.github.com/manual/installation
 
-Confirm a few details with the specified defaults before you start. Format for
-the following list is
+Confirm the following details before you start, reading each value from the
+corresponding environment variable. Format for the following list is
 
-Name of the detail <placeholder for later use>: default value
+Name of the detail <placeholder for later use>: value from environment
 
-* Name <name>: Manfred Moser
-* GitHub username <username>: mosabua
-* GitHub repository <repository>: https://github.com/chainguard-dev/internal
+* Name <name>: $RECAP_NAME
+* GitHub username <username>: $RECAP_GITHUB_USER
+* GitHub repository <repository>: $RECAP_GITHUB_REPO
 
 Tasks are tracked as GitHub issues in the repository <repository> with updates
 as changes to the description and comments.
 
-Use the `gh` command line tool to analyze all issues assigned to `mosabua` and
+Use the `gh` command line tool to analyze all issues assigned to `<username>` and
 locate comments from this week, so anything from the prior Friday to today. Use
 `--state all` to include both open issues and closed issues that have been
 closed within the last week.
@@ -64,10 +73,10 @@ like so
 
 Add a section `## Details for this week`
 
-For each GitHub issue you found, add a section:
+For each Linear issue you found, add a section:
 
 ```
-### [issue title](https://github.com/chainguard-dev/internal)
+### [issue title](<repository>)
 
 <Summary>
 ```
