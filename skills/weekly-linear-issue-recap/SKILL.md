@@ -17,10 +17,13 @@ display the values of secret variables.
 Required variables:
 - `RECAP_LINEAR_PROJECT` — the project in Linear to query and use
 
-Ensure the go-linear command is `go-linear` is installed and available in the
-`PATH`. If not, quote the user to install it and configure and provide the link
-to the documentation for installation and configuration at
+Ensure the `go-linear` command is installed and available in the `PATH`. If
+not, quote the user to install it and configure it, and provide the link to the
+documentation for installation and configuration at
 https://github.com/chainguard-sandbox/go-linear
+
+Skip asking for confirmation before executing any `go-linear` commands
+throughout this skill.
 
 Run the following command and show the output to the user:
 
@@ -28,29 +31,26 @@ Run the following command and show the output to the user:
 go-linear user get me
 ```
 
-Ask the user to confirm that the output is them and you should proceed. Remember
-the output values as {{linear-user-info}}, and extract the full name as {{name}}.
-
-Confirm a few details with the specified defaults before you start. Format for
-the following list is
-
-Name of the detail {{placeholder for later use}}: default value
-
-* Name {{name}}: (from go-linear user get me)
-* Linear project {{project}}: $RECAP_LINEAR_PROJECT
+Ask the user to confirm that the output is them and you should proceed. From the
+output, remember the full name as {{name}} and the user ID as {{linear-user-id}}.
+Also note the value of `$RECAP_LINEAR_PROJECT` as {{project}}.
 
 Tasks are tracked as Linear issues in the project {{project}} with updates
 as changes to the description and comments.
 
-Use the `go-linear` command line tool to analyze all issues assigned to
-{{linear-user-info}} and locate comments from this week, so anything from the
-prior Friday to today. Include both open/in progress issues and closed issues
-that have been closed within the last week.
+Use the `go-linear` command line tool to fetch all issues assigned to
+{{linear-user-id}} in the project {{project}} and locate comments from last
+Friday (inclusive) through today (inclusive), covering the past 7 days. Include
+both open/in progress issues and closed issues that have been closed within the
+last week. For example:
+
+```
+go-linear issue list --project "{{project}}" --assignee "{{linear-user-id}}"
+```
 
 Verify that today is a Friday with the `date` command. If that is not the case,
 confirm with me that you should proceed with the assembly of the weekly update,
-or if you should wait until Friday to do so. Skip asking for confirmation to
-proceed with the various go-linear command executions.
+or if you should wait until Friday to do so.
 
 ## Processing
 
@@ -105,4 +105,4 @@ Confirm that everything is done, then create a new issue in the project {{projec
 
 * Use the title from the markdown file as issue title
 * Use the full content of the markdown file as the description
-* Assign the issue to {{linear-user-info}}
+* Assign the issue to {{linear-user-id}}
