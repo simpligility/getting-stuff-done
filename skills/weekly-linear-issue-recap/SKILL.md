@@ -50,7 +50,8 @@ that have been closed within the last week.
 
 Verify that today is a Friday with the `date` command. If that is not the case,
 confirm with me that you should proceed with the assembly of the weekly update,
-or if you should wait until Friday to do so.
+or if you should wait until Friday to do so. Skip asking for confirmation to
+proceed with the various go-linear command executions.
 
 ## Processing
 
@@ -90,7 +91,8 @@ For each Linear issue you found, add a section:
 
 Generate the summary of the progress for the issue by including updates from the
 current week only. If the comments and changes for an issue are very long,
-summarize them. Use markdown syntax, especially for links.
+summarize them. Use markdown syntax, especially for links. Wrap the summary text
+at 80 characters and use bullet points as applicable.
 
 Once you are done, ask me to review the file and add the summary for this week
 and plans for next week.
