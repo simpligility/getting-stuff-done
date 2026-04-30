@@ -54,8 +54,13 @@ proceed with the various go-linear command executions.
 
 ## Processing
 
-Create a markdown file in the directory `weekly-updates`. Name the file using the
-ISO date format pattern `update-yyyy-mm-dd.md`.
+Determine where to write the output file:
+- If the current working directory is named `weekly-updates`, write the file there.
+- Otherwise, if a `weekly-updates` subdirectory exists in the current directory, write the file inside it.
+- Otherwise, write the file in the current directory.
+
+Create the markdown file using the ISO date format pattern `update-yyyy-mm-dd.md`
+in the location determined above.
 
 Add the title `# {{name}} weekly update as of yyyy-mm-dd`, with the date
 replaced into the `yyyy-mm-dd`.
