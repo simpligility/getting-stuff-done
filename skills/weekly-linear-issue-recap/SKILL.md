@@ -15,7 +15,6 @@ source `~/.env` or the appropriate secrets file for your environment. Do not
 display the values of secret variables.
 
 Required variables:
-- `RECAP_NAME` — your full name
 - `RECAP_LINEAR_PROJECT` — the project in Linear to query and use
 
 Ensure the go-linear command is `go-linear` is installed and available in the
@@ -26,18 +25,18 @@ https://github.com/chainguard-sandbox/go-linear
 Run the following command and show the output to the user:
 
 ```
-go-linear user get "$RECAP_NAME"
+go-linear user get me
 ```
 
 Ask the user to confirm that the output is them and you should proceed. Remember
-the output values as {{linear-user-info}}.
+the output values as {{linear-user-info}}, and extract the full name as {{name}}.
 
 Confirm a few details with the specified defaults before you start. Format for
 the following list is
 
 Name of the detail {{placeholder for later use}}: default value
 
-* Name {{name}}: $RECAP_NAME
+* Name {{name}}: (from go-linear user get me)
 * Linear project {{project}}: $RECAP_LINEAR_PROJECT
 
 Tasks are tracked as Linear issues in the project {{project}} with updates
@@ -58,7 +57,7 @@ proceed with the various go-linear command executions.
 Create a markdown file in the directory `weekly-updates`. Name the file using the
 ISO date format pattern `update-yyyy-mm-dd.md`.
 
-Add the title `# {name}} weekly update as of yyyy-mm-dd`, with the date
+Add the title `# {{name}} weekly update as of yyyy-mm-dd`, with the date
 replaced into the `yyyy-mm-dd`.
 
 Add a section title `## Plans for next week` and leave an empty bullet list like
