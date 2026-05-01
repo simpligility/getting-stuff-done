@@ -1,0 +1,7 @@
+# Go binary produced by go build in the recap program directory
+skills/weekly-linear-issue-recap/recap/recap
+
+# Weekly update output files - these are personal outputs, not source
+skills/weekly-linear-issue-recap/recap/update-*.md
+
+outputs
