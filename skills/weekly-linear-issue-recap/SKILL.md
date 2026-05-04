@@ -94,9 +94,10 @@ For each Linear issue you found, add a section:
 ```
 
 Generate the summary of the progress for the issue by including updates from the
-current week only. Ignore any comments from apps and agents, specifically the "Lens Agent"If the comments and changes for an issue are very long,
-summarize them. Use markdown syntax, especially for links. Wrap the summary text
-at 80 characters and use bullet points as applicable.
+current week only. Ignore any comments from apps and agents, specifically the
+"Lens Agent". If the comments and changes for an issue are very long, summarize
+them. Use markdown syntax, especially for links. Wrap the summary text at 80
+characters and use bullet points as applicable.
 
 Once you are done, ask me to review the file and add the summary for this week
 and plans for next week.
