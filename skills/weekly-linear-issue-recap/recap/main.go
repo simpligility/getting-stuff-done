@@ -77,6 +77,10 @@ func main() {
 	if project == "" {
 		fatal("RECAP_LINEAR_PROJECT environment variable not set")
 	}
+	team := os.Getenv("RECAP_LINEAR_TEAM")
+	if team == "" {
+		fatal("RECAP_LINEAR_TEAM environment variable not set")
+	}
 
 	// Identify current user and ask for confirmation
 	viewerData := runLinear("user", "get", "me")
@@ -99,8 +103,8 @@ func main() {
 	}
 
 	// Fetch all issues for the project assigned to current user
-	fmt.Printf("\nFetching issues for project %q assigned to %s...\n", project, v.Name)
-	issues := fetchIssues(project)
+	fmt.Printf("\nFetching issues for project %q (team %q) assigned to %s...\n", project, team, v.Name)
+	issues := fetchIssues(team, project)
 	fmt.Printf("Found %d issues.\n", len(issues))
 
 	// For each issue, fetch comments from the past 7 days
@@ -147,6 +151,7 @@ func main() {
 	}
 	title := v.Name + " weekly update as of " + dateStr
 	runLinear("issue", "create",
+		"--team", team,
 		"--project", project,
 		"--assignee", v.Email,
 		"--title", title,
@@ -155,11 +160,11 @@ func main() {
 	fmt.Println("Linear issue created.")
 }
 
-func fetchIssues(project string) []issueNode {
+func fetchIssues(team, project string) []issueNode {
 	var all []issueNode
 	cursor := ""
 	for {
-		args := []string{"issue", "list", "--project", project, "--assignee", "me", "--limit", "250"}
+		args := []string{"issue", "list", "--team", team, "--project", project, "--assignee", "me", "--limit", "250"}
 		if cursor != "" {
 			args = append(args, "--after", cursor)
 		}

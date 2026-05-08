@@ -15,6 +15,7 @@ yourself before the tool creates the Linear issue.
   configured
 - `LINEAR_API_KEY` environment variable set
 - `RECAP_LINEAR_PROJECT` environment variable set to the Linear project name
+- `RECAP_LINEAR_TEAM` environment variable set to the Linear team that owns the project
 
 ## Build
 

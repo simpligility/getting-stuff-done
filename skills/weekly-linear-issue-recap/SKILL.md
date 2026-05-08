@@ -16,6 +16,7 @@ display the values of secret variables.
 
 Required variables:
 - `RECAP_LINEAR_PROJECT` — the project in Linear to query and use
+- `RECAP_LINEAR_TEAM` — the team in Linear that owns the project
 
 Ensure the `go-linear` command is installed and available in the `PATH`. If
 not, quote the user to install it and configure it, and provide the link to the
@@ -33,10 +34,11 @@ go-linear user get me
 
 Ask the user to confirm that the output is them and you should proceed. From the
 output, remember the full name as {{name}} and the user ID as {{linear-user-id}}.
-Also note the value of `$RECAP_LINEAR_PROJECT` as {{project}}.
+Also note the value of `$RECAP_LINEAR_PROJECT` as {{project}} and the value of
+`$RECAP_LINEAR_TEAM` as {{team}}.
 
-Tasks are tracked as Linear issues in the project {{project}} with updates
-as changes to the description and comments.
+Tasks are tracked as Linear issues in the project {{project}} (team {{team}})
+with updates as changes to the description and comments.
 
 Use the `go-linear` command line tool to fetch all issues assigned to
 {{linear-user-id}} in the project {{project}} and locate comments from last
@@ -45,7 +47,7 @@ both open/in progress issues and closed issues that have been closed within the
 last week. For example:
 
 ```
-go-linear issue list --project "{{project}}" --assignee "{{linear-user-id}}"
+go-linear issue list --team "{{team}}" --project "{{project}}" --assignee "{{linear-user-id}}"
 ```
 
 Verify that today is a Friday with the `date` command. If that is not the case,
@@ -102,7 +104,8 @@ characters and use bullet points as applicable.
 Once you are done, ask me to review the file and add the summary for this week
 and plans for next week.
 
-Confirm that everything is done, then create a new issue in the project {{project}}:
+Confirm that everything is done, then create a new issue in the project {{project}}
+on team {{team}}:
 
 * Use the title from the markdown file as issue title
 * Use the full content of the markdown file as the description
