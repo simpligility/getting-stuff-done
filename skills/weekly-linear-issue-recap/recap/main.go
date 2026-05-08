@@ -198,14 +198,12 @@ func buildMarkdown(name, date string, issues []issueWithComments) string {
 	b.WriteString("## Details for this week\n\n")
 	for _, iw := range issues {
 		fmt.Fprintf(&b, "### [%s](%s)\n\n", iw.Issue.Title, iw.Issue.URL)
-		fmt.Fprintf(&b, "**State:** %s | **ID:** %s\n\n", iw.Issue.State.Name, iw.Issue.Identifier)
 		if iw.Issue.Description != "" {
 			b.WriteString("**Description:**\n\n")
 			b.WriteString(iw.Issue.Description)
 			b.WriteString("\n\n")
 		}
 		if len(iw.Comments) > 0 {
-			b.WriteString("**Recent comments:**\n\n")
 			for _, c := range iw.Comments {
 				fmt.Fprintf(&b, "*%s on %s:*\n\n%s\n\n---\n\n",
 					c.User.Name, c.CreatedAt.Format("2006-01-02"), c.Body)
