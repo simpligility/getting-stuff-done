@@ -6,6 +6,45 @@ tools from Manfred Moser.
 All material in this repo is created, tested, and maintained by myself and for
 myself. 
 
+## AI assistant instructions
+
+[`AGENTS.md`](./AGENTS.md) in the root of this repo holds my cross-tool
+instructions for AI coding assistants — commit message style, attribution
+trailer preferences, and similar global rules. Each tool reads it via a
+symlink from its expected user-level instruction file, so the rules live in
+one place and a single edit propagates to all of them.
+
+### Symlink setup
+
+On a fresh machine, after cloning this repo, run:
+
+```bash
+cd getting-stuff-done
+
+# Claude Code → ~/.claude/CLAUDE.md
+mkdir -p ~/.claude
+ln -s "$PWD/AGENTS.md" ~/.claude/CLAUDE.md
+
+# Codex CLI → ~/.codex/AGENTS.md
+mkdir -p ~/.codex
+ln -s "$PWD/AGENTS.md" ~/.codex/AGENTS.md
+
+# Gemini CLI → ~/.gemini/GEMINI.md
+mkdir -p ~/.gemini
+ln -s "$PWD/AGENTS.md" ~/.gemini/GEMINI.md
+```
+
+Verify with:
+
+```bash
+ls -la ~/.claude/CLAUDE.md ~/.codex/AGENTS.md ~/.gemini/GEMINI.md
+```
+
+Each should show as a symlink to `AGENTS.md` in this repo. If any tool ships
+a default instruction file at its expected path, move or back it up before
+running the `ln -s` command — `ln` will fail rather than overwrite, but a
+pre-existing regular file will block the symlink.
+
 ## Resources
 
 This project is inspired by my own experience and the shared learning of many
