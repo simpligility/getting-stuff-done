@@ -28,12 +28,14 @@ Use this phase immediately after a release has been cut and the previous release
 4.  **Identify the last release date**: Note the date of the latest release in `docs/release-notes.md` (e.g., "11 May 2026").
 5.  **Prepare the branch**: 
     - Create a new branch: `git checkout -b release-notes-<version>`.
-6.  **Fetch initial merges**: Find all PRs merged into `main` since the last release date.
+6.  **Update quickstart guide**: Update the VERSION property in `docs/quickstart.md` to the new version. Commit the change to main with message "Update quickstart guide to version <version>".
+7.  **Fetch initial merges**: Find all PRs merged into `main` since the last release date.
     - Command: `gh pr list --repo trinodb/trino-gateway --state merged --base main --limit 100 --json number,title,mergedAt`
-7.  **Initialize docs/release-notes.md**: 
+8.  **Initialize docs/release-notes.md**: 
     - Add a new section for the new version at the top of the current year section.
     - Use the [Release notes file template](#release-notes-file-template) with "Planned Date" as a placeholder.
-8.  **Open the PR**:
+    - Use the commmit message "Add Trino Gateway <version> release notes".
+9.  **Open the PR**:
     - **Push the branch**: `git push -u origin release-notes-<version>`.
     - **Title**: `Add Trino Gateway <version> release notes`.
     - **Body**: Use the [Tracking list template](#tracking-list-template), populating the "verification" section with the PRs found in step 6.
@@ -57,14 +59,15 @@ Use this phase regularly (e.g., weekly or whenever significant PRs are merged) t
 5.  **Fetch new merges**: Find PRs merged into `main` since that last check date.
 6.  **Update the PR tracking list**:
     - Append the new PRs to the PR description, grouped by date.
+    - Sort the dated sections in chronological order, with the most recent at the bottom.
     - Mark them with `❌ rn ❌ docs` to signify they need verification.
     - Update via `gh pr edit <PR_NUMBER> --body-file <path_to_updated_body>`.
 7.  **Refine release notes in docs/release-notes.md**:
     - Analyze the newly merged PRs.
-    - Add descriptive entries to the appropriate categories (**General**, **UI**, etc.) in `docs/release-notes.md`.
+    - Add descriptive entries to the appropriate categories (**General** and  **UI**) in `docs/release-notes.md`.
     - **Linking rule**: If a PR resolves a specific issue, the link in the release note entry should point to the issue (e.g., `([#123](https://github.com/trinodb/trino-gateway/issues/123))`). Otherwise, link to the PR (`([#124](https://github.com/trinodb/trino-gateway/pull/124))`).
 8.  **Commit and push updates**: 
-    - Commit the changes to `docs/release-notes.md`.
+    - Ammend the existing commit with the changes to `docs/release-notes.md`. Leave the commit message unchanged.
     - Push or force-push the updates to the branch: `git push --force-with-lease origin release-notes-<version>`.
 
 ---
