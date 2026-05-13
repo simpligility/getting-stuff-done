@@ -5,3 +5,6 @@ skills/weekly-linear-issue-recap/recap/recap
 skills/weekly-linear-issue-recap/recap/update-*.md
 
 outputs
+
+# Packaged Gemini CLI skills
+*.skill
