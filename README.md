@@ -61,6 +61,7 @@ time:
 * [promptfoo](https://www.promptfoo.dev/)
 * [notme.bot](https://notme.bot/)
 * [claude-guard](https://github.com/chainguard-sandbox/claude-guard)
+* [Matt Pocock skills](https://github.com/mattpocock/skills/)
 
 ### Writing
 
