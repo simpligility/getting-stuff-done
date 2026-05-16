@@ -56,7 +56,8 @@ Use this phase regularly (e.g., weekly or whenever significant PRs are merged) t
     - Ensure it is up to date with its remote counterpart: `git pull origin release-notes-<version>`.
 3.  **Locate the open PR**: Find the PR titled `Add Trino Gateway <version> release notes`.
 4.  **Determine the "last check" date**: Look at the PR's tracking list to find the most recent date listed.
-5.  **Fetch new merges**: Find PRs merged into `main` since that last check date.
+5.  **Fetch new merges**: Find PRs merged into `main` since that last check date, but inluding the last check date to avoid missing any PRs.
+    - Command: `gh pr list --repo trinodb/trino-gateway --state merged --base main --limit 100 --json number,title,mergedAt --search "merged:>={last_check_date}"`
 6.  **Update the PR tracking list**:
     - Append the new PRs to the PR description, grouped by date.
     - Sort the dated sections in chronological order, with the most recent at the bottom.
@@ -65,6 +66,8 @@ Use this phase regularly (e.g., weekly or whenever significant PRs are merged) t
 7.  **Refine release notes in docs/release-notes.md**:
     - Analyze the newly merged PRs.
     - Add descriptive entries to the appropriate categories (**General** and  **UI**) in `docs/release-notes.md`.
+    - The description of each PR should contain a suggestion for the release notes entry, which you can refine for clarity and consistency. If you insert a release notes entry or determine that no entry is needed, mark the PR as `✅ rn`. If you determine that documentation updates are needed, and included in the PR, mark it as `✅ docs`. If they are needed, but not included in the PR, leave them as `❌ docs` until they are resolved. Otherwise, leave them as `❌ rn` and `❌ docs` until they are resolved.
+    - If a PR does not require release notes entry, you can skip adding it to the release notes, but you should still mark it as `✅ rn` in the tracking list to indicate that it has been reviewed. Same for documentation updates.
     - **Linking rule**: If a PR resolves a specific issue, the link in the release note entry should point to the issue (e.g., `([#123](https://github.com/trinodb/trino-gateway/issues/123))`). Otherwise, link to the PR (`([#124](https://github.com/trinodb/trino-gateway/pull/124))`).
 8.  **Commit and push updates**: 
     - Ammend the existing commit with the changes to `docs/release-notes.md`. Leave the commit message unchanged.
