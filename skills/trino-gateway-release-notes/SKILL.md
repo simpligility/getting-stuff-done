@@ -59,8 +59,9 @@ Use this phase regularly (e.g., weekly or whenever significant PRs are merged) t
 5.  **Fetch new merges**: Find PRs merged into `main` since that last check date, but inluding the last check date to avoid missing any PRs.
     - Command: `gh pr list --repo trinodb/trino-gateway --state merged --base main --limit 100 --json number,title,mergedAt --search "merged:>={last_check_date}"`
 6.  **Update the PR tracking list**:
+    - Do not edit the existing entries to preserve the verification status. Instead, add new entries for the newly merged PRs.
     - Append the new PRs to the PR description, grouped by date.
-    - Sort the dated sections in chronological order, with the most recent at the bottom.
+    - Ensure the dated sections are in chronological order, with the most recent at the bottom.
     - Mark them with `❌ rn ❌ docs` to signify they need verification.
     - Update via `gh pr edit <PR_NUMBER> --body-file <path_to_updated_body>`.
 7.  **Refine release notes in docs/release-notes.md**:
