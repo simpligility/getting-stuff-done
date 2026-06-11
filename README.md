@@ -55,13 +55,18 @@ others. Find more details in the following, very **incomplete** sections.
 A  list of other projects that I looked at in more or less detail over
 time:
 
-* [Gastown](https://github.com/gastownhall/gastown)
+* [Gastown](https://github.com/gastownhall/gastown) - multi agent tool
 * [Beads](https://github.com/gastownhall/beads)
-* [superpowers](https://github.com/obra/superpowers)
+* [Gascity](https://github.com/gastownhall/gascity) - replacement for Gastown
+* [superpowers](https://github.com/obra/superpowers) - skills collection
 * [promptfoo](https://www.promptfoo.dev/)
 * [notme.bot](https://notme.bot/)
 * [claude-guard](https://github.com/chainguard-sandbox/claude-guard)
-* [Matt Pocock skills](https://github.com/mattpocock/skills/)
+* [Matt Pocock skills](https://github.com/mattpocock/skills/) - skills collection
+* [Superset](https://github.com/superset-sh/superset) - multi agent tool
+* [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) - engineering skills collection
+* [MLcon workshop](https://github.com/mosabua/mlcon-san-diego-2026) - my fork
+* [skills.sh](https://www.skills.sh/) - skills repository
 
 ### Writing
 
@@ -76,9 +81,4 @@ Blog posts and other written resources that caught my attention:
 * [Clarity Is the New Bottleneck](https://blog.chipjohnson.net/clarity-is-the-new-bottleneck.html)
 * [Will you be my CLI? Making Agents fall in love with Langfuse.](https://langfuse.com/blog/2026-02-13-will-you-be-my-cli)
 * [The Fossil Record of Harness Engineering](https://hexproof.dev/datagrams/fossil-record-harness-engineering/)
-
-
-### Videos
-
-Video tutorials, overviews, or shows I watched at least partially and found useful:
 
