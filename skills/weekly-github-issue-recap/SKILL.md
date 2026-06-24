@@ -104,3 +104,6 @@ Confirm that everything is done, then create a new issue in the repository {{rep
 * Use the title from the markdown file as issue title
 * Use the full content of the markdown file as the description
 * Assign the issue to {{username}}
+
+Display the full URL to the issue you just created, so I can do further actions
+easily. If possible open the new issues in a browser tab automatically.

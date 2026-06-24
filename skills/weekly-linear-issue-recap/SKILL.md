@@ -110,3 +110,6 @@ on team {{team}}:
 * Use the title from the markdown file as issue title
 * Use the full content of the markdown file as the description
 * Assign the issue to {{linear-user-id}}
+
+Display the full URL to the issue you just created, so I can do further actions
+easily. If possible open the new issues in a browser tab automatically.
