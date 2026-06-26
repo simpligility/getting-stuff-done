@@ -45,6 +45,37 @@ a default instruction file at its expected path, move or back it up before
 running the `ln -s` command — `ln` will fail rather than overwrite, but a
 pre-existing regular file will block the symlink.
 
+## Skills
+
+The [`skills/`](./skills) directory holds reusable agent skills in the open
+`SKILL.md` format, which works across every major AI coding tool. Rather than
+maintain a copy per tool, `install-skills.sh` symlinks each skill into the
+user-level skills directory of each tool, so editing happens only here in the
+repo and there is never a second copy to drift out of sync.
+
+On any machine, after cloning this repo, run:
+
+```bash
+cd getting-stuff-done
+./install-skills.sh
+```
+
+The script is idempotent — run it again any time to pick up newly added skills
+or repair links on a fresh machine. It installs into:
+
+| Tool | Skills directory |
+|------|------------------|
+| Claude Code | `~/.claude/skills` |
+| opencode | `~/.config/opencode/skills` |
+| Codex CLI | `~/.codex/skills` |
+| GitHub Copilot | `~/.copilot/skills` |
+| Antigravity | `~/.gemini/antigravity/skills` and `~/.gemini/config/skills` |
+
+Antigravity gets both paths because its global skills location changed across
+versions. The script refreshes its own symlinks but never overwrites a real
+file or directory a tool placed there itself. To support another tool, add a
+single `"name:$HOME/path/skills"` entry to the `TOOLS` array in the script.
+
 ## Resources
 
 This project is inspired by my own experience and the shared learning of many
