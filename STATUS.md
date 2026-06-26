@@ -2,11 +2,6 @@
 
 Task tracker for ongoing work in this repo.
 
-## In progress
-
-- **Apply the writing style to the other skills** — bring the rest of the skills
-  in `skills/` into line with the new `manfred-writing` guidelines.
-
 ## Backlog
 
 - **Manually review the manfred skills** — read through `skills/manfred` and
