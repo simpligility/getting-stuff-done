@@ -70,7 +70,8 @@ time:
 * [Cavenman](https://github.com/JuliusBrussee/caveman) - shorten output to safe
 * [Cavenmem](https://github.com/JuliusBrussee/cavemem) - local cross-agent memory
 * [The Sovereign Engineer](https://leanpub.com/thesovereignengineer) - book
-
+* [claude md starter](https://github.com/sumit-ai-ml/claude-md-starter)
+* [gstack](https://github.com/garrytan/gstack)
 
 ### Writing
 
