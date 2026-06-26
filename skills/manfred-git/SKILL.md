@@ -30,7 +30,22 @@ where Chris Beams' rules cannot be followed as-is. In those repos:
 - Scope is optional but preferred when it adds clarity
 - Summary is lowercase, imperative mood, no trailing period
 - Breaking changes use a `!` after the type/scope or a `BREAKING CHANGE:` footer
-- Wrap the body at 72 characters, same as the default
+- Limit the subject to 72 characters, looser than Chris Beams' 50 because the
+  `type(scope):` prefix eats into the line
+- Wrap the body at 80 characters, looser than the Chris Beams default of 72
+
+These looser 72-character subject and 80-character body limits apply to any
+commit style that does not follow Chris Beams, not only conventional commits.
+
+### Body wrapping exceptions
+Whatever the body wrap width, exceptions are acceptable when a single token
+cannot be broken, for example a long URL, a long file path, or quoted output
+that must stay on one line.
+
+### Body structure
+When a commit covers multiple distinct changes, write the body as a bulleted
+list rather than a single long paragraph, with each bullet describing one
+change. This applies regardless of commit style.
 
 ### Per-repository mapping
 Pick the style by repo or organization rather than inspecting history each time. When a

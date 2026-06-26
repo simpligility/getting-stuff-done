@@ -6,45 +6,6 @@ tools from Manfred Moser.
 All material in this repo is created, tested, and maintained by myself and for
 myself. 
 
-## AI assistant instructions
-
-[`AGENTS.md`](./AGENTS.md) in the root of this repo holds my cross-tool
-instructions for AI coding assistants — commit message style, attribution
-trailer preferences, and similar global rules. Each tool reads it via a
-symlink from its expected user-level instruction file, so the rules live in
-one place and a single edit propagates to all of them.
-
-### Symlink setup
-
-On a fresh machine, after cloning this repo, run:
-
-```bash
-cd getting-stuff-done
-
-# Claude Code → ~/.claude/CLAUDE.md
-mkdir -p ~/.claude
-ln -s "$PWD/AGENTS.md" ~/.claude/CLAUDE.md
-
-# Codex CLI → ~/.codex/AGENTS.md
-mkdir -p ~/.codex
-ln -s "$PWD/AGENTS.md" ~/.codex/AGENTS.md
-
-# Gemini CLI → ~/.gemini/GEMINI.md
-mkdir -p ~/.gemini
-ln -s "$PWD/AGENTS.md" ~/.gemini/GEMINI.md
-```
-
-Verify with:
-
-```bash
-ls -la ~/.claude/CLAUDE.md ~/.codex/AGENTS.md ~/.gemini/GEMINI.md
-```
-
-Each should show as a symlink to `AGENTS.md` in this repo. If any tool ships
-a default instruction file at its expected path, move or back it up before
-running the `ln -s` command — `ln` will fail rather than overwrite, but a
-pre-existing regular file will block the symlink.
-
 ## Skills
 
 The [`skills/`](./skills) directory holds reusable agent skills in the open
@@ -52,6 +13,11 @@ The [`skills/`](./skills) directory holds reusable agent skills in the open
 maintain a copy per tool, `install-skills.sh` symlinks each skill into the
 user-level skills directory of each tool, so editing happens only here in the
 repo and there is never a second copy to drift out of sync.
+
+My personal context and cross-tool conventions live here too: the `manfred`
+skill carries identity and working style, and `manfred-git` carries commit
+message style and attribution preferences. Invoke them explicitly when you
+want that context.
 
 On any machine, after cloning this repo, run:
 

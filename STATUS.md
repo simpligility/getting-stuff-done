@@ -31,15 +31,6 @@ Task tracker for ongoing work in this repo.
     - Titles and headings use sentence case, always.
     - One empty line after every title or heading.
     - Hard-wrap Markdown files at 80 characters.
-- **Eliminate AGENTS.md in favor of the manfred skills** — move the config
-  currently in `AGENTS.md`, commit message style and the `Assisted-by:`
-  attribution trailer, into the `manfred` skill stack so the skills are the
-  single source of truth, then delete `AGENTS.md` along with its symlinks and
-  the "Symlink setup" section of the README.
-  - First verify this is actually viable: most tools load skills on-demand by
-    description rather than always-on like a global instructions file, so
-    confirm each tool reliably surfaces this guidance from a skill before
-    removing `AGENTS.md`. This verification is part of the task.
 - **Absorb ideas from claude-md-starter** — review
   <https://github.com/sumit-ai-ml/claude-md-starter> and fold useful patterns into the
   persona skill stack and/or global CLAUDE.md.
