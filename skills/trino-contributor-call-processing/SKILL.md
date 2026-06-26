@@ -9,7 +9,7 @@ Use this skill to process the video recording from a [Trino contributor
 call](https://www.youtube.com/playlist?list=PLFnr63che7wYkKTBWGulzVbzLSV_wrSBq)
 recording available on YouTube to create time stamped list of topics for the
 video description and expanded summary for [the contributor meetings wiki
-page](https://github.com/trinodb/trino/wiki/Contributor-meetings). 
+page](https://github.com/trinodb/trino/wiki/Contributor-meetings).
 
 ## Processing steps
 
@@ -21,12 +21,12 @@ markdown file and remember it as {{draftnotes}}.
 
 Ingest the meeting notes markdown file.
 
-Take note of the attendees from the while and any topics there were discussed. 
+Take note of the attendees from the notes and any topics that were discussed.
 
-Analyze the video to create a list of attendees a time-stamped list of sections
-that discuss different topics, and a short description for each topic. Use the
-content from the {{draftnotes}} as suggestions and further details for the
-topics. Also take note of the title of the video as {{title}}.
+Analyze the video to create a list of attendees, a time-stamped list of
+sections that discuss different topics, and a short description for each topic.
+Use the content from the {{draftnotes}} as suggestions and further details for
+the topics. Also take note of the title of the video as {{title}}.
 
 ### YouTube description
 
@@ -70,7 +70,7 @@ Topics
 ### Attendees list
 
 For the section of attendees, use their GitHub username and link to their
-profile in markdown format. List one attendee per line. 
+profile in markdown format. List one attendee per line.
 
 Consult the list of [Trino contributors](https://github.com/orgs/trinodb/people)
 for a list of potential attendees. Also look at common attendees from prior
