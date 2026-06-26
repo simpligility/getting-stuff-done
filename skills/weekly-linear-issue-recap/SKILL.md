@@ -32,19 +32,19 @@ Run the following command and show the output to the user:
 go-linear user get me
 ```
 
-Ask the user to confirm that the output is them and you should proceed. From the
-output, remember the full name as {{name}} and the user ID as {{linear-user-id}}.
-Also note the value of `$RECAP_LINEAR_PROJECT` as {{project}} and the value of
-`$RECAP_LINEAR_TEAM` as {{team}}.
+Ask the user to confirm that the output is them and you should proceed. From
+the output, remember the full name as {{name}} and the user ID as
+{{linear-user-id}}. Also note the value of `$RECAP_LINEAR_PROJECT` as
+{{project}} and the value of `$RECAP_LINEAR_TEAM` as {{team}}.
 
-Tasks are tracked as Linear issues in the project {{project}} (team {{team}})
-with updates as changes to the description and comments.
+Tasks are tracked as Linear issues in the project {{project}} on team
+{{team}} with updates as changes to the description and comments.
 
 Use the `go-linear` command line tool to fetch all issues assigned to
 {{linear-user-id}} in the project {{project}} and locate comments from last
-Friday (inclusive) through today (inclusive), covering the past 7 days. Include
-both open/in progress issues and closed issues that have been closed within the
-last week. For example:
+Friday through today, both days inclusive, covering the past 7 days. Include
+both open and in-progress issues, and closed issues that have been closed
+within the last week. For example:
 
 ```
 go-linear issue list --team "{{team}}" --project "{{project}}" --assignee "{{linear-user-id}}"
@@ -57,12 +57,14 @@ or if you should wait until Friday to do so.
 ## Processing
 
 Determine where to write the output file:
-- If the current working directory is named `weekly-updates`, write the file there.
-- Otherwise, if a `weekly-updates` subdirectory exists in the current directory, write the file inside it.
+- If the current working directory is named `weekly-updates`, write the file
+  there.
+- Otherwise, if a `weekly-updates` subdirectory exists in the current
+  directory, write the file inside it.
 - Otherwise, write the file in the current directory.
 
-Create the markdown file using the ISO date format pattern `update-yyyy-mm-dd.md`
-in the location determined above.
+Create the markdown file using the ISO date format pattern
+`update-yyyy-mm-dd.md` in the location determined above.
 
 Add the title `# {{name}} weekly update as of yyyy-mm-dd`, with the date
 replaced into the `yyyy-mm-dd`.
@@ -104,8 +106,8 @@ characters and use bullet points as applicable.
 Once you are done, ask me to review the file and add the summary for this week
 and plans for next week.
 
-Confirm that everything is done, then create a new issue in the project {{project}}
-on team {{team}}:
+Confirm that everything is done, then create a new issue in the project
+{{project}} on team {{team}}:
 
 * Use the title from the markdown file as issue title
 * Use the full content of the markdown file as the description
