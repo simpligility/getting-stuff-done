@@ -96,6 +96,14 @@ defaulting to 5 minutes before expiry.
 Assisted-by: Claude Opus 4.8 <noreply@anthropic.com>
 ```
 
+## Commit execution and signing
+
+- Run all `git commit` commands in the foreground synchronously using a
+  high `WaitMsBeforeAsync` value like `10000` or the maximum allowed.
+- This allows commit signing workflows like Sigstore to successfully
+  trigger browser popups or interactive terminal prompt requests for
+  user authentication.
+
 ## Branching strategy
 - **Trunk-based development** — short-lived feature branches off `main`
 - Branch naming: `type/short-description` (e.g. `feat/oauth-refresh`, `fix/token-expiry`)
