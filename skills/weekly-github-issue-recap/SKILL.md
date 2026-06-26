@@ -39,8 +39,8 @@ Tasks are tracked as GitHub issues in the repository {{repository}} with updates
 as changes to the description and comments.
 
 Use the `gh` command line tool to fetch all issues assigned to {{username}} in
-the repository {{repository}} and locate comments from last Friday (inclusive)
-through today (inclusive), covering the past 7 days. For example:
+the repository {{repository}} and locate comments from last Friday through
+today, both days inclusive, covering the past 7 days. For example:
 
 ```
 gh issue list --repo "{{repository}}" --assignee "{{username}}" --state all
@@ -53,12 +53,14 @@ or if you should wait until Friday to do so.
 ## Processing
 
 Determine where to write the output file:
-- If the current working directory is named `weekly-updates`, write the file there.
-- Otherwise, if a `weekly-updates` subdirectory exists in the current directory, write the file inside it.
+- If the current working directory is named `weekly-updates`, write the file
+  there.
+- Otherwise, if a `weekly-updates` subdirectory exists in the current
+  directory, write the file inside it.
 - Otherwise, write the file in the current directory.
 
-Create the markdown file using the ISO date format pattern `update-yyyy-mm-dd.md`
-in the location determined above.
+Create the markdown file using the ISO date format pattern
+`update-yyyy-mm-dd.md` in the location determined above.
 
 Add the title `# {{name}} weekly update as of yyyy-mm-dd`, with the date
 replaced into the `yyyy-mm-dd`.
@@ -99,7 +101,8 @@ at 80 characters and use bullet points as applicable.
 Once you are done, ask me to review the file and add the summary for this week
 and plans for next week.
 
-Confirm that everything is done, then create a new issue in the repository {{repository}}:
+Confirm that everything is done, then create a new issue in the repository
+{{repository}}:
 
 * Use the title from the markdown file as issue title
 * Use the full content of the markdown file as the description
