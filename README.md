@@ -67,6 +67,10 @@ time:
 * [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) - engineering skills collection
 * [MLcon workshop](https://github.com/mosabua/mlcon-san-diego-2026) - my fork
 * [skills.sh](https://www.skills.sh/) - skills repository
+* [Cavenman](https://github.com/JuliusBrussee/caveman) - shorten output to safe
+* [Cavenmem](https://github.com/JuliusBrussee/cavemem) - local cross-agent memory
+* [The Sovereign Engineer](https://leanpub.com/thesovereignengineer) - book
+
 
 ### Writing
 
