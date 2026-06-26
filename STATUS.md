@@ -33,11 +33,4 @@ Task tracker for ongoing work in this repo.
     - Hard-wrap Markdown files at 80 characters.
 - **Absorb ideas from claude-md-starter** — review
   <https://github.com/sumit-ai-ml/claude-md-starter> and fold useful patterns into the
-  persona skill stack and/or global CLAUDE.md.
-- **Reconcile & trim global CLAUDE.md** — review `~/.claude/CLAUDE.md` (canonical
-  source; tool paths symlink to it) and trim it down, migrating overlapping content
-  into the persona skill stack so the skills become the source of truth and the global
-  file shrinks to a thin pointer where possible.
-  - As part of this, sync the `Assisted-by:` trailer guidance — the global example
-    still references `Claude Opus 4.7`; replace with the dynamic-model approach now in
-    `skills/manfred-git`.
+  persona skill stack.
