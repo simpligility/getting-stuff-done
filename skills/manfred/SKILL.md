@@ -44,5 +44,6 @@ When working with Manfred on the following topics, check for and load the corres
 | Topic | Skill to load |
 |-------|--------------|
 | Git, commits, PRs, branching, code review | `manfred-git/SKILL.md` |
+| Writing, blogs, marketing, docs, markdown | `manfred-writing/SKILL.md` |
 
 Add new entries to this table as new `manfred-*` skills are created.
