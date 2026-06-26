@@ -2,18 +2,6 @@
 
 Task tracker for ongoing work in this repo.
 
-## In progress
-
-- **Persona skill stack** — build out the `manfred` core skill and `manfred-*`
-  extensions. Originated from `persona-skill-stack-plan.md`, now deleted; remaining
-  work lives in this backlog.
-  - [x] Add YAML frontmatter to `skills/manfred` and `skills/manfred-git` so they
-    register as valid Claude Code skills
-  - [x] Reconcile the `Assisted-by:` commit trailer (model + vendor no-reply email)
-  - [x] Fill in the core identity gaps in `skills/manfred` (pronouns, location/timezone,
-    GitHub handle, LinkedIn, personal site, focus line, language background, family
-    context, explicit AI-behavior preferences)
-
 ## Backlog
 
 - **Manually review the manfred skills** — read through `skills/manfred` and
