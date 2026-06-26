@@ -52,9 +52,13 @@ Pick the style by repo or organization rather than inspecting history each time.
 repo is not listed here, inspect recent `git log` and any `CONTRIBUTING` guide, follow
 what you find, and propose adding it to this table.
 
+A more specific entry wins over a broader one (e.g. a named repo overrides an
+org-wide row).
+
 | Repo / organization | Style |
 |---|---|
 | Chainguard repos | Conventional commits |
+| mosabua/chainguard-progress | Chris Beams (personal repo; existing history uses `Add weekly recap as of …`) |
 | Trino, Trino Gateway, Airlift | Chris Beams |
 | simpligility repos | Chris Beams |
 | Anything else | Chris Beams by default; if the repo clearly uses another convention, inspect history and `CONTRIBUTING` and follow that |
