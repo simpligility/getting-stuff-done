@@ -173,5 +173,8 @@ Changes:
 * <Change description>
   ([#<PR_NUMBER_OR_ISSUE_NUMBER>](https://github.com/trinodb/trino-gateway/<pull_or_issues>/<NUMBER>))
 
-More details and a list of all merged pull requests are [available in the milestone <version> list](https://github.com/trinodb/trino-gateway/pulls?q=is%3Apr+milestone%3A<version>+is%3Aclosed).
+More details and a list of all merged pull requests are [available in the milestone <version>
+list](https://github.com/trinodb/trino-gateway/pulls?q=is%3Apr+milestone%3A<version>+is%3Aclosed)
+and the [GitHub release section for version
+<version>](https://github.com/trinodb/trino-gateway/releases/tag/<version>).
 ```
