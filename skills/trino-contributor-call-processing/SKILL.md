@@ -16,12 +16,20 @@ page](https://github.com/trinodb/trino/wiki/Contributor-meetings).
 Ask the user to provide the URL to the video recording on YouTube and remember
 it as {{url}}.
 
+Ask the user for the date of the meeting in the format YYYY-MM-DD and remember it as {{date}}. This will be used to locate the section in the wiki for the meeting and to create a new section if it does not exist.
+
 Ask the user for the path to the local file with the rough meeting notes
-markdown file and remember it as {{draftnotes}}.
+markdown file and remember it as {{draftnotes}}. If there is no file, proceed without it.
 
 Ingest the meeting notes markdown file.
 
-Take note of the attendees from the notes and any topics that were discussed.
+Take note of the attendees and any topics that were discussed. 
+
+Ingest the [wiki
+page](https://github.com/trinodb/trino/wiki/Contributor-meetings) and locate the
+section for the meeting date and take note of the attendees and topic
+information there. If the section does not exist, create a new section for the
+meeting date.
 
 Analyze the video to create a list of attendees, a time-stamped list of
 sections that discuss different topics, and a short description for each topic.
@@ -61,16 +69,17 @@ structure and insert data from analyzing the minutes and the video:
 
 [📹 Video recording on YouTube with timestamps]({{url}})
 
-Attendees
+**Attendees**
 
 
-Topics
+**Topics**
+
 ```
 
 ### Attendees list
 
 For the section of attendees, use their GitHub username and link to their
-profile in markdown format. List one attendee per line.
+profile in markdown format. List one attendee per line, followed by a comma. 
 
 Consult the list of [Trino contributors](https://github.com/orgs/trinodb/people)
 for a list of potential attendees. Also look at common attendees from prior
@@ -109,19 +118,19 @@ For the topics list, you need the following details for each topics
 * {{description of the topic}}
 
 For the description create a summary of the discussion of the topic and add
-links and other information from the {{draftnotes}}. If any other links to
-pull requests or issue numbers are mentioned, see if you can locate them with
-the Trino repository at https://github.com/trinodb/trino and insert relevant
-links
+links and other information from the {{draftnotes}} and the wiki topic
+information. If any other links to pull requests or issue numbers are
+mentioned, see if you can locate them with the Trino repository at
+https://github.com/trinodb/trino and insert relevant links.
 
 Format each section in the following manner:
 
 ```
-[{{timestamp in mm:ss format}}]({{url}}?t={{timestamp in seconds}}) {{topic title}}
+[{{timestamp in mm:ss format}}]({{url}}?t={{timestamp in seconds}}) **{{topic title}}**
 
 {{description of the topic}}
 
 ```
 
 Ask for a review of the files and assist with any further refinement, based on
-the info you already have and any further details received.
+the info you already have and any further details received.etails received.
