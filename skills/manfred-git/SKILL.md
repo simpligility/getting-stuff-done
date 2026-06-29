@@ -125,14 +125,35 @@ Assisted-by: Claude Opus 4.8 <noreply@anthropic.com>
 - Other AI coding agents such as Claude Code can execute the commit directly if
   their interactive environments support signing workflows.
 
+## Default branch
+
+The default branch name varies — some repos use `master`, others use `main`.
+Never assume one or the other. Detect the actual default branch and use it in
+all commands. When the repo is a fork, the upstream default branch is the
+source of truth; match whatever it uses.
+
 ## Branching strategy
 
-- **Trunk-based development** — short-lived feature branches off `main`
+- **Trunk-based development** — short-lived feature branches off the default
+  branch
 - Branch naming: `type/short-description`, for example `feat/oauth-refresh` or
   `fix/token-expiry`
 - Branches should be small and focused — if a branch is getting large, consider
   splitting
-- Merge back to `main` quickly; avoid long-lived branches
+- Merge back to the default branch quickly; avoid long-lived branches
+
+## Forks and upstream
+
+Assume a fork has an `upstream` remote configured that points at the canonical
+repository, with `origin` pointing at the personal fork. To sync the default
+branch with upstream and update the fork, substituting `master` or `main` as
+appropriate:
+
+```
+git co master
+git pull upstream master
+git push
+```
 
 ## PR preferences
 
