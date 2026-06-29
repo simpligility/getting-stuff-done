@@ -1,9 +1,16 @@
 ---
 name: manfred-git
-description: Manfred Moser's git preferences and workflows — commit message style, branching conventions, PR workflows, and code review approach. Load when working with git, commits, branches, PRs, changelogs, or code reviews.
+description: Manfred Moser's personal git conventions — commit message style, branching, PR workflow, and code review. A component of the `manfred` skill family. Activate only when the `manfred` skill is already active (its index directs you here) or when Manfred explicitly invokes it; do not auto-activate on generic git work by description match alone.
 ---
 
 # Manfred Moser — git preferences and workflows
+
+> **Base-context check.** This skill encodes Manfred's personal conventions and
+> assumes the `manfred` base skill established the working context. If `manfred`
+> was not activated earlier in this session, pause and ask before applying these
+> conventions: "The `manfred` base skill isn't active this session — load it
+> first for full context, or proceed anyway?" Once `manfred` is active (or the
+> user confirms), continue without asking again.
 
 ## Commit message style
 

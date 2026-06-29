@@ -1,9 +1,16 @@
 ---
 name: manfred-writing
-description: Manfred Moser's writing style, voice, audience, and formatting preferences for blog posts, documentation, marketing, and markdown content. Load when authoring or editing prose and markdown.
+description: Manfred Moser's personal writing voice, audience, and markdown formatting conventions for blogs, docs, and marketing content. A component of the `manfred` skill family. Activate only when the `manfred` skill is already active (its index directs you here) or when Manfred explicitly invokes it; do not auto-activate on generic writing or markdown work by description match alone.
 ---
 
 # Manfred Moser — writing style and preferences
+
+> **Base-context check.** This skill encodes Manfred's personal conventions and
+> assumes the `manfred` base skill established the working context. If `manfred`
+> was not activated earlier in this session, pause and ask before applying these
+> conventions: "The `manfred` base skill isn't active this session — load it
+> first for full context, or proceed anyway?" Once `manfred` is active (or the
+> user confirms), continue without asking again.
 
 This skill defines the voice, audience, and formatting guidelines for technical
 content written by or for Manfred. Follow these rules to ensure consistency
@@ -12,8 +19,8 @@ across blog posts, documentation, marketing materials, and markdown files.
 
 ## Voice and tone
 
-- **Direct and precise** — get straight to the point without filler words or
-  unnecessary preambles.
+- **Direct and precise** — content should get to the point without filler
+  words or unnecessary preambles, mirroring Manfred's own communication style.
 - **Technical and pragmatic** — write for engineers and professionals. Avoid
   fluff, buzzwords, or exaggerated marketing claims.
 - **Authoritative yet accessible** — explain complex topics clearly and
@@ -44,27 +51,8 @@ across blog posts, documentation, marketing materials, and markdown files.
   and general documentation. Read more at https://developers.google.com/style.
 
 
-## Author biography templates
+## Author biography
 
-Use these templates when a short description of the author is needed.
-
-### One-line biography
-
-Manfred Moser is a Senior Principal DevRel Engineer at Chainguard, an
-open-source maintainer, and co-author of Trino: The Definitive Guide.
-
-### Short biography
-
-Manfred Moser is a Senior Principal DevRel Engineer at Chainguard, focusing on
-software supply-chain security and developer relations. He is a long-time
-maintainer of open-source projects such as Maven and Trino, and co-author of
-the O'Reilly book Trino: The Definitive Guide.
-
-### Detailed biography
-
-Manfred Moser is a Senior Principal DevRel Engineer at Chainguard. His work
-focuses on software supply-chain and container security, DevOps, developer
-relations, and community building. Manfred is a long-time contributor and
-maintainer of key open-source technologies including Maven, Jenkins, and Trino.
-He is also the co-author of the O'Reilly book Trino: The Definitive Guide.
-Manfred lives in Victoria, British Columbia, Canada.
+When a short description of the author is needed, use the canonical bio
+templates in the `manfred` base skill — one-line, short, and detailed versions
+are maintained there alongside the source identity facts.
