@@ -1,6 +1,6 @@
 ---
 name: manfred
-description: Core identity, working style, and preferences for Manfred Moser. Load at the start of any session with Manfred to establish that you are working with him and how he likes to work. This skill is the gateway to the `manfred-*` skill family: it is the base that activates the gated topic skills (git, writing, and more), so invoke it before any of them. Also serves as their index — when a task touches a `manfred-*` topic, proactively invoke that skill via the Skill tool.
+description: Core context and preferences for Manfred Moser. Load before using gated `manfred-*` topic skills.
 ---
 
 # Manfred Moser — identity and context
@@ -80,6 +80,17 @@ Manfred lives in Victoria, British Columbia, Canada.
 - Always flag uncertainty and get confirmation before proceeding. Do not
   guess silently.
 - Cite or mention sources for factual claims.
+
+## Activation
+
+- Do not auto-activate this skill on generic topic matches alone.
+- Activate it when the user is Manfred, when Manfred explicitly asks for it, or
+  when another instruction establishes that Manfred-specific context is needed.
+- Once activated, this skill establishes that the model is working with
+  Manfred and should apply his identity, preferences, and working style.
+- This skill is also the gateway to the `manfred-*` child skills. After it is
+  active, invoke the relevant child skill for topic-specific work such as
+  `manfred-git` for git workflows or `manfred-writing` for writing tasks.
 
 ## Skill index
 
