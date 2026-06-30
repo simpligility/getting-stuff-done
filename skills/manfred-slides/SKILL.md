@@ -103,3 +103,4 @@ alone — the presenter delivers the substance, and the slides reinforce it.
   bullets.
 - Keep one consistent visual style across the deck.
 - Ensure every visual is legible at presentation size and has enough contrast.
+- Use images and memes sparingly and only when they add real value to the point being made.
