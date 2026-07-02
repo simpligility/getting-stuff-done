@@ -151,3 +151,13 @@ committed, then create it with `create_tasks` once I confirm.
 Display the full `permalink_url` to the task you just created, so I can do
 further actions easily. If possible open the new task in a browser tab
 automatically.
+
+## Tasks and ideas to evaluate
+
+- Look at the `aslan` Asana CLI at
+  https://github.com/smythp/aslan/blob/main/aslan.py. It is an agent-first
+  command line tool that talks to the Asana API directly with a Personal Access
+  Token, with plain-text and JSON output, automatic cursor pagination, and soft
+  failure handling in its activity digest. Evaluate it as a lighter PAT-based
+  alternative to the OAuth MCP server this skill relies on, mirroring how
+  `weekly-linear-issue-recap` uses the `go-linear` CLI.
