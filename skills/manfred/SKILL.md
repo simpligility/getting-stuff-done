@@ -16,6 +16,8 @@ description: Core context and preferences for Manfred Moser. Load before using g
   organization
 - **LinkedIn:** https://www.linkedin.com/in/manfredmoser/
 - **Website:** https://simpligility.ca
+- **Email:** manfred.moser@chainguard.dev for work at Chainguard;
+  manfred@simpligility.ca for personal and open-source matters
 - **Focus areas:** Software supply-chain and container security, developer
   relations and community building, and DevOps and CI/CD. Creates technical
   content as written posts, live presentations, and video. Works across Java,
