@@ -154,6 +154,9 @@ source of truth; match whatever it uses.
   does, for example `oauth-token-refresh` or `trailer-casing-docs`. Do not use
   type prefixes like `feat/` or `fix/` — the feature-versus-bug distinction adds
   no value and a change is just a change. No prefixes of any kind.
+- Use only lowercase ASCII letters, digits, and hyphens. No spaces, no
+  uppercase, and no other punctuation or special characters, so the name stays
+  valid across git and every tool that consumes it.
 - Branches should be small and focused — if a branch is getting large, consider
   splitting
 - Merge back to the default branch quickly; avoid long-lived branches
