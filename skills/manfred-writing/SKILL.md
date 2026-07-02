@@ -40,6 +40,8 @@ across blog posts, documentation, marketing materials, and markdown files.
 
 - Avoid parentheses in prose. Restructure sentences or use other punctuation
   like em-dashes to integrate side notes.
+- Never use the abbreviations "e.g." or "i.e." Write "for example" or "that
+  is" instead, or restructure the sentence.
 - Avoid the ampersand symbol entirely unless it is part of an official name.
   Always write "and" instead.
 - Titles and headings must use sentence case at all times. Only capitalize the
