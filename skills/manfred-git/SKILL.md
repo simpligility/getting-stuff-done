@@ -150,8 +150,10 @@ source of truth; match whatever it uses.
 
 - **Trunk-based development** — short-lived feature branches off the default
   branch
-- Branch naming: `type/short-description`, for example `feat/oauth-refresh` or
-  `fix/token-expiry`
+- Branch naming: a plain descriptive kebab-case name that says what the change
+  does, for example `oauth-token-refresh` or `trailer-casing-docs`. Do not use
+  type prefixes like `feat/` or `fix/` — the feature-versus-bug distinction adds
+  no value and a change is just a change. No prefixes of any kind.
 - Branches should be small and focused — if a branch is getting large, consider
   splitting
 - Merge back to the default branch quickly; avoid long-lived branches
