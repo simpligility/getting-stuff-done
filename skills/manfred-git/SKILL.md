@@ -82,10 +82,24 @@ overrides an org-wide row.
 
 The `Assisted-by:` trailer applies regardless of which style a repo uses.
 
+### Trailer conventions
+
+Commit trailers follow the RFC 822 header convention used by git and the Linux
+kernel: capitalize only the first word and keep the rest lowercase. Write
+`Co-authored-by:`, `Signed-off-by:`, `Reviewed-by:`, and `Assisted-by:` — not
+`Co-Authored-By:` or `Assisted-By:`. Git parses trailer keys case-insensitively,
+so the wrong casing still works, but the first-word-only form is the correct and
+consistent style.
+
+Use `Co-authored-by:` when a human collaborator was genuinely involved in
+writing the change, one trailer per collaborator, with the name and email they
+use for git. Reserve it for people; never use it to attribute AI tooling.
+
 ### AI tooling attribution
 
 Always include an `Assisted-by:` trailer when AI tooling was involved. Frame the
-AI as an assistant, not a co-author — never use `Co-Authored-By:`.
+AI as an assistant, not a co-author — attribute AI with `Assisted-by:` and never
+with `Co-authored-by:`, which is reserved for human collaborators.
 
 Fill in the trailer with the **actual model and provider doing the work** at
 commit time. This is not Claude-specific — use whatever model is genuinely in
