@@ -93,13 +93,27 @@ consistent style.
 
 Use `Co-authored-by:` when a human collaborator was genuinely involved in
 writing the change, one trailer per collaborator, with the name and email they
-use for git. Reserve it for people; never use it to attribute AI tooling.
+use for git. Reserve it for people; never use it to attribute AI tooling. If a
+commit was produced with AI help and no human collaborator co-authored it, do
+not emit any `Co-authored-by:` trailer at all.
 
 ### AI tooling attribution
 
 Always include an `Assisted-by:` trailer when AI tooling was involved. Frame the
 AI as an assistant, not a co-author — attribute AI with `Assisted-by:` and never
 with `Co-authored-by:`, which is reserved for human collaborators.
+
+When the assistant drafts or suggests commit trailers, the AI attribution block
+must contain only `Assisted-by:` lines for AI tools. Never add a matching
+`Co-authored-by:` trailer for Copilot, Claude, GPT, Gemini, Ollama, or any
+other AI system. The invalid pattern to avoid is:
+
+```
+Assisted-by: GPT-5.4 <https://github.com/copilot>
+Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+```
+
+The correct form is the `Assisted-by:` line only.
 
 Fill in the trailer with the **actual model and provider doing the work** at
 commit time. This is not Claude-specific — use whatever model is genuinely in
