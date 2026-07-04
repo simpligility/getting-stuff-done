@@ -44,13 +44,16 @@ across blog posts, documentation, marketing materials, and markdown files.
   is" instead, or restructure the sentence.
 - Avoid the ampersand symbol entirely unless it is part of an official name.
   Always write "and" instead.
+- Links must use descriptive text. Never use "here" as link text.
+- Show the raw URL for a link only when it is truly relevant to display it.
 - Titles and headings must use sentence case at all times. Only capitalize the
   first word and proper nouns.
 - Leave exactly one empty line after every title or heading.
 - Hard-wrap all markdown files at 80 characters.
 - Use Merriam-Webster as the reference dictionary.
 - Follow the Google Developer Documentation Style Guide for technical writing
-  and general documentation. Read more at https://developers.google.com/style.
+  and general documentation. Read the
+  [Google Developer Documentation Style Guide](https://developers.google.com/style).
 
 
 ## Author biography
