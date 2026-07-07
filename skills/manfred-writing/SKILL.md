@@ -44,6 +44,9 @@ across blog posts, documentation, marketing materials, and markdown files.
   is" instead, or restructure the sentence.
 - Avoid the ampersand symbol entirely unless it is part of an official name.
   Always write "and" instead.
+- Never use "above" or "below" to refer to another place in a document.
+  Following the Google style guide, use "preceding" or "following" instead, or
+  restructure to name the specific section, table, or list.
 - Links must use descriptive text. Never use "here" as link text.
 - Show the raw URL for a link only when it is truly relevant to display it.
 - Titles and headings must use sentence case at all times. Only capitalize the
