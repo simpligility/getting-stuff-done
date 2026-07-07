@@ -165,6 +165,37 @@ Assisted-by: Claude Opus 4.8 <noreply@anthropic.com>
 
 ## Commit execution and signing
 
+### Multi-line messages: never embed `\n`
+
+Never write a multi-line commit message as a single `-m` string with `\n`
+escapes, for example `git commit -m "Subject\n\nBody line"`. Most shells and
+several AI tools, including Copilot, do not interpret `\n` in that position, so
+the literal characters `\n` land in the stored commit message instead of real
+line breaks. Use one of these instead:
+
+- **Pass the message on stdin** — the most reliable across tools and shells:
+
+  ```
+  git commit -F - <<'EOF'
+  Add support for OAuth2 token refresh
+
+  Token expiry was causing silent failures in long-running sessions.
+
+  Assisted-by: Claude Opus 4.8 <noreply@anthropic.com>
+  EOF
+  ```
+
+- **Repeat `-m`** — each `-m` becomes its own paragraph separated by a blank
+  line, with no escapes needed:
+  `git commit -m "Subject" -m "Body" -m "Assisted-by: ..."`.
+- **Write a temp file and use `-F <file>`** when the message is long or built
+  up programmatically.
+
+If a shell genuinely does interpret ANSI-C escapes, `$'line1\nline2'` quoting
+works, but do not rely on it — stdin or repeated `-m` are portable and safe.
+
+### Execution environment
+
 - When running under Antigravity, never run `git commit` directly. Instead,
   stage the changes, draft the commit message following the guidelines above,
   and display the exact `git commit` command and message so the user can run it
