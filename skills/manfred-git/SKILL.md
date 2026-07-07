@@ -51,6 +51,25 @@ Beams' rules cannot be followed as-is. In those repos:
 These looser 72-character subject and 80-character body limits apply to any
 commit style that does not follow Chris Beams, not only conventional commits.
 
+#### Detecting a Chainguard repo
+
+Chainguard repos use conventional commits. Treat a repo as a Chainguard repo
+when `chainguard` or `wolfi` (case-insensitive) appears in any of the following:
+
+- the repository name or its local directory
+- the name of any configured git remote, for example a remote literally named
+  `chainguard`
+- the URL of any remote, including `origin`, `upstream`, and the source repo a
+  fork was created from
+
+In practice, check `git remote -v` and the repo path. If `chainguard` or
+`wolfi` shows up anywhere in that output, use conventional commits. Wolfi is
+Chainguard's Linux distribution, so its repos follow the same convention — this
+includes the `wolfi-dev` org.
+
+**Exception:** `chainguard-progress` is not a Chainguard repo. It is a local
+folder Manfred manages with git and uses Chris Beams, despite the name match.
+
 ### Body wrapping exceptions
 
 Whatever the body wrap width, exceptions are acceptable when a single token
@@ -74,8 +93,8 @@ overrides an org-wide row.
 
 | Repo / organization | Style |
 |---|---|
-| Chainguard repos | Conventional commits |
-| mosabua/chainguard-progress | Chris Beams — personal repo; existing history uses `Add weekly recap as of …` |
+| Chainguard and Wolfi repos | Conventional commits — see [Detecting a Chainguard repo](#detecting-a-chainguard-repo). Covers repos under the Chainguard org, the `wolfi-dev` org, and personal repos whose name matches, such as `mosabua/chainguard-libraries-{java,javascript,python}` |
+| mosabua/chainguard-progress | Chris Beams — local folder Manfred manages with git, not a real Chainguard repo; existing history uses `Add weekly recap as of …` |
 | Trino, Trino Gateway, Airlift | Chris Beams |
 | simpligility repos | Chris Beams |
 | Anything else | Chris Beams by default; if the repo clearly uses another convention, inspect history and `CONTRIBUTING` and follow that |
