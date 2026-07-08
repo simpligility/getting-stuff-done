@@ -143,3 +143,11 @@ Blog posts and other written resources that caught my attention:
 * [Will you be my CLI? Making Agents fall in love with Langfuse.](https://langfuse.com/blog/2026-02-13-will-you-be-my-cli)
 * [The Fossil Record of Harness Engineering](https://hexproof.dev/datagrams/fossil-record-harness-engineering/)
 
+## License and sponsorship
+
+Created and maintained by Manfred Moser. The contents of this repository,
+including all skills, are licensed under the [Apache License 2.0](LICENSE).
+
+The skills here are all my own work. If you find them useful, consider
+[sponsoring the work through GitHub Sponsors](https://github.com/sponsors/mosabua).
+
