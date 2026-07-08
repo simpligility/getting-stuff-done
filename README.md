@@ -79,18 +79,27 @@ Personal skills:
 The `install-skills.sh` script installs every skill for the tools listed
 preceding. To install a single skill instead, and for anyone who prefers a
 package-manager style workflow, the skills are also installable with the
-[skills CLI](https://github.com/vercel-labs/skills), which uses public GitHub
-repositories as its registry:
+[skills CLI](https://github.com/vercel-labs/skills). It installs a skill
+directly from any public GitHub repository. Install a single skill with the
+`owner/repo@skill` shorthand:
 
 ```bash
-npx skills add simpligility/getting-stuff-done/tree/main/skills/trino-packages-update
+npx skills add simpligility/getting-stuff-done@trino-packages-update
+```
+
+Install every skill in the repository at once by pointing at the repository:
+
+```bash
+npx skills add simpligility/getting-stuff-done
 ```
 
 This adds a Node based dependency at install time and is entirely optional. The
 symlink script and a plain clone remain the primary, dependency-free path.
-Because the CLI indexes public GitHub repositories directly, the skills are also
-discoverable with `npx skills find --owner simpligility` without any separate
-registration.
+
+The `npx skills find` command searches the separate
+[skills.sh](https://skills.sh) registry rather than GitHub directly, so these
+skills do not appear in that search until they are published to the registry.
+Installing directly by repository or skill reference works either way.
 
 ## Resources
 
