@@ -42,6 +42,56 @@ versions. The script refreshes its own symlinks but never overwrites a real
 file or directory a tool placed there itself. To support another tool, add a
 single `"name:$HOME/path/skills"` entry to the `TOOLS` array in the script.
 
+> Skills run with the full permissions of the agent that loads them. Review a
+> skill before installing it, whether it comes from this repository or any other
+> source.
+
+### Skill catalog
+
+The repository holds two kinds of skills. General skills are useful to anyone
+working on the same tools or projects. Personal skills carry Manfred's identity,
+preferences, and conventions, and double as a worked example of a personal
+context skill family.
+
+General skills:
+
+| Skill | Purpose |
+|---|---|
+| [`trino`](./skills/trino) | Shared reference facts about the Trino project for the `trino-*` family. |
+| [`trino-packages-update`](./skills/trino-packages-update) | Update a `trino-packages` clone to a newer Trino version. |
+| [`trino-gateway-release-notes`](./skills/trino-gateway-release-notes) | Create and maintain Trino Gateway release notes pull requests. |
+| [`trino-contributor-call-processing`](./skills/trino-contributor-call-processing) | Turn a Trino contributor call recording into topics and a wiki summary. |
+| [`weekly-asana-task-recap`](./skills/weekly-asana-task-recap) | Assemble a weekly progress summary from Asana task updates. |
+| [`weekly-github-issue-recap`](./skills/weekly-github-issue-recap) | Assemble a weekly progress summary from GitHub issue updates. |
+| [`weekly-linear-issue-recap`](./skills/weekly-linear-issue-recap) | Assemble a weekly progress summary from Linear issue updates. |
+
+Personal skills:
+
+| Skill | Purpose |
+|---|---|
+| [`manfred`](./skills/manfred) | Core identity, context, and working style. The gateway to the `manfred-*` family. |
+| [`manfred-git`](./skills/manfred-git) | Commit message style, branching, PR workflow, and code review. |
+| [`manfred-writing`](./skills/manfred-writing) | Writing voice, audience, and markdown formatting conventions. |
+| [`manfred-slides`](./skills/manfred-slides) | Presentation slide deck structure and content conventions. |
+
+### Installing individual skills
+
+The `install-skills.sh` script installs every skill for the tools listed
+preceding. To install a single skill instead, and for anyone who prefers a
+package-manager style workflow, the skills are also installable with the
+[skills CLI](https://github.com/vercel-labs/skills), which uses public GitHub
+repositories as its registry:
+
+```bash
+npx skills add simpligility/getting-stuff-done/tree/main/skills/trino-packages-update
+```
+
+This adds a Node based dependency at install time and is entirely optional. The
+symlink script and a plain clone remain the primary, dependency-free path.
+Because the CLI indexes public GitHub repositories directly, the skills are also
+discoverable with `npx skills find --owner simpligility` without any separate
+registration.
+
 ## Resources
 
 This project is inspired by my own experience and the shared learning of many
