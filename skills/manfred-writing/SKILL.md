@@ -14,7 +14,10 @@ description: Manfred Moser's personal writing voice, audience, and markdown form
 
 This skill defines the voice, audience, and formatting guidelines for technical
 content written by or for Manfred. Follow these rules to ensure consistency
-across blog posts, documentation, marketing materials, and markdown files.
+across blog posts, documentation, marketing materials, and markdown files. This
+includes authoring or editing skill files. Any `SKILL.md`, whether in this
+family or a standalone skill, is documentation and must follow these
+conventions, so activate this skill before writing one.
 
 
 ## Voice and tone
