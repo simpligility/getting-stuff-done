@@ -203,6 +203,38 @@ works, but do not rely on it — stdin or repeated `-m` are portable and safe.
 - Other AI coding agents such as Claude Code can execute the commit directly if
   their interactive environments support signing workflows.
 
+## Rewriting history
+
+Keeping a clean, story-telling history usually means editing commits after the
+fact. Pick the tool by the operation.
+
+- **Folding a change into an existing commit** — stage the change, run
+  `git commit --fixup=<sha>`, then squash it in with
+  `git rebase -i --autosquash <base>`. Autosquash pre-arranges the todo
+  list, so you save and quit without editing it, and every other commit
+  stays untouched with no manual re-staging. This is the default for
+  correcting an earlier commit. Two useful variants are
+  `git commit --fixup=reword:<sha>` to change only a commit message and
+  `git commit --fixup=amend:<sha>` to change both content and message.
+- **Reordering or inserting commits** — run `git rebase -i <base>` and edit
+  the todo list, moving lines to reorder or adding a new commit at the right
+  spot. Autosquash does not help here; it only squashes `fixup!` and
+  `squash!` commits into their targets.
+
+Prefer both over `git reset` and re-committing, which is manual and easy to
+get wrong when re-staging files.
+
+### Assistant fallback when interactive rebase is blocked
+
+Some AI agent environments, including the default Claude Code shell, block
+interactive git flags such as `git rebase -i`, and autosquash depends on an
+interactive rebase. When the assistant cannot run one, it should either reset
+to the base with `git reset --mixed <base>` and re-commit the changes in the
+intended order, or hand the rebase to Manfred to run himself — for example
+through the `!` command prefix in Claude Code, so the result lands in the
+session. State which fallback is in use rather than silently rewriting
+history.
+
 ## Default branch
 
 The default branch name varies — some repos use `master`, others use `main`.
