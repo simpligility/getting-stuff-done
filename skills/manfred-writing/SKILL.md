@@ -47,6 +47,9 @@ conventions, so activate this skill before writing one.
   is" instead, or restructure the sentence.
 - Avoid the ampersand symbol entirely unless it is part of an official name.
   Always write "and" instead.
+- Use the Oxford comma. In a list of three or more items, place a comma
+  before the final "and" or "or", for example "clients, drivers, and
+  tooling".
 - Never use "above" or "below" to refer to another place in a document.
   Following the Google style guide, use "preceding" or "following" instead, or
   restructure to name the specific section, table, or list.
