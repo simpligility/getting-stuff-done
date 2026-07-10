@@ -123,5 +123,6 @@ reading its `SKILL.md` file:
 | Alternative Trino binary packages — RPM, custom tarball, custom container image — and version bumps | `trino-packages-update` |
 | Trino Gateway release notes pull requests | `trino-gateway-release-notes` |
 | Processing Trino contributor call recordings from YouTube | `trino-contributor-call-processing` |
+| Updating or debugging the MinIO test container image in core Trino | `trino-minio` |
 
 Add new entries to this table as new `trino-*` skills are created.
