@@ -11,8 +11,8 @@ if [ -z "$REPO" ] || [ -z "$SINCE" ]; then
   exit 1
 fi
 
-# Fetch PRs merged into main since the specified date
-# We use a loop to fetch details for each PR to find closing issues
+# Fetch PRs merged into main since the specified date. Group by mergedAt in UTC
+# so tracking dates are independent of contributor and viewer time zones.
 gh pr list --repo "$REPO" --state merged --base main --limit 100 --json number,title,mergedAt --jq '.[] | select(.mergedAt > "'$SINCE'")' | while read -r pr; do
   NUMBER=$(echo "$pr" | jq -r '.number')
   TITLE=$(echo "$pr" | jq -r '.title')
@@ -23,7 +23,7 @@ gh pr list --repo "$REPO" --state merged --base main --limit 100 --json number,t
   CLOSING_ISSUES=$(gh pr view "$NUMBER" --repo "$REPO" --json closingIssuesReferences --jq '.closingIssuesReferences[].number' | xargs echo)
   
   echo "{\"date\": \"$DATE\", \"number\": $NUMBER, \"title\": \"$TITLE\", \"issues\": \"$CLOSING_ISSUES\"}"
-done | jq -s 'group_by(.date) | reverse | .[]' | jq -r '
-  "\n## \(. [0].date)\n",
+done | jq -s 'sort_by(.date, .number) | group_by(.date) | .[]' | jq -r '
+  "\n## \(. [0].date | strptime("%Y-%m-%d") | strftime("%-d %b %Y"))\n",
   (.[] | "* #\(.number) ❌ rn ❌ docs\(if .issues != "" then " (Resolves: #\(.issues | split(" ") | join(", #")))" else "" end)")
 '

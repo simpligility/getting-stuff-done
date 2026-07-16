@@ -43,7 +43,9 @@ all changes for the next version.
     `docs/quickstart.md` to the new version. Commit the change to main with
     message "Update quickstart guide to version <version>".
 7.  **Fetch initial merges**: Find all PRs merged into `main` since the last
-    release date.
+    release date. Use the PR `mergedAt` timestamp to find and date the PRs in
+    UTC. Do not use author or committer dates, which retain each contributor's
+    timezone and can predate a delayed merge.
     - Command: `gh pr list --repo trinodb/trino-gateway --state merged --base main --limit 100 --json number,title,mergedAt`
 8.  **Initialize docs/release-notes.md**:
     - Add a new section for the new version at the top of the current year
@@ -77,16 +79,32 @@ merged, to keep the release notes PR updated until the next release is ready.
 4.  **Determine the "last check" date**: Look at the PR's tracking list to find
     the most recent date listed.
 5.  **Fetch new merges**: Find PRs merged into `main` since that last check
-    date, but including the last check date to avoid missing any PRs.
+    date, but including the last check date to avoid missing any PRs. Use the
+    PR `mergedAt` timestamp in UTC for both selection and the tracking-list
+    date. Do not use author or committer dates, which retain each contributor's
+    timezone and can predate a delayed merge.
     - Command: `gh pr list --repo trinodb/trino-gateway --state merged --base main --limit 100 --json number,title,mergedAt --search "merged:>={last_check_date}"`
 6.  **Update the PR tracking list**:
     - Do not edit the existing entries to preserve the verification status.
       Instead, add new entries for the newly merged PRs.
-    - Append the new PRs to the PR description, grouped by date.
-    - Ensure the dated sections are in chronological order, with the most recent
-      at the bottom.
+    - Append the new PRs to the PR description, grouped by UTC date from their
+      `mergedAt` timestamps.
+    - Ensure the dated sections are in chronological order, with the most
+      recent at the bottom.
     - Mark them with `❌ rn ❌ docs` to signify they need verification.
     - Update via `gh pr edit <PR_NUMBER> --body-file <path_to_updated_body>`.
+    - State that tracking-list dates use UTC and are based on PR merge
+      timestamps.
+    - To inspect `main` commits grouped by their UTC committer date, run:
+
+      ```bash
+      TZ=UTC git log upstream/main --date=iso-local --format='%cd%x09%s' |
+        awk -F '\t' '
+          { date = substr($1, 1, 10) }
+          date != previous { if (previous != "") print ""; print "## " date }
+          { print "* " $2; previous = date }
+        '
+      ```
 7.  **Refine release notes in docs/release-notes.md**:
     - Analyze the newly merged PRs.
     - Add descriptive entries to the **General** category and, when there are
@@ -143,6 +161,8 @@ Format: PR/issue number, ✅ / ❌ rn ✅ / ❌ docs
 ✅ docs - need for docs assessed and merged, or assessed to be not necessary, set to ❌ docs before completion
 
 Any dates missing in the list just had no merged PRs.
+
+All dates in this tracking list use UTC and are based on PR merge timestamps.
 
 ## <Day Month Year>
 
