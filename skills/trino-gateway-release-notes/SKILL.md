@@ -89,8 +89,9 @@ merged, to keep the release notes PR updated until the next release is ready.
     - Update via `gh pr edit <PR_NUMBER> --body-file <path_to_updated_body>`.
 7.  **Refine release notes in docs/release-notes.md**:
     - Analyze the newly merged PRs.
-    - Add descriptive entries to the appropriate **General** and **UI**
-      categories in `docs/release-notes.md`.
+    - Add descriptive entries to the **General** category and, when there are
+      user-visible UI changes, the **UI** category in `docs/release-notes.md`.
+      Omit the **UI** heading when it has no entries.
     - The description of each PR should contain a suggestion for the release
       notes entry, which you can refine for clarity and consistency. If you
       insert a release notes entry or determine that no entry is needed, mark
@@ -171,13 +172,18 @@ Changes:
 * <Change description>
   ([#<PR_NUMBER_OR_ISSUE_NUMBER>](https://github.com/trinodb/trino-gateway/<pull_or_issues>/<NUMBER>))
 
-**UI**
-
-* <Change description>
-  ([#<PR_NUMBER_OR_ISSUE_NUMBER>](https://github.com/trinodb/trino-gateway/<pull_or_issues>/<NUMBER>))
-
 More details and a list of all merged pull requests are [available in the milestone <version>
 list](https://github.com/trinodb/trino-gateway/pulls?q=is%3Apr+milestone%3A<version>+is%3Aclosed)
 and the [GitHub release section for version
 <version>](https://github.com/trinodb/trino-gateway/releases/tag/<version>).
+```
+
+Add the following section after **General** only when the release has one or
+more user-visible UI changes:
+
+```markdown
+**UI**
+
+* <Change description>
+  ([#<PR_NUMBER_OR_ISSUE_NUMBER>](https://github.com/trinodb/trino-gateway/<pull_or_issues>/<NUMBER>))
 ```
