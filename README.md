@@ -58,6 +58,8 @@ General skills:
 | Skill | Purpose |
 |---|---|
 | [`trino`](./skills/trino) | Shared reference facts about the Trino project for the `trino-*` family. |
+| [`trino-java-update`](./skills/trino-java-update) | Update dependencies and tooling in Java-based Trino projects with a local Renovate scan. |
+| [`trino-minio`](./skills/trino-minio) | Update and troubleshoot the MinIO test container image in trino and aws-proxy. |
 | [`trino-packages-update`](./skills/trino-packages-update) | Update a `trino-packages` clone to a newer Trino version. |
 | [`trino-gateway-release-notes`](./skills/trino-gateway-release-notes) | Create and maintain Trino Gateway release notes pull requests. |
 | [`trino-contributor-call-processing`](./skills/trino-contributor-call-processing) | Turn a Trino contributor call recording into topics and a wiki summary. |

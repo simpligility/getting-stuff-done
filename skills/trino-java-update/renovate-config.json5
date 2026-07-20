@@ -1,0 +1,43 @@
+{
+  // Local, read-only scanner config for Java-based Trino projects such as
+  // trino, trino-gateway, and aws-proxy. Used only through the
+  // RENOVATE_CONFIG_FILE environment variable with `renovate --platform=local`.
+  //
+  // Do not commit this file into a target repository. The whole point is to
+  // scan for updates without wiring Renovate into the repositories themselves.
+  platform: "local",
+
+  // config:recommended is deliberately NOT extended. Its :ignoreModulesAndTests
+  // preset forces **/test/** into ignorePaths, which hides the MinIO container
+  // digest pinned in src/test sources such as S3Container.java and Minio.java.
+  // In a global config that preset also overrides an explicit ignorePaths, so
+  // the only reliable fix is to skip the preset. All managers needed here,
+  // maven, maven-wrapper, github-actions, npm, and custom regex, are enabled by
+  // default without it.
+  ignorePaths: [
+    "**/node_modules/**",
+    "**/vendor/**",
+    "**/bower_components/**",
+  ],
+
+  // The MinIO container image is pinned by digest in plain Java source, so a
+  // custom manager is needed to resolve the current cgr.dev/chainguard/minio
+  // digest. The file patterns cover the aws-proxy S3Container.java and the
+  // trino Minio.java and SpoolingMinio.java pins. Add more patterns here if a
+  // repository pins the digest elsewhere.
+  customManagers: [
+    {
+      customType: "regex",
+      managerFilePatterns: [
+        "**/containers/*.java",
+        "**/env/**/*.java",
+      ],
+      matchStrings: [
+        "cgr\\.dev/chainguard/minio@(?<currentDigest>sha256:[a-f0-9]+)",
+      ],
+      depNameTemplate: "cgr.dev/chainguard/minio",
+      datasourceTemplate: "docker",
+      currentValueTemplate: "latest",
+    },
+  ],
+}
