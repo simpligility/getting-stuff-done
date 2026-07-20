@@ -1,6 +1,6 @@
 ---
 name: trino-minio
-description: Update and troubleshoot the MinIO test container image in the core trinodb/trino repository. Covers the Chainguard fork the image is built from, where the pinned digest lives, how to bump it, and the known streaming-flush failure mode. Use when changing or debugging the MinIO test container in Trino.
+description: Update and troubleshoot the MinIO test container image in the core trinodb/trino repository and the sibling trinodb/aws-proxy repository. Covers the Chainguard fork the image is built from, where the pinned digest lives in each repository, how to bump it, and the known streaming-flush failure mode. Use when changing or debugging the MinIO test container in Trino.
 ---
 
 # Trino MinIO test container
@@ -32,6 +32,21 @@ The image is pinned by digest in three files, and all three must match:
 - `testing/trino-testing-containers/src/main/java/io/trino/testing/containers/Minio.java`
 - `testing/trino-product-tests-launcher/src/main/java/io/trino/tests/product/launcher/env/common/Minio.java`
 - `testing/trino-product-tests-launcher/src/main/java/io/trino/tests/product/launcher/env/environment/SpoolingMinio.java`
+
+## The sibling aws-proxy repository
+
+The [trinodb/aws-proxy](https://github.com/trinodb/aws-proxy) repository uses the
+same `cgr.dev/chainguard/minio` image for its integration tests and should track
+the same build. There the digest is pinned in a single file, in the `IMAGE`
+constant:
+
+- `trino-aws-proxy/src/test/java/io/trino/aws/proxy/server/testing/containers/S3Container.java`
+
+Bump it with the procedure in the following section, and keep the digest aligned
+with the core trinodb/trino repository so both test suites run against the same
+MinIO build. The `dep.minio.version` property in the aws-proxy `pom.xml` is the
+`io.minio` Java client version, which is independent of the container digest and
+does not change with it.
 
 ## Bumping the digest
 
