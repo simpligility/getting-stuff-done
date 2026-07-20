@@ -12,6 +12,12 @@ Use this skill to keep the Java and Maven Trino projects up to date — the core
 repositories or their forks. It builds on the shared context in the `trino`
 skill and defers MinIO specifics to the `trino-minio` skill.
 
+These repositories typically run Dependabot, which opens most routine dependency
+bumps automatically. Treat this skill as a periodic sweep to catch what
+Dependabot misses, such as the MinIO container digest, the Maven wrapper
+version, and anything its configuration does not track, rather than as the main
+update path.
+
 The approach is deliberately two-phase: a local, read-only Renovate run
 discovers what could be updated, then the updates are applied with the right
 tool for each kind. Renovate runs from this skill, so the target repositories
