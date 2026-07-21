@@ -34,8 +34,11 @@ stay free of any Renovate configuration.
   ships a web UI or similar.
 - The Java version the project targets and builds with, set in the Maven
   compiler configuration and the CI workflow. The scan does not surface this. It
-  is a manual bump, often to match the version Trino itself uses, and raising it
-  usually pulls in many dependency, plugin, and parent updates at the same time.
+  is a manual bump, often to match the version Trino itself uses. Raising it
+  depends on matching Airlift and airbase upgrades, pulls in many dependency,
+  plugin, and parent updates at the same time, and has downstream impacts such
+  as the Helm charts. The most reliable approach is to find an old pull request
+  from a prior Java bump and follow the work it did.
 
 ## Prerequisites
 
