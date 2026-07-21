@@ -32,6 +32,10 @@ stay free of any Renovate configuration.
 - The MinIO test container image, pinned by digest in Java test sources.
 - Embedded JavaScript through `package.json` and its lockfile, when a repository
   ships a web UI or similar.
+- The Java version the project targets and builds with, set in the Maven
+  compiler configuration and the CI workflow. The scan does not surface this. It
+  is a manual bump, often to match the version Trino itself uses, and raising it
+  usually pulls in many dependency, plugin, and parent updates at the same time.
 
 ## Prerequisites
 
