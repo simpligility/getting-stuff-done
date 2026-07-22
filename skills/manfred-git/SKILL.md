@@ -95,11 +95,13 @@ overrides an org-wide row.
 |---|---|
 | Chainguard and Wolfi repos | Conventional commits — see [Detecting a Chainguard repo](#detecting-a-chainguard-repo). Covers repos under the Chainguard org, the `wolfi-dev` org, and personal repos whose name matches, such as `mosabua/chainguard-libraries-{java,javascript,python}` |
 | mosabua/chainguard-progress | Chris Beams — local folder Manfred manages with git, not a real Chainguard repo; existing history uses `Add weekly recap as of …` |
-| Trino, Trino Gateway, Airlift | Chris Beams |
+| Trino, Trino Gateway, Airlift | Chris Beams. For Trino project work, do not add `Co-authored-by:` or `Assisted-by:` footers to attribute AI tooling. |
 | simpligility repos | Chris Beams |
 | Anything else | Chris Beams by default; if the repo clearly uses another convention, inspect history and `CONTRIBUTING` and follow that |
 
-The `Assisted-by:` trailer applies regardless of which style a repo uses.
+The `Assisted-by:` trailer applies regardless of which style a repo uses, except
+for Trino project work. Trino prohibits AI tooling footers using either
+`Co-authored-by:` or `Assisted-by:`.
 
 ### Trailer conventions
 
@@ -118,40 +120,46 @@ not emit any `Co-authored-by:` trailer at all.
 
 ### AI tooling attribution
 
-Always include an `Assisted-by:` trailer when AI tooling was involved. Frame the
-AI as an assistant, not a co-author — attribute AI with `Assisted-by:` and never
-with `Co-authored-by:`, which is reserved for human collaborators.
+For projects other than Trino project work, always include an `Assisted-by:`
+trailer when AI tooling was involved. Frame the AI as an assistant, not a
+co-author — attribute AI with `Assisted-by:` and never with `Co-authored-by:`,
+which is reserved for human collaborators. Do not add either footer for AI
+tooling to Trino commits.
 
-When the assistant drafts or suggests commit trailers, the AI attribution block
-must contain only `Assisted-by:` lines for AI tools. Never add a matching
-`Co-authored-by:` trailer for Copilot, Claude, GPT, Gemini, Ollama, or any
-other AI system. The invalid pattern to avoid is:
+When the assistant drafts or suggests commit trailers for projects other than
+Trino project work, the AI attribution block must contain only `Assisted-by:`
+lines for AI tools. Never add a matching `Co-authored-by:` trailer for Copilot,
+Claude, GPT, Gemini, Ollama, or any other AI system. The invalid pattern to
+avoid is:
 
 ```
 Assisted-by: GPT-5.4 <https://github.com/copilot>
 Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
 ```
 
-The correct form is the `Assisted-by:` line only.
+For projects other than Trino project work, the correct form is the
+`Assisted-by:` line only.
 
-Fill in the trailer with the **actual model and provider doing the work** at
-commit time. This is not Claude-specific — use whatever model is genuinely in
-use, with a sensible identifier and a contact or no-reply address, or repo URL,
-for that provider. Do **not** hardcode a single model or copy these examples
-blindly:
+For projects other than Trino project work, fill in the trailer with the
+**actual AI tool and model doing the work** at commit time. Name the tool first,
+followed by the model and version. Use a sensible contact, no-reply address, or
+repo URL for that tool. Do **not** hardcode a single model or copy these
+examples blindly:
 
 ```
-Assisted-by: Claude Opus 4.8 <noreply@anthropic.com>
-Assisted-by: Gemini 2.5 Pro <noreply@google.com>
+Assisted-by: GitHub Copilot GPT-5.6 Terra <https://github.com/copilot>
+Assisted-by: Claude Code Opus 4.8 <noreply@anthropic.com>
+Assisted-by: Gemini CLI Gemini 2.5 Pro <noreply@google.com>
 Assisted-by: Ollama gemma3 <https://ollama.com>
 ```
 
-Format: `Assisted-by: <Provider/Model and version> <email-or-url>`. If unsure of
-the exact model name or version, state what you can verify accurately rather
-than guessing. Place trailers at the end of the commit message, after the body,
+For projects other than Trino project work, format trailers as
+`Assisted-by: <Tool> <model and version> <email-or-url>`. If unsure of the exact
+model name or version, state what you can verify accurately rather than
+guessing. Place trailers at the end of the commit message, after the body,
 separated by a blank line.
 
-### Example commit
+### Example commit for non-Trino work
 
 ```
 Add support for OAuth2 token refresh

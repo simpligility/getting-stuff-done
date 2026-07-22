@@ -100,6 +100,8 @@ Work on a feature branch, then open a pull request against the upstream default
 branch. Trino repositories follow the
 [Chris Beams commit message conventions](https://cbea.ms/git-commit/): a short
 imperative subject, a blank line, and a body that explains what changed and why.
+Do not add `Co-authored-by:` or `Assisted-by:` footers to attribute AI tooling
+to Trino commits, including when preparing Trino project work for Manfred.
 
 First-time contributors must sign the
 [Trino Contributor License Agreement](https://github.com/trinodb/cla) before a
