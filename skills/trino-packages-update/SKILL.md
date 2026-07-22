@@ -140,6 +140,17 @@ extra changes. Cite what you find.
 * Leave `trino-server-rpm/src/main/resources/dist/config/log.properties` as is
   normally. It keeps the `io.trino.server.Server=INFO` override.
 * In `trino-server-rpm/README.md`, update the version and Java references.
+* Check the direct `docker-java-api` and `testcontainers` test dependencies
+  against the `docker-java-bom` and `testcontainers-bom` versions in the
+  upstream Trino root pom. Update both together when upstream changes them.
+  These direct dependencies override the versions brought in by
+  `trino-testing-containers`. A stale pair can prevent `ServerIT` from
+  connecting to newer Docker daemons. Confirm the resolved versions with:
+
+  ```bash
+  ./mvnw dependency:tree -pl trino-server-rpm \
+    -Dincludes=org.testcontainers,com.github.docker-java -Dverbose
+  ```
 
 ## Step 4 — root pom and top-level README
 
