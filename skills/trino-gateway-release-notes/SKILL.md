@@ -56,8 +56,11 @@ all changes for the next version.
 9.  **Open the PR**:
     - **Push the branch**: `git push -u origin release-notes-<version>`.
     - **Title**: `Add Trino Gateway <version> release notes`.
-    - **Body**: Use the [Tracking list template](#tracking-list-template),
-      populating the "verification" section with the PRs found in step 6.
+    - **Body**: Start with the pull request template in the target
+      `trino-gateway` repository, then use the
+      [Tracking list template](#tracking-list-template) to populate the
+      applicable sections, including "verification" with the PRs found in
+      step 6.
     - **Create PR**: `gh pr create --title "Add Trino Gateway <version> release notes" --body-file <path_to_body>`.
 
 ### 2. Maintain release notes

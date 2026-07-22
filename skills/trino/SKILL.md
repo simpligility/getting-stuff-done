@@ -97,7 +97,9 @@ documents the code style along with the rest of the contribution details.
 Contributions follow the standard fork-and-upstream model. Keep an `upstream`
 remote pointing at the canonical `trinodb` repository and `origin` at your fork.
 Work on a feature branch, then open a pull request against the upstream default
-branch. Trino repositories follow the
+branch. When creating a pull request, use the pull request template from the
+specific target repository; do not substitute a generic Trino template or one
+from another Trino project. Trino repositories follow the
 [Chris Beams commit message conventions](https://cbea.ms/git-commit/): a short
 imperative subject, a blank line, and a body that explains what changed and why.
 Do not add `Co-authored-by:` or `Assisted-by:` footers to attribute AI tooling

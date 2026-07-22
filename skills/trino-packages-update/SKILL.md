@@ -216,6 +216,8 @@ tarball commit did this in 481. Note in a commit body when a module is
 intentionally left on the old version to be updated in a later commit.
 
 Open a pull request against the upstream default branch once the build passes.
+Use the pull request template from the target `trino-packages` repository for
+the PR body.
 
 ## Gotchas from the 481 update
 
