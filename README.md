@@ -103,6 +103,51 @@ The `npx skills find` command searches the separate
 skills do not appear in that search until they are published to the registry.
 Installing directly by repository or skill reference works either way.
 
+## Instructions
+
+The [`instructions/`](./instructions) directory holds cross-tool, user-level
+instructions in a single canonical file, `AGENTS.md`. Just like skills, one
+source of truth feeds every tool: `install-instructions.sh` symlinks that file
+into each tool's user-level instructions path under the name that tool expects,
+so editing happens only here in the repo and there is never a second copy to
+drift out of sync.
+
+The first section turns off automatic cross-session memory in favor of an
+explicit, ask-first workflow: nothing is remembered silently, and anything worth
+keeping gets encoded into a skill by choice rather than an opaque memory store.
+
+On any machine, after cloning this repo, run:
+
+```bash
+cd getting-stuff-done
+./install-instructions.sh
+```
+
+It installs into:
+
+| Tool | Instructions file |
+|------|-------------------|
+| Claude Code | `~/.claude/CLAUDE.md` |
+| Codex CLI | `~/.codex/AGENTS.md` |
+| opencode | `~/.config/opencode/AGENTS.md` |
+| Gemini CLI & Antigravity | `~/.gemini/AGENTS.md` |
+
+Same safety rule as the skills script: it refreshes its own symlinks but never
+overwrites a real file a tool or you placed there. To support another tool, add
+a single `"name:$HOME/path/INSTRUCTIONS_FILE"` entry to the `TOOLS` array in the
+script. Which global paths a given tool actually reads varies by version, so
+verify against the tool's current docs before relying on a new entry.
+
+Tools whose global instructions live in app settings rather than a file have no
+symlink target — paste the same text there by hand:
+
+- **Cursor** — Settings → Rules → User Rules
+- **GitHub Copilot** — personal custom instructions in your editor or profile
+
+Disabling Claude Code's built-in memory is a companion one-line settings change,
+separate from the instructions file: set `"autoMemoryEnabled": false` (and
+`"autoDreamEnabled": false`) in `~/.claude/settings.json`.
+
 ## Resources
 
 This project is inspired by my own experience and the shared learning of many
