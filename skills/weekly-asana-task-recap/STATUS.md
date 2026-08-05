@@ -1,5 +1,35 @@
 # weekly-asana-task-recap — status log
 
+## 2026-08-05
+
+Switched the backend from the official OAuth MCP server to the `aslan`
+Personal Access Token CLI, and split the shared tooling into a new base `asana`
+skill that this skill now builds on.
+
+### Why the change
+
+The OAuth MCP server needs an Asana MCP app with a client id and secret, and
+MCP tools load only after a Claude Code restart. That is heavy for scripted and
+ad-hoc work. `aslan` authenticates with a Personal Access Token, runs
+immediately through a `PATH` wrapper, and mirrors how `weekly-linear-issue-recap`
+uses `go-linear`. The change landed while migrating an active issue tracker
+from Linear to Asana, when `aslan` was audited, installed, and used to drive
+the migration.
+
+### Workflow now
+
+- Identity and project resolution use `aslan whoami` and `aslan projects`.
+- Weekly activity comes from `aslan digest --days 7 --all --json`, supplemented
+  by `aslan my-tasks --open --json`, then `aslan task` and `aslan comments` per
+  task.
+- The recap task is created with `aslan create`, previewed with `--dry-run`.
+
+### Known limits
+
+- `aslan` lists tasks by assignee, not by project, so the candidate set is
+  assignee-scoped and project membership is best-effort. See the `asana` skill
+  for the underlying tool capabilities.
+
 ## 2026-06-30
 
 Created as the Asana counterpart to `weekly-linear-issue-recap`. Same workflow,
