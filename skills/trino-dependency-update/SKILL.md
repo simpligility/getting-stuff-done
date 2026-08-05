@@ -1,5 +1,5 @@
 ---
-name: trino-java-update
+name: trino-dependency-update
 description: Update dependencies and tooling in Java-based Trino projects such as trino, trino-gateway, and aws-proxy. Covers scanning for available updates with a local, read-only Renovate run bundled in the skill, then applying Maven dependency and plugin versions, the Maven wrapper distribution, the MinIO container digest, and embedded JavaScript. Use when bumping dependencies in a Trino Java or Maven repository without wiring Renovate into the repository itself.
 ---
 

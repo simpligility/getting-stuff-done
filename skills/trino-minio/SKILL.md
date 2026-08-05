@@ -9,7 +9,7 @@ Use this skill when updating or debugging the MinIO container image used by the
 Trino test suites in the core [trinodb/trino](https://github.com/trinodb/trino)
 repository. It builds on the shared context in the `trino` skill. To bump the
 MinIO digest alongside many other dependencies at once, see the
-`trino-java-update` skill, which scans a whole repository for available updates.
+`trino-dependency-update` skill, which scans a whole repository for available updates.
 
 ## The image and its fork
 
