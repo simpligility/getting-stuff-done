@@ -107,10 +107,13 @@ request without sending it. Run `aslan <command> --help` for the full flag set.
 
 ## Conventions
 
-- Asana task notes and comments are plain text and do not render markdown
-  richly. Bullets and links appear as literal text. This is acceptable for
-  most work. For rich formatting, the underlying API supports an `html_notes`
-  field, which `aslan` does not expose.
+- Asana comments are plain text and do not render markdown richly, so bullets
+  and links appear as literal text. This is acceptable for most work.
+- Task descriptions can be rich text. Plain `--notes` writes literal text, while
+  `--html-notes` writes the `html_notes` field as Asana's restricted HTML subset
+  so links, lists, and emphasis render. The value must be a single `<body>`
+  element, and Asana supports neither `<p>` nor `<h3>`. This flag is recent —
+  confirm the installed `aslan` has it with `aslan create --help`.
 - Use a task's `permalink_url`, available with `aslan task <gid> --json`, when
   you need a shareable link to a task.
 - When creating a task from another system, put a backlink to the source in the

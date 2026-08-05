@@ -159,18 +159,34 @@ Confirm that everything is done, then create a new task in the project
 {{project}}:
 
 - Use the title from the markdown file as the task name.
-- Use the full content of the markdown file as the task notes, which is the
-  `notes` field. Asana task notes are plain text and do not render markdown
-  richly. This is acceptable for the recap.
+- Use the markdown file as the task description, converted to Asana rich text so
+  its links, lists, and emphasis render instead of showing as literal markdown.
 - Assign the task to {{asana-user-id}} with `--assignee me`.
+
+Convert the markdown file to Asana rich-text HTML with the bundled
+`md-to-asana-html.py` script in this skill's directory. It emits a single
+`<body>` element wrapping Asana's supported subset:
+
+```
+HTML="$(python3 <skill-dir>/md-to-asana-html.py weekly-updates/update-yyyy-mm-dd.md)"
+```
 
 Preview the task first with `--dry-run` so the user can review it before it is
 committed, then create it once the user confirms:
 
 ```
-aslan create "<title>" --project {{project-gid}} --assignee me --notes "<content>" --dry-run
-aslan create "<title>" --project {{project-gid}} --assignee me --notes "<content>"
+aslan create "<title>" --project {{project-gid}} --assignee me --html-notes "$HTML" --dry-run
+aslan create "<title>" --project {{project-gid}} --assignee me --html-notes "$HTML"
 ```
+
+The converter handles the recap's headings, bullet lists, paragraphs, links,
+bold, inline code, and italics. Asana supports neither `<p>` nor `<h3>`, so
+paragraphs become plain lines separated by newlines and level-three task
+headings render as bold lines. aslan passes the markup through and only checks
+that the `<body>` wrapper is present, so a malformed fragment fails locally
+rather than as an opaque Asana error. The `--html-notes` flag needs a build of
+aslan that includes it. If rich text is ever not wanted, `--notes "<content>"`
+still posts the raw markdown as plain text.
 
 Display the full `permalink_url` to the task you just created so the user can do
 further actions easily. If possible, open the new task in a browser tab

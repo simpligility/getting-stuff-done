@@ -26,7 +26,7 @@ time:
 * [claude md starter](https://github.com/sumit-ai-ml/claude-md-starter)
 * [gstack](https://github.com/garrytan/gstack)
 * [multica](https://github.com/multica-ai/multica) - multi agent tool
-
+* [agentic-dev-team from Bryan Finster](https://github.com/bdfinst/agentic-dev-team)
 ## Writing
 
 Blog posts and other written resources that caught my attention:
