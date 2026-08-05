@@ -25,7 +25,7 @@ time:
 * [The Sovereign Engineer](https://leanpub.com/thesovereignengineer) - book
 * [claude md starter](https://github.com/sumit-ai-ml/claude-md-starter)
 * [gstack](https://github.com/garrytan/gstack)
-* [multica](https://github.com/multica-ai/multica)
+* [multica](https://github.com/multica-ai/multica) - multi agent tool
 
 ## Writing
 
