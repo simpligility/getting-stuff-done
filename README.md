@@ -73,7 +73,7 @@ Personal skills:
 
 | Skill | Purpose |
 |---|---|
-| [`manfred`](./skills/manfred) | Core identity, context, and working style. The gateway to the `manfred-*` family. |
+| [`manfred`](./skills/manfred) | Core identity, context, and working style. The entry point to the `manfred-*` family. |
 | [`manfred-git`](./skills/manfred-git) | Commit message style, branching, PR workflow, and code review. |
 | [`manfred-writing`](./skills/manfred-writing) | Writing voice, audience, and markdown formatting conventions. |
 | [`manfred-slides`](./skills/manfred-slides) | Presentation slide deck structure and content conventions. |
