@@ -58,9 +58,11 @@ General skills:
 | Skill | Purpose |
 |---|---|
 | [`trino`](./skills/trino) | Shared reference facts about the Trino project for the `trino-*` family. |
-| [`trino-java-update`](./skills/trino-java-update) | Update dependencies and tooling in Java-based Trino projects with a local Renovate scan. |
+| [`trino-java-code-style`](./skills/trino-java-code-style) | Java code style for Trino, Airlift, and projects using airbase, split by what the build enforces. |
+| [`trino-dependency-update`](./skills/trino-dependency-update) | Update dependencies and tooling in Java-based Trino projects with a local Renovate scan. |
 | [`trino-minio`](./skills/trino-minio) | Update and troubleshoot the MinIO test container image in trino and aws-proxy. |
 | [`trino-packages-update`](./skills/trino-packages-update) | Update a `trino-packages` clone to a newer Trino version. |
+| [`trino-gateway-development`](./skills/trino-gateway-development) | Build and test Trino Gateway, including the Testcontainers setup and database behavior. |
 | [`trino-gateway-release-notes`](./skills/trino-gateway-release-notes) | Create and maintain Trino Gateway release notes pull requests. |
 | [`trino-contributor-call-processing`](./skills/trino-contributor-call-processing) | Turn a Trino contributor call recording into topics and a wiki summary. |
 | [`weekly-asana-task-recap`](./skills/weekly-asana-task-recap) | Assemble a weekly progress summary from Asana task updates. |
