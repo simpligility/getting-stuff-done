@@ -108,7 +108,65 @@ which can update verifiers such as `sortpom`.
 Code style follows the Airlift conventions and is enforced with
 [airstyle](https://github.com/airlift/airstyle). The
 [Trino development guide](https://github.com/trinodb/trino/blob/master/.github/DEVELOPMENT.md)
-documents the code style along with the rest of the contribution details.
+documents the code style along with the rest of the contribution details, and
+the [development section of the website](https://trino.io/development/) covers
+the process, reviews, and related topics. The
+[developer guide in the documentation](https://trino.io/docs/current/develop.html)
+covers the SPI, connectors, and other extension points, and points back to both
+of those for style and process.
+
+For Java code style, including which rules the build enforces and which ones
+only reviewers catch, use the `trino-java-code-style` skill.
+
+## Documentation and writing style
+
+One writing style covers all project content: the documentation in
+`trinodb/trino`, the Trino Gateway documentation, the website, and other written
+material. Trino Gateway states this explicitly in its own `docs/docs.md`, which
+defers to the Trino documentation and website.
+
+The standard is the
+[Google developer documentation style guide](https://developers.google.com/style).
+The [Trino documentation readme](https://github.com/trinodb/trino/blob/master/docs/README.md)
+is the authoritative summary and calls out these parts in particular:
+
+- [Highlights](https://developers.google.com/style/highlights)
+- [Word list](https://developers.google.com/style/word-list)
+- [Style and tone](https://developers.google.com/style/tone)
+- [Writing for a global audience](https://developers.google.com/style/translation)
+- [Cross-references](https://developers.google.com/style/cross-references)
+- [Present tense](https://developers.google.com/style/tense)
+
+The guide is used to make decisions easy rather than as a rule to enforce
+retroactively, and existing documentation is still being brought in line.
+
+One project-specific rule is not in the Google guide. Readers disagree on
+whether "a SQL" or "an SQL" is correct, depending on how they pronounce SQL, so
+avoid the construction altogether. Reword or reorder the sentence instead. Where
+there is genuinely no way around it, use "a SQL".
+
+[Vale](https://vale.sh) checks documents against the Google style, configured in
+the `docs` folder of `trinodb/trino` through `.vale.ini` and a `.vale`
+directory, with an approved word list in
+`.vale/config/vocabularies/Base/accept.txt`.
+Install it with `brew install vale` on macOS and run it against a path:
+
+```
+vale docs/src/main/sphinx/overview/use-cases.md
+```
+
+Treat the output as an aid rather than a gate. Fixing every finding is not
+required to contribute.
+
+The writing style is shared, but the toolchains are not:
+
+| Repository | Format and tooling |
+|---|---|
+| `trinodb/trino` | Myst Markdown rendered with Sphinx. Build with `docs/build` for a fast Docker-based build, or `./mvnw -pl docs clean install` for the authoritative Maven build. |
+| `trinodb/trino-gateway` | Markdown rendered with MkDocs and the Material theme, hosted on GitHub Pages. |
+
+Documentation contributions follow the same process as code contributions and
+need the same Contributor License Agreement.
 
 ## Contribution workflow
 
