@@ -49,6 +49,24 @@ The website also documents the wider
 client applications, data lake components, data sources, and add-ons. It is a
 good reference for the tools and integrations that surround the core engine.
 
+## Product names
+
+Always use the full product name. This applies everywhere, including
+documentation, pull request titles and descriptions, issues, commit messages,
+code comments, blog posts, and talks.
+
+**Trino Gateway** is the product name. Never substitute a generic term such as
+"the gateway", "the load balancer", "the loadbalancer", or "the proxy". Repeat
+the full name rather than shortening it after first use.
+
+The same rule applies to the other products in the project. Write **Trino**
+rather than "the query engine" or "the server" when the product is meant.
+
+Generic terms remain correct when describing what the software does, rather than
+standing in for its name. "Trino Gateway is a load balancer and proxy for Trino
+clusters" is right, while "configure the gateway" and "the load balancer routes
+the query" are not.
+
 ## Versioning and release cadence
 
 Trino uses a single incrementing integer as its version, with no major or minor
@@ -124,7 +142,10 @@ reading its `SKILL.md` file:
 
 | Topic | Skill to invoke |
 |---|---|
+| Java code style for Trino, Airlift, and airbase-based projects | `trino-java-code-style` |
+| Dependency updates in Trino Java projects | `trino-dependency-update` |
 | Alternative Trino binary packages — RPM, custom tarball, custom container image — and version bumps | `trino-packages-update` |
+| Building and testing the Trino Gateway repository | `trino-gateway-development` |
 | Trino Gateway release notes pull requests | `trino-gateway-release-notes` |
 | Processing Trino contributor call recordings from YouTube | `trino-contributor-call-processing` |
 | Updating or debugging the MinIO test container image in core Trino | `trino-minio` |
