@@ -141,6 +141,15 @@ human-authored comments and changes. If the comments and changes for a task are
 very long, summarize them. Use markdown syntax, especially for links. Wrap the
 summary text at 80 characters and use bullet points as applicable.
 
+Keep each bullet to a single topic or activity. A single comment often bundles
+several distinct pieces of work into one sentence or paragraph. When it does,
+split it into one bullet per topic rather than carrying the bundle into a single
+dense bullet. For example, a comment that reads "Reviewed notes from the monthly
+sync, followed up with Gary on marketing training, and offered to run a git
+training" becomes three separate bullets, one for the sync review, one for the
+Gary follow-up, and one for the git training offer. This keeps the recap
+scannable and makes each item easy to reference on its own.
+
 Once you are done, ask the user to review the file and add the summary for this
 week and the plans for next week.
 
