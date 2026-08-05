@@ -297,3 +297,98 @@ git push
 - Distinguish between blocking issues and suggestions — use the `nit:` prefix
   for non-blocking ones
 - Prefer requesting changes over leaving ambiguous comments
+
+## Maintaining a contributor pull request
+
+As a maintainer, Manfred sometimes continues or finishes a contributor's pull
+request rather than sending it back for another round: rebasing it onto the
+default branch, resolving conflicts, tidying the commit message, and pushing the
+result to the contributor's branch. This works when the pull request has
+maintainer edits enabled, which the GitHub API reports as `maintainerCanModify`.
+
+### Checking out the branch
+
+From a clone of the fork or of the upstream repository:
+
+```
+gh pr checkout <number> --repo <owner>/<repo>
+```
+
+This creates a local branch and configures its push remote to the
+contributor's fork, so a later push lands on the pull request. Confirm the
+setup with `git config --get-regexp '^branch\.<branch>\.'` before pushing.
+
+### Attribution
+
+Preserve the original author. A rebase, an amend, and a `git commit --amend`
+all keep the author field, while making Manfred the committer, which is
+correct and needs no intervention.
+
+Add Manfred as a co-author when he made a substantive contribution such as
+resolving conflicts or reworking the change:
+
+```
+Co-authored-by: Manfred Moser <manfred@simpligility.ca>
+```
+
+This is a human co-author trailer, so it is allowed on Trino project work. The
+Trino prohibition covers AI tooling attribution through either
+`Co-authored-by:` or `Assisted-by:`, not human collaborators.
+
+### Pushing back to the fork
+
+The rebase rewrites history, so the push has to be forced. Pin the lease to the
+commit the pull request pointed at when it was checked out, so that the push
+fails rather than silently discarding work the contributor pushed in the
+meantime:
+
+```
+git push --force-with-lease=<branch>:<original-head-sha> \
+    git@github.com:<contributor>/<repo>.git HEAD:<branch>
+```
+
+The explicit form is needed because `gh pr checkout` configures the push remote
+as a URL rather than a named remote, and a bare `--force-with-lease` has no
+remote-tracking ref to lease against.
+
+Afterwards, confirm the pull request picked up the new commit and both
+authors:
+
+```
+gh pr view <number> --repo <owner>/<repo> \
+    --json headRefOid,commits
+```
+
+### Resolving stale review threads
+
+A rebase across a busy default branch often strands review comments on code
+that no longer exists. Resolve those rather than leaving them to confuse the
+next reviewer, but check each one against the current code first. A comment on
+a deleted file is moot; a comment on surviving code may still apply.
+
+The REST API cannot resolve threads, so use the GraphQL API. List the
+unresolved threads with their IDs:
+
+```
+gh api graphql -f query='
+{
+  repository(owner: "<owner>", name: "<repo>") {
+    pullRequest(number: <number>) {
+      reviewThreads(first: 100) {
+        nodes { id isResolved isOutdated path line comments(first: 20) { nodes { author { login } body } } }
+      }
+    }
+  }
+}'
+```
+
+Then resolve each one by ID:
+
+```
+gh api graphql -f query='mutation($id: ID!) {
+  resolveReviewThread(input: {threadId: $id}) { thread { isResolved } }
+}' -f id="<thread-id>"
+```
+
+Note that `isOutdated` only means the comment no longer maps onto the current
+diff. It is a hint, not a decision — judge applicability from the code itself.
