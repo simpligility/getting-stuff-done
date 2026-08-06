@@ -109,3 +109,10 @@ not just read its `SKILL.md` file:
 | Slide decks, presentations, talks | `manfred-slides` |
 
 Add new entries to this table as new `manfred-*` skills are created.
+
+**Git operations are a hard precondition, not just a topic match.** While this
+skill is active, before running any `git commit`, `git push`, `git rebase`, or
+PR-creating command, invoke `manfred-git` first — even when the git step is a
+minor tail-end of another task. Never commit with a tool's default author or
+footer; the trailer must follow `manfred-git` (`Assisted-by:`, never
+`Co-authored-by:` for AI).
