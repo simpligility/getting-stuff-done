@@ -76,7 +76,13 @@ merged, to keep the release notes PR updated until the next release is ready.
     - Identify the release notes branch, for example `release-notes-<version>`.
     - Switch to the branch: `git checkout release-notes-<version>`.
     - Rebase onto the updated main: `git rebase main`.
-    - Ensure it is up to date with its remote counterpart: `git pull origin release-notes-<version>`.
+    - Never run `git pull` on the release notes branch. The rebase
+      deliberately diverges the branch from its remote counterpart, so a pull
+      replays the commits picked up from main back onto the stale remote tip
+      and duplicates them, with `--rebase`, or creates a merge commit without
+      it. The branch is brought back in sync by the force-push in step 8. If
+      the remote branch may have changes made elsewhere, inspect them with
+      `git fetch origin` and `git log origin/release-notes-<version>` instead.
 3.  **Locate the open PR**: Find the PR titled `Add Trino Gateway <version>
     release notes`.
 4.  **Determine the "last check" date**: Look at the PR's tracking list to find
