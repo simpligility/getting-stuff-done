@@ -99,21 +99,34 @@ can also be set as a default in the wrapper if preferred.
 | Reopen a task | `aslan reopen <gid>` |
 | Resolve a project name to a gid | `aslan projects "<query>"` |
 | Search tasks | `aslan search "<query>"` |
+| Add collaborators to a task | `aslan add-collaborator <gid> <user>...` |
+| Remove collaborators from a task | `aslan remove-collaborator <gid> <user>...` |
 | Recent activity | `aslan digest --days 7` |
 
 Add `--json` to read commands for structured output. Add `--dry-run` to
-`create`, `set`, `delete`, `add-project`, and `remove-project` to preview the
-request without sending it. Run `aslan <command> --help` for the full flag set.
+`create`, `subtask`, `set`, `delete`, `add-project`, `remove-project`,
+`add-collaborator`, and `remove-collaborator` to preview the request without
+sending it. Run `aslan <command> --help` for the full flag set.
+
+A collaborator is what Asana's API calls a task follower. Both collaborator
+commands accept one or more users as a gid, a user name, or `me`. A name needs a
+workspace, set through `$ASANA_WORKSPACE` or `aslan --workspace <gid> ...`, and
+every name resolves before any write, so one bad name fails the whole call.
 
 ## Conventions
 
 - Asana comments are plain text and do not render markdown richly, so bullets
   and links appear as literal text. This is acceptable for most work.
-- Task descriptions can be rich text. Plain `--notes` writes literal text, while
-  `--html-notes` writes the `html_notes` field as Asana's restricted HTML subset
-  so links, lists, and emphasis render. The value must be a single `<body>`
-  element, and Asana supports neither `<p>` nor `<h3>`. This flag is recent —
-  confirm the installed `aslan` has it with `aslan create --help`.
+- Task descriptions can be rich text. `--notes` takes either plain text, which
+  aslan escapes and wraps for you, or Asana rich text as a single
+  `<body>...</body>` element so links, lists, and emphasis render. Inside the
+  body Asana supports `h1`-`h3`, `strong`/`b`, `em`/`i`, `u`, `s`, `code`,
+  `pre`, `blockquote`, `ul`/`ol`/`li`, `a`, `hr`, `span`, and
+  `table`/`tr`/`td`. It has no `<p>` element, so separate paragraphs with a
+  blank line, and no `<br>`, so use a newline. aslan validates the markup
+  locally and fails before sending, so a malformed fragment surfaces a clear
+  error rather than an opaque Asana rejection. The older `--html-notes` flag
+  still works as a deprecated alias for `--notes`.
 - Use a task's `permalink_url`, available with `aslan task <gid> --json`, when
   you need a shareable link to a task.
 - When creating a task from another system, put a backlink to the source in the

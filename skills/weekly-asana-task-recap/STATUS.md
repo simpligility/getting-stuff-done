@@ -1,5 +1,16 @@
 # weekly-asana-task-recap — status log
 
+## 2026-08-14
+
+Followed the `asana` base skill onto the reworked `aslan`. The recap task now
+uses `--notes` instead of the deprecated `--html-notes` alias to post the
+rich-text description.
+
+Since aslan and Asana now accept `<h3>`, the bundled `md-to-asana-html.py`
+converter emits real `<h1>` through `<h3>` headings. Level-three task-name
+headings previously rendered as bold lines because `<h3>` was thought
+unsupported.
+
 ## 2026-08-05
 
 Switched the backend from the official OAuth MCP server to the `aslan`

@@ -175,18 +175,18 @@ Preview the task first with `--dry-run` so the user can review it before it is
 committed, then create it once the user confirms:
 
 ```
-aslan create "<title>" --project {{project-gid}} --assignee me --html-notes "$HTML" --dry-run
-aslan create "<title>" --project {{project-gid}} --assignee me --html-notes "$HTML"
+aslan create "<title>" --project {{project-gid}} --assignee me --notes "$HTML" --dry-run
+aslan create "<title>" --project {{project-gid}} --assignee me --notes "$HTML"
 ```
 
 The converter handles the recap's headings, bullet lists, paragraphs, links,
-bold, inline code, and italics. Asana supports neither `<p>` nor `<h3>`, so
-paragraphs become plain lines separated by newlines and level-three task
-headings render as bold lines. aslan passes the markup through and only checks
-that the `<body>` wrapper is present, so a malformed fragment fails locally
-rather than as an opaque Asana error. The `--html-notes` flag needs a build of
-aslan that includes it. If rich text is ever not wanted, `--notes "<content>"`
-still posts the raw markdown as plain text.
+bold, inline code, and italics. Asana has no `<p>`, so paragraphs become plain
+lines separated by newlines, while level-one through level-three headings map to
+`<h1>` through `<h3>`. `--notes` detects the `<body>` wrapper and treats the
+value as rich text, escaping plain text otherwise, and aslan validates the
+markup locally so a malformed fragment fails before sending rather than as an
+opaque Asana error. If rich text is ever not wanted, pass the raw markdown as
+plain text with `--notes "<content>"`.
 
 Display the full `permalink_url` to the task you just created so the user can do
 further actions easily. If possible, open the new task in a browser tab

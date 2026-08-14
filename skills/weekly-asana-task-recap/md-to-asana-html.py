@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-"""Convert a weekly-recap markdown file to Asana rich-text HTML (html_notes).
+"""Convert a weekly-recap markdown file to Asana rich-text HTML.
 
-Asana renders task descriptions from an html_notes field that accepts a
-restricted HTML subset wrapped in a single <body> element, NOT markdown and NOT
-the plain-text notes field. This converter turns the recap markdown into that
-subset so links, lists, and emphasis render in the Asana task.
+Asana renders task descriptions from a restricted HTML subset wrapped in a
+single <body> element, NOT markdown. aslan's `--notes` flag accepts that subset
+directly: it treats a <body>-wrapped value as rich text and escapes anything
+else as plain text. This converter turns the recap markdown into that subset so
+links, lists, and emphasis render in the Asana task.
 
 Scope is deliberately narrow — only the constructs a weekly recap uses:
 
     # h1            -> <h1>
     ## h2           -> <h2>
-    ### h3          -> <strong> line   (Asana has no <h3>; only h1/h2 exist)
+    ### h3          -> <h3>
     * bullet        -> <ul><li>...</li></ul>  (2-space continuation lines join)
     paragraph text  -> plain text + newline    (Asana has no <p>)
     [text](url)     -> <a href="url">text</a>
@@ -20,7 +21,7 @@ Scope is deliberately narrow — only the constructs a weekly recap uses:
 
 Usage:
     python3 md-to-asana-html.py <file.md>      # or read markdown from stdin
-    ... | aslan create "title" --html-notes "$(python3 md-to-asana-html.py f.md)"
+    ... | aslan create "title" --notes "$(python3 md-to-asana-html.py f.md)"
 """
 import re
 import sys
@@ -74,12 +75,7 @@ def convert(md):
             flush_para()
             flush_list()
             level, text = len(m.group(1)), m.group(2)
-            if level == 1:
-                blocks.append(f"<h1>{_inline(text)}</h1>")
-            elif level == 2:
-                blocks.append(f"<h2>{_inline(text)}</h2>")
-            else:  # no <h3> in Asana — render as a bold line
-                blocks.append(f"<strong>{_inline(text)}</strong>")
+            blocks.append(f"<h{level}>{_inline(text)}</h{level}>")
             continue
         bullet = re.match(r"\*\s+(.*)", line)
         if bullet:
