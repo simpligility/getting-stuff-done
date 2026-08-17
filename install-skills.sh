@@ -25,15 +25,17 @@ TOOLS=(
   "antigravity:$HOME/.gemini/config/skills"
 )
 
-# Create or refresh a single skill symlink. Refreshes an existing symlink but
-# never clobbers a real file or directory the tool may have put there itself.
+# Create or refresh a single skill symlink. Refreshes an existing symlink, and
+# aborts on anything that is not a symlink rather than clobbering a real file or
+# directory the tool or the user put there. That case needs a human decision:
+# move the real copy aside, then run this again.
 link_skill() {
   local src="$1" dest="$2"
   if [ -L "$dest" ]; then
     rm "$dest"
   elif [ -e "$dest" ]; then
-    echo "  skip  $dest (exists, not a symlink — left untouched)"
-    return
+    echo "  ERROR $dest exists and is not a symlink — move it aside and re-run." >&2
+    exit 1
   fi
   ln -s "$src" "$dest"
   echo "  link  $dest"
