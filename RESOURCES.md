@@ -29,7 +29,11 @@ time:
 * [agentic-dev-team](https://github.com/bdfinst/agentic-dev-team) - from Bryan Finster
 * [ELI5 — Explain Like I Am 5](https://github.com/DreambigOu/ELI5/) 
 * [ASD-STE100 Output Style (Simplified Technical English)](https://gist.github.com/starise/470f53dbd16149dcd168fa45bff17d1f)
-* [manager-centaur-claude-code](https://github.com/deangiberson/manager-centaur-claude-code) - skills and setup for managing one-on-one meetings
+* [manager-centaur-claude-code](https://github.com/deangiberson/manager-centaur-claude-code)
+  - skills and setup for managing one-on-one meetings
+* [Agentic research](https://github.com/agentic-research) - collection of AI
+  tools from [James Gardner jamestexas](https://github.com/jamestexas) who has
+  more interesting repos in his account as well
 
 ## Writing
 
