@@ -74,13 +74,18 @@ Each event directory holds:
 | `outline.md` | The per-slide outline in the format below. The working document for the whole prep phase. |
 | `speaker-notes-trim.md` | Optional. A trim pass that moves anything already visible on a slide out of its speaker notes. Create it only when notes need cleanup. |
 | `STATUS.md` | Where the talk stands — proposed, accepted, outlined, generated, delivered — plus links once it exists (deck, recording, event log). |
-| templates | Reusable master `.pptx` templates (for example a dark and a light master). The only decks kept in git. |
+| templates | Optional. Reusable master `.pptx` templates (a dark and a light master, say) when the generator needs one. If present, the only decks kept in git. |
 
 Generated and working `.pptx` files are throwaway — they exist only to carry the
 outline into slide software (see the generation step), so keep them out of
-version control. The markdown outline is the source of truth; the reusable
-templates are the only decks worth committing. Keep one canonical copy of the
-templates and reference it rather than duplicating per event.
+version control. The markdown outline is the source of truth.
+
+Templates are **optional**. Some generators need a master `.pptx` to carry the
+visual style; others do not — a Claude Cowork setup, for example, can hold the
+brand style as a skill of its own, so no template file is required. When
+templates are used, they are the only decks worth committing: keep one canonical
+copy and reference it rather than duplicating per event. When the generator
+already knows the brand style, skip templates entirely.
 
 ## Workflow
 
@@ -188,9 +193,10 @@ run when you need it, not an automatic sync.
 ### Generate the whole deck
 
 - **Today: Claude Cowork.** Generate the `.pptx` from `outline.md` in Claude
-  Cowork, using its slide skills and the reusable template deck(s). Claude Code
-  in a terminal cannot produce or drive the deck directly, so this step moves to
-  Cowork. Then import the generated `.pptx` into Google Slides.
+  Cowork, using its slide and brand-style skills — and a reusable template deck
+  only if that setup needs one. Claude Code in a terminal cannot produce or
+  drive the deck directly, so this step moves to Cowork. Then import the
+  generated `.pptx` into Google Slides.
 - **Future: other generators.** This should become a choice, not a single path —
   for example a markdown-to-`pptx` CLI, or a reveal.js render when the markdown
   itself is the final product. Add them here as they are proven out.
