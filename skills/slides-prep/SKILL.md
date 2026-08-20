@@ -144,8 +144,10 @@ the markdown and the deck" below.
 `outline.md` uses a fixed, simple structure so it reads well as a document and
 generates cleanly into slides.
 
-- A short header at the top: speaker, event, target length, rough slide count,
-  and any deck-wide conventions (for example a theme or color scheme).
+- A short header at the top. Do not repeat the event, speaker, dates, or talk
+  length here — those live in `index.md`. Keep only what is specific to the
+  deck: a pointer to `index.md`, a rough slide count, and any deck-wide
+  conventions such as theme usage, color scheme, or reference decks.
 - One `# Slide N - Title` heading per slide. Write the title as the **takeaway**,
   not a label: "Sigstore signs without managing keys", not "Sigstore".
 - An optional theme or layout hint as an HTML comment directly under the
@@ -157,19 +159,18 @@ generates cleanly into slides.
   hit, a story to tell, a callback. Never a full script.
 - Use a `---` divider between major sections to keep the arc readable in the
   markdown.
-- Write every date in ISO 8601 (`YYYY-MM-DD`); use `start/end` for a range, for
-  example `2026-06-01/2026-06-05`.
+- Dates anywhere in the event files (`index.md`, `STATUS.md`) use ISO 8601
+  (`YYYY-MM-DD`); use `start/end` for a range, for example
+  `2026-06-01/2026-06-05`.
 
 Skeleton:
 
 ```markdown
 # Talk outline — <takeaway-style talk title>
 
-Speaker: <name, role>
-Event: <event, location, ISO date or range, e.g. 2026-06-01/2026-06-05>
-Target length: ~<n> min, ~<n> slides
+See `index.md` for event details, speaker bio, and the abstract.
 
-Conventions: <deck-wide notes, e.g. theme usage, reference decks>
+Conventions: <deck-wide notes — theme usage, ~<n> slides, reference decks>
 
 ---
 
