@@ -63,8 +63,10 @@ clear, plain prose.
 ## Workspace layout
 
 Work lives in a slides workspace repository, one directory per event. The
-directory name is a slug of `event-location-year`, lowercase, hyphenated — for
-example `devopscon-sandiego-2026` or `kubecon-na-saltlakecity-2026`.
+directory name is a slug of `event-location-year-month`, lowercase, hyphenated,
+with the month as two digits — for example `devopscon-sandiego-2026-06` or
+`kubecon-na-saltlakecity-2026-11`. Including the month keeps directories
+sortable and avoids collisions when there are several events in a year.
 
 Each event directory holds:
 
