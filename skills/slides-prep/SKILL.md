@@ -72,7 +72,7 @@ Each event directory holds:
 |---|---|
 | `index.md` | The brief: event and CFP details, speaker bio, abstract, and the raw idea dump. The starting point and the source of truth for intent. |
 | `outline.md` | The per-slide outline in the format below. The working document for the whole prep phase. |
-| `speaker-notes-trim.md` | Optional. A trim pass that moves anything already visible on a slide out of its speaker notes. Create it only when notes need cleanup. |
+| `speaker-notes-trim.md` | Optional scratch file for a one-off speaker-notes trim pass. Temporary — delete it once the trimmed notes are back in the outline or the deck; not a deliverable worth keeping. |
 | `STATUS.md` | Where the talk stands — proposed, accepted, outlined, generated, delivered — plus links once it exists (deck, recording, event log). |
 | templates | Optional. Reusable master `.pptx` templates (a dark and a light master, say) when the generator needs one. If present, the only decks kept in git. |
 
@@ -120,10 +120,11 @@ the markdown and the deck" below.
    dense slides, and make each slide follow from the one before it. This is
    where most of the time goes.
 
-6. **Speaker-notes trim.** Optionally produce `speaker-notes-trim.md`: for each
-   slide, strip anything from the notes that is already on the slide, leaving
-   only delivery cues, pacing, extra facts, and callbacks. Notes are prompts,
-   not a script.
+6. **Speaker-notes trim.** Trim each slide's notes down to what is not already
+   on the slide — delivery cues, pacing, extra facts, callbacks — so notes stay
+   prompts, not a script. Apply the trim directly in the outline (and later in
+   the deck). A `speaker-notes-trim.md` scratch file is fine if you want a place
+   to work, but treat it as temporary and delete it once the notes are updated.
 
 7. **Generate.** Generate a `.pptx` from the outline, then import it into Google
    Slides. See "Moving between the markdown and the deck" for how. Update
