@@ -66,11 +66,13 @@ Each event directory holds:
 | `outline.md` | The per-slide outline in the format below. The working document for the whole prep phase. |
 | `speaker-notes-trim.md` | Optional. A trim pass that moves anything already visible on a slide out of its speaker notes. Create it only when notes need cleanup. |
 | `STATUS.md` | Where the talk stands — proposed, accepted, outlined, generated, delivered — plus links once it exists (deck, recording, event log). |
-| `*.pptx` | Generated deck plus any reusable templates. Never hand-edited; treated as build output, not source. |
+| templates | Reusable master `.pptx` templates (for example a dark and a light master). The only decks kept in git. |
 
-Slide templates (for example a dark and a light master `.pptx`) are reusable
-across events. Keep one canonical copy and reference it rather than duplicating
-per event.
+Generated and working `.pptx` files are throwaway — they exist only to carry the
+outline into slide software (see the generation step), so keep them out of
+version control. The markdown outline is the source of truth; the reusable
+templates are the only decks worth committing. Keep one canonical copy of the
+templates and reference it rather than duplicating per event.
 
 ## Workflow
 
@@ -184,9 +186,8 @@ current stage and, once the talk exists and is delivered, the links.
 
 - **Stage:** one of proposed, accepted, outlined, generated, delivered.
 - **Event facts:** final title, date, location, session type, length.
-- **Links:** slide deck, recording/video, event page, and any event-log or
-  video-log entry. Fill these in as they become available; leave a clear
-  placeholder until then.
+- **Links:** slide deck, recording/video, and the event page. Fill these in as
+  they become available; leave a clear placeholder until then.
 
 ## Finalizing
 
