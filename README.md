@@ -57,6 +57,7 @@ General skills:
 
 | Skill | Purpose |
 |---|---|
+| [`slides-prep`](./skills/slides-prep) | Prepare a talk from proposal through a slide-ready markdown outline, then generate a first deck; composes with `manfred-slides`. |
 | [`trino`](./skills/trino) | Shared reference facts about the Trino project for the `trino-*` family. |
 | [`trino-java-code-style`](./skills/trino-java-code-style) | Java code style for Trino, Airlift, and projects using airbase, split by what the build enforces. |
 | [`trino-dependency-update`](./skills/trino-dependency-update) | Update dependencies and tooling in Java-based Trino projects with a local Renovate scan. |

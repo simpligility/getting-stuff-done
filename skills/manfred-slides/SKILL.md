@@ -17,6 +17,13 @@ markdown house-style rules apply to slide content as well — this skill only ad
 the structure, narrative, and slide-specific guidance on top. When working on a
 deck, treat `manfred-writing` as active too and invoke it if it is not.
 
+The general `slides-prep` skill drives the whole talk process — proposal, idea
+dump, the slide-ready markdown outline, generating the deck, and reviewing it
+through to finished. This skill is an optional, Manfred-specific guideline that
+layers his personal deck preferences on top of that process; `slides-prep` does
+not hand off to it. Use this skill as extra guidance whenever the deck is
+Manfred's.
+
 ## Tooling and workflow
 
 Slides are tool-agnostic in principle, and Manfred's workflow shifts from deck to
