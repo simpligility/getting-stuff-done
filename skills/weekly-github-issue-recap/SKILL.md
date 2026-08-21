@@ -60,7 +60,7 @@ Determine where to write the output file:
 - Otherwise, write the file in the current directory.
 
 Create the markdown file using the ISO date format pattern
-`update-yyyy-mm-dd.md` in the location determined above.
+`update-yyyy-mm-dd.md` in the location determined earlier.
 
 Add the title `# {{name}} weekly update as of yyyy-mm-dd`, with the date
 replaced into the `yyyy-mm-dd`.

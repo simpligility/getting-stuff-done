@@ -1,6 +1,6 @@
 ---
 name: manfred-git
-description: Manfred Moser's personal git conventions — commit message style, branching, PR workflow, and code review. A component of the `manfred` skill family. Activate only when the `manfred` skill is already active (its index directs you here) or when Manfred explicitly invokes it; do not auto-activate on generic git work by description match alone.
+description: Manfred Moser's personal git conventions — commit message style, branching, PR workflow, and code review. A component of the `manfred` skill family. Activate only when the `manfred` skill is already active and its index directs you here, or when Manfred explicitly invokes it; do not auto-activate on generic git work by description match alone.
 ---
 
 # Manfred Moser — git preferences and workflows
@@ -14,9 +14,9 @@ description: Manfred Moser's personal git conventions — commit message style, 
 
 ## Commit message style
 
-A repository's own convention always wins. Use the per-repository mapping below
-to pick the style without digging through commit history. The default style,
-used when a repo has no stronger convention, is Chris Beams.
+A repository's own convention always wins. Use the per-repository mapping in the
+following table to pick the style without digging through commit history. The
+default style, used when a repo has no stronger convention, is Chris Beams.
 
 ### Default: Chris Beams
 
@@ -54,7 +54,7 @@ commit style that does not follow Chris Beams, not only conventional commits.
 #### Detecting a Chainguard repo
 
 Chainguard repos use conventional commits. Treat a repo as a Chainguard repo
-when `chainguard` or `wolfi` (case-insensitive) appears in any of the following:
+when `chainguard` or `wolfi`, case-insensitive, appears in any of the following:
 
 - the repository name or its local directory
 - the name of any configured git remote, for example a remote literally named
@@ -205,8 +205,8 @@ works, but do not rely on it — stdin or repeated `-m` are portable and safe.
 ### Execution environment
 
 - When running under Antigravity, never run `git commit` directly. Instead,
-  stage the changes, draft the commit message following the guidelines above,
-  and display the exact `git commit` command and message so the user can run it
+  stage the changes, draft the commit message following these conventions, and
+  display the exact `git commit` command and message so the user can run it
   externally.
 - Other AI coding agents such as Claude Code can execute the commit directly if
   their interactive environments support signing workflows.

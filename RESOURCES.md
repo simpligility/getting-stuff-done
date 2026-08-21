@@ -5,7 +5,7 @@ less detail.
 
 ## Projects
 
-A  list of other projects that I looked at in more or less detail over
+A list of other projects that I looked at in more or less detail over
 time:
 
 * [Gastown](https://github.com/gastownhall/gastown) - multi agent tool
@@ -27,7 +27,7 @@ time:
 * [gstack](https://github.com/garrytan/gstack)
 * [multica](https://github.com/multica-ai/multica) - multi agent tool
 * [agentic-dev-team](https://github.com/bdfinst/agentic-dev-team) - from Bryan Finster
-* [ELI5 — Explain Like I Am 5](https://github.com/DreambigOu/ELI5/) 
+* [ELI5 — Explain Like I Am 5](https://github.com/DreambigOu/ELI5/)
 * [ASD-STE100 Output Style (Simplified Technical English)](https://gist.github.com/starise/470f53dbd16149dcd168fa45bff17d1f)
 * [manager-centaur-claude-code](https://github.com/deangiberson/manager-centaur-claude-code)
   - skills and setup for managing one-on-one meetings
@@ -48,5 +48,3 @@ Blog posts and other written resources that caught my attention:
 * [Clarity Is the New Bottleneck](https://blog.chipjohnson.net/clarity-is-the-new-bottleneck.html)
 * [Will you be my CLI? Making Agents fall in love with Langfuse.](https://langfuse.com/blog/2026-02-13-will-you-be-my-cli)
 * [The Fossil Record of Harness Engineering](https://hexproof.dev/datagrams/fossil-record-harness-engineering/)
-
-#

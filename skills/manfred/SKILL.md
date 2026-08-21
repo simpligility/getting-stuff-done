@@ -96,7 +96,7 @@ Manfred lives in Victoria, British Columbia, Canada.
 
 ## Skill index
 
-The `manfred-*` skills below are gated components of this family: they are
+The following `manfred-*` skills are gated components of this family: they are
 designed not to auto-activate on generic topic matches, so this skill is their
 primary activation path. When working with Manfred on the following topics,
 proactively invoke the corresponding skill by name through the Skill tool — do

@@ -133,7 +133,7 @@ It installs into:
 | Claude Code | `~/.claude/CLAUDE.md` |
 | Codex CLI | `~/.codex/AGENTS.md` |
 | opencode | `~/.config/opencode/AGENTS.md` |
-| Gemini CLI & Antigravity | `~/.gemini/AGENTS.md` |
+| Gemini CLI and Antigravity | `~/.gemini/AGENTS.md` |
 
 Same safety rule as the skills script: it refreshes its own symlinks but never
 overwrites a real file a tool or you placed there. To support another tool, add
@@ -157,7 +157,7 @@ This project is inspired by my own experience and the shared learning of many
 others. Find more details in the following, very **incomplete** [RESOURCES
 documentation](./RESOURCES.md).
 
-# License and sponsorship
+## License and sponsorship
 
 Created and maintained by Manfred Moser. The contents of this repository,
 including all skills, are licensed under the [Apache License 2.0](LICENSE).

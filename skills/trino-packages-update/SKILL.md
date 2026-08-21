@@ -12,7 +12,8 @@ commonly forked, for example to `simpligility/trino-packages`. The skill is
 fork-agnostic and operates on whatever clone you run it in. The repository
 builds three packages on top of the upstream Trino release artifacts:
 
-* **Custom tarball** — the `trino-server-custom/` Maven module, provisio-based.
+* **Custom tarball** — the `trino-server-custom/` Maven module,
+  provisio-based.
 * **RPM** — the `trino-server-rpm/` Maven module, provisio-based.
 * **Custom Docker image** — the standalone `custom-docker/build.sh`, not a Maven
   module.
@@ -105,8 +106,8 @@ extra changes. Cite what you find.
    Search the pom for `temurin` or `jdk-`. When the Java major version changed,
    also check the bundled `jvm.config` in the upstream `trino-server-core` or
    `trino-server` for flags that must be added or removed. For example, Java 25
-   removed Security Manager support, so `-Djava.security.manager=allow` had to be
-   dropped in the 481 bump.
+   removed Security Manager support, so `-Djava.security.manager=allow` had to
+   be dropped in the 481 bump.
 
 4. **Check plugin availability.** To add newly available plugins, confirm their
    zips exist on the release before enabling them in the provisio descriptors or

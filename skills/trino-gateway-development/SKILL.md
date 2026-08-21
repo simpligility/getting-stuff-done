@@ -74,10 +74,10 @@ guessing at the order.
 > `createPostgreSqlContainer` describes
 > [trino-gateway#1222](https://github.com/trinodb/trino-gateway/pull/1222),
 > which is still open. Until it merges, `createMySqlContainer` and
-> `createTrinoContainer` do not exist, `test-versions.properties` is not present,
-> and the tests construct the MySQL and Trino containers with hardcoded image
-> names. Check the state of that pull request before relying on this section,
-> and remove this note once it merges.
+> `createTrinoContainer` do not exist, `test-versions.properties` is not
+> present, and the tests construct the MySQL and Trino containers with hardcoded
+> image names. Check the state of that pull request before relying on this
+> section, and remove this note once it merges.
 
 `TestcontainersUtils` in `gateway-ha/src/test/java/io/trino/gateway/ha/util`
 holds the factory methods that create containers. Always create containers

@@ -1,6 +1,6 @@
 ---
 name: slides-prep
-description: Prepare a conference talk end to end, from proposal through a slide-ready markdown outline to a finalized deck. Covers the CFP/abstract, an idea dump, a per-slide outline in a fixed markdown format, a speaker-notes trim pass, generating a PowerPoint (today via Claude Cowork) that gets imported into Google Slides, and reviewing the deck through to finished. Enter at any point and move in either direction — draft from scratch, review an existing deck, generate a single new slide to paste in, or reconstruct the markdown outline from an existing Google Slides or PowerPoint deck. Use when planning a talk, writing a proposal, turning talk ideas into an outline, adding or reworking slides, or reviewing the resulting deck. General and tool-agnostic; the manfred-slides and manfred-writing skills are optional helpers that layer in when available.
+description: Prepare a conference talk end to end, from proposal through a slide-ready markdown outline to a finalized deck. Covers the CFP/abstract, an idea dump, a per-slide outline in a fixed markdown format, a speaker-notes trim pass, generating a PowerPoint — today via Claude Cowork — that gets imported into Google Slides, and reviewing the deck through to finished. Enter at any point and move in either direction — draft from scratch, review an existing deck, generate a single new slide to paste in, or reconstruct the markdown outline from an existing Google Slides or PowerPoint deck. Use when planning a talk, writing a proposal, turning talk ideas into an outline, adding or reworking slides, or reviewing the resulting deck. General and tool-agnostic; the manfred-slides and manfred-writing skills are optional helpers that layer in when available.
 ---
 
 # slides-prep — from talk proposal to a finished deck
@@ -14,7 +14,7 @@ review of the generated deck is part of this skill, not a handoff to another.
 The phases are not a one-way pipeline. **Enter at whatever point matches what you
 already have** — a rough idea, a finished outline, or an existing deck you only
 want reviewed — and move in either direction between the markdown outline and
-the deck. Each operation below stands on its own, so pick the one you need
+the deck. Each operation stands on its own, so pick the one you need
 rather than always starting at the top.
 
 It is a general skill. It does not assume a particular speaker, employer, or
@@ -27,7 +27,7 @@ Any of these, in any order and as standalone entry points:
 
 - Talk proposals and CFP submissions: title, abstract, speaker bio, takeaways.
 - An idea dump that captures everything before it is structured.
-- A per-slide outline in the markdown format below.
+- A per-slide outline in the markdown format from the outline format section.
 - A speaker-notes trim pass.
 - Generating a deck from the outline — the whole deck, or a single new slide to
   paste into a deck that already exists.
@@ -48,17 +48,17 @@ This skill is designed to compose with, but never depend on, a personal skill
 set. When those skills are available, use them; when they are not, this skill
 stands on its own.
 
-- **manfred-writing** (if present): the voice, audience, and markdown house
+- **manfred-writing**, when present: the voice, audience, and markdown house
   style — including the 80-character hard wrap — apply to all prose written
   here, in proposals and in slide content alike. Invoke it for any writing.
-- **manfred-slides** (if present): an optional, Manfred-specific helper — his
+- **manfred-slides**, when present: an optional, Manfred-specific helper — his
   personal deck structure, one-idea-per-slide, and narrative preferences. It is
   a guideline that layers on top of this skill's process, not a skill to hand
   off to. This skill still drives the work through finalization; use
   manfred-slides as extra guidance when the deck is Manfred's.
 
-If neither is available, follow the slide conventions inlined below and write in
-clear, plain prose.
+If neither is available, follow the slide conventions inlined in this skill and
+write in clear, plain prose.
 
 ## Workspace layout
 
@@ -73,14 +73,14 @@ Each event directory holds:
 | File | Purpose |
 |---|---|
 | `index.md` | The brief: event and CFP details, speaker bio, abstract, and the raw idea dump. The starting point and the source of truth for intent. |
-| `outline.md` | The per-slide outline in the format below. The working document for the whole prep phase. |
+| `outline.md` | The per-slide outline in the outline format. The working document for the whole prep phase. |
 | `speaker-notes-trim.md` | Optional scratch file for a one-off speaker-notes trim pass. Temporary — delete it once the trimmed notes are back in the outline or the deck; not a deliverable worth keeping. |
 | `STATUS.md` | Where the talk stands — proposed, accepted, outlined, generated, delivered — plus links once it exists (deck, recording, event log). |
 | templates | Optional. Reusable master `.pptx` templates (a dark and a light master, say) when the generator needs one. If present, the only decks kept in git. |
 
 Generated and working `.pptx` files are throwaway — they exist only to carry the
-outline into slide software (see the generation step), so keep them out of
-version control. The markdown outline is the source of truth.
+outline into slide software as described in the generation step, so keep them
+out of version control. The markdown outline is the source of truth.
 
 Templates are **optional**. Some generators need a master `.pptx` to carry the
 visual style; others do not — a Claude Cowork setup, for example, can hold the
@@ -91,12 +91,12 @@ already knows the brand style, skip templates entirely.
 
 ## Workflow
 
-The phases below are the natural order for a talk built from scratch, but they
-are also independent entry points. Start wherever your material already is, run
-only the phases you need, and loop back freely — especially between the outline
-and content phases. The two cross-cutting operations — generating a single slide
-and reconstructing the outline from an existing deck — live in "Moving between
-the markdown and the deck" below.
+The following phases are the natural order for a talk built from scratch, but
+they are also independent entry points. Start wherever your material already is,
+run only the phases you need, and loop back freely — especially between the
+outline and content phases. The two cross-cutting operations — generating a
+single slide and reconstructing the outline from an existing deck — live in
+"Moving between the markdown and the deck".
 
 1. **Proposal / CFP.** Draft the title, abstract, bio, and audience takeaways.
    Capture the submitted text verbatim in `index.md` once submitted, so later
@@ -111,7 +111,7 @@ the markdown and the deck" below.
    supporting fact with no structure. Volume first, judgment later. This is
    thinking on paper, not an outline.
 
-4. **Outline.** Turn the dump into `outline.md` using the format below — one
+4. **Outline.** Turn the dump into `outline.md` using the outline format — one
    `# Slide N` heading per slide, a title that states the takeaway, a short
    `## On slide` list, and glanceable `## Speaker notes`. Build the narrative
    arc: set up the problem, build tension, resolve it, and end with a call to
@@ -134,12 +134,12 @@ the markdown and the deck" below.
 
 8. **Review and finalize.** Review the deck and finish it in the deck tool:
    visual design, layout, theming, and per-slide polish, checked against the
-   one-idea-per-slide and narrative conventions here (and manfred-slides when the
-   deck is Manfred's). This is a valid entry point on its own — arrive with an
-   existing deck and do only this. Review happens in the deck; if you want the
-   outline to reflect changes made there, reconstruct it (see "Moving between the
-   markdown and the deck"). Update `STATUS.md` to `delivered` once the talk is
-   given.
+   one-idea-per-slide and narrative conventions here — and manfred-slides when
+   the deck is Manfred's. This is a valid entry point on its own — arrive with
+   an existing deck and do only this. Review happens in the deck; if you want
+   the outline to reflect changes made there, reconstruct it as described in
+   "Moving between the markdown and the deck". Update `STATUS.md` to `delivered`
+   once the talk is given.
 
 ## Outline format
 
@@ -243,6 +243,6 @@ current stage and, once the talk exists and is delivered, the links.
 
 This skill stays in charge through to a finished deck — there is no handoff.
 After generation and import, keep reviewing and polishing in the deck tool
-against the conventions above, layering in manfred-slides as optional guidance
+against these conventions, layering in manfred-slides as optional guidance
 when the deck is Manfred's. Update `STATUS.md` as the stage advances —
 `generated` after import, `delivered` after the talk.

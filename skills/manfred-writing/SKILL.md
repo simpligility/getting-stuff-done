@@ -1,6 +1,6 @@
 ---
 name: manfred-writing
-description: Manfred Moser's personal writing voice, audience, and markdown formatting conventions for blogs, docs, and marketing content. A component of the `manfred` skill family. Activate only when the `manfred` skill is already active (its index directs you here) or when Manfred explicitly invokes it; do not auto-activate on generic writing or markdown work by description match alone.
+description: Manfred Moser's personal writing voice, audience, and markdown formatting conventions for blogs, docs, and marketing content. A component of the `manfred` skill family. Activate only when the `manfred` skill is already active and its index directs you here, or when Manfred explicitly invokes it; do not auto-activate on generic writing or markdown work by description match alone.
 ---
 
 # Manfred Moser — writing style and preferences

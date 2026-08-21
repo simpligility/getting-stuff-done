@@ -194,7 +194,7 @@ free from Starburst.
 
 ## Skill index
 
-The `trino-*` skills below build on this shared context. When working on the
+The following `trino-*` skills build on this shared context. When working on the
 matching topic, invoke the skill by name through the Skill tool rather than only
 reading its `SKILL.md` file:
 

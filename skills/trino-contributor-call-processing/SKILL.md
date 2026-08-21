@@ -16,10 +16,13 @@ page](https://github.com/trinodb/trino/wiki/Contributor-meetings).
 Ask the user to provide the URL to the video recording on YouTube and remember
 it as {{url}}.
 
-Ask the user for the date of the meeting in the format YYYY-MM-DD and remember it as {{date}}. This will be used to locate the section in the wiki for the meeting and to create a new section if it does not exist.
+Ask the user for the date of the meeting in the format YYYY-MM-DD and remember
+it as {{date}}. This will be used to locate the section in the wiki for the
+meeting and to create a new section if it does not exist.
 
 Ask the user for the path to the local file with the rough meeting notes
-markdown file and remember it as {{draftnotes}}. If there is no file, proceed without it.
+markdown file and remember it as {{draftnotes}}. If there is no file, proceed
+without it.
 
 Ingest the meeting notes markdown file.
 
@@ -133,4 +136,4 @@ Format each section in the following manner:
 ```
 
 Ask for a review of the files and assist with any further refinement, based on
-the info you already have and any further details received.etails received.
+the info you already have and any further details received.

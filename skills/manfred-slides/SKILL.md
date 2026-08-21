@@ -1,6 +1,6 @@
 ---
 name: manfred-slides
-description: Manfred Moser's conventions for presentation slide decks — structure, narrative flow, and slide content. Extends the `manfred-writing` skill and is a component of the `manfred` skill family. Activate only when the `manfred` skill is already active (its index directs you here) or when Manfred explicitly invokes it; do not auto-activate on generic slide or presentation work by description match alone.
+description: Manfred Moser's conventions for presentation slide decks — structure, narrative flow, and slide content. Extends the `manfred-writing` skill and is a component of the `manfred` skill family. Activate only when the `manfred` skill is already active and its index directs you here, or when Manfred explicitly invokes it; do not auto-activate on generic slide or presentation work by description match alone.
 ---
 
 # Manfred Moser — presentation slide decks

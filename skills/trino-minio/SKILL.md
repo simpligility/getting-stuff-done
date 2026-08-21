@@ -9,7 +9,8 @@ Use this skill when updating or debugging the MinIO container image used by the
 Trino test suites in the core [trinodb/trino](https://github.com/trinodb/trino)
 repository. It builds on the shared context in the `trino` skill. To bump the
 MinIO digest alongside many other dependencies at once, see the
-`trino-dependency-update` skill, which scans a whole repository for available updates.
+`trino-dependency-update` skill, which scans a whole repository for available
+updates.
 
 ## The image and its fork
 
@@ -82,6 +83,7 @@ forwarding `Flush`, documented with a standalone reproducer at
 `-raw` mode shows whether response headers reach the client, which quickly
 separates a server publish problem from a streaming flush problem.
 
-When a bump breaks these tests, suspect the streaming flush path first, reproduce
-against the old and new digests, and fix or report against the fork rather than
-adjusting the Trino tests, since the tests verify real S3 access patterns.
+When a bump breaks these tests, suspect the streaming flush path first,
+reproduce against the old and new digests, and fix or report against the fork
+rather than adjusting the Trino tests, since the tests verify real S3 access
+patterns.
