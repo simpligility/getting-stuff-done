@@ -4,6 +4,14 @@ Task tracker for ongoing work in this repo.
 
 ## Backlog
 
+- **Confirm the cause of the Trino Gateway 21 configuration validation
+  change** — the `trino` skill records that Trino Gateway 21 rejects
+  configuration properties that no module consumes, while Trino Gateway 20
+  accepts the same configuration. Both behaviors were verified by running the
+  container images against an identical configuration. The section attributes
+  the change to the Airlift bump from 435 to 441 as a likely cause only. Trace
+  it to the upstream change and either confirm the attribution or correct it.
+
 - **Review the new `trino-website` skill** — written during a working session
   in a `trinodb/trino.io` clone and verified against the repository, but not
   reviewed yet. Worth checking closely: the blog post front matter conventions,
