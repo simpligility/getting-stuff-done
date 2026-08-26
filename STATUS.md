@@ -4,6 +4,26 @@ Task tracker for ongoing work in this repo.
 
 ## Backlog
 
+- **Pull the Trino Gateway material out of the `trino` base skill** — the
+  base skill now carries content that is specific to Trino Gateway rather than
+  shared across the project, most recently the configuration validation section
+  for Trino Gateway 21. That material belongs with the product. Decide whether
+  the existing `trino-gateway-development` skill absorbs it, or whether a
+  broader Trino Gateway skill should sit alongside it and cover the product
+  beyond building and testing the repository.
+
+- **Consider renaming the `trino-*` skill family to `trinodb-*`** — the GitHub
+  organization is `trinodb`, so matching it would tie the skill names to the
+  source of the repositories they describe. Against that, the product is Trino
+  and the skills document the product at least as much as the organization, so
+  the current naming may already be the better fit. If the rename goes ahead,
+  it has to cover the skill directories, the `name` field in each front matter,
+  the skill index tables, the entries in `README.md` and
+  `instructions/AGENTS.md`, and the symlinks created by `install-skills.sh`.
+  Take care to change only skill names. Strings such as `trino-gateway`,
+  `trino-packages`, and `trino-python-client` also name real upstream
+  repositories and must stay as they are, including in the helper scripts.
+
 - **Confirm the cause of the Trino Gateway 21 configuration validation
   change** — the `trino` skill records that Trino Gateway 21 rejects
   configuration properties that no module consumes, while Trino Gateway 20
