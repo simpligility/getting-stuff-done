@@ -4,6 +4,15 @@ Task tracker for ongoing work in this repo.
 
 ## Backlog
 
+- **Review the new `trino-website` skill** — written during a working session
+  in a `trinodb/trino.io` clone and verified against the repository, but not
+  reviewed yet. Worth checking closely: the blog post front matter conventions,
+  the author rule that forbids company affiliations, the `_data` schemas for
+  the ecosystem, users, and sponsors pages, and the two linking traps. The
+  skill also records that around eighteen older posts carry a company name in
+  the author field, which is a separate cleanup in the website repository and
+  is not tracked anywhere else yet.
+
 - **Revisit progressive loading when skills get too big** — when a skill's
   `SKILL.md` approaches the roughly 500-line ceiling, or is mostly reference
   material that costs tokens on every invocation, split the reference-heavy

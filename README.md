@@ -66,6 +66,7 @@ General skills:
 | [`trino-gateway-development`](./skills/trino-gateway-development) | Build and test Trino Gateway, including the Testcontainers setup and database behavior. |
 | [`trino-gateway-release-notes`](./skills/trino-gateway-release-notes) | Create and maintain Trino Gateway release notes pull requests. |
 | [`trino-contributor-call-processing`](./skills/trino-contributor-call-processing) | Turn a Trino contributor call recording into topics and a wiki summary. |
+| [`trino-website`](./skills/trino-website) | Add and edit content on the trino.io website, including the Jekyll setup and blog post conventions. |
 | [`weekly-asana-task-recap`](./skills/weekly-asana-task-recap) | Assemble a weekly progress summary from Asana task updates. |
 | [`weekly-github-issue-recap`](./skills/weekly-github-issue-recap) | Assemble a weekly progress summary from GitHub issue updates. |
 | [`weekly-linear-issue-recap`](./skills/weekly-linear-issue-recap) | Assemble a weekly progress summary from Linear issue updates. |

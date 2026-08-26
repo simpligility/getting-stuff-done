@@ -206,6 +206,7 @@ reading its `SKILL.md` file:
 | Building and testing the Trino Gateway repository | `trino-gateway-development` |
 | Trino Gateway release notes pull requests | `trino-gateway-release-notes` |
 | Processing Trino contributor call recordings from YouTube | `trino-contributor-call-processing` |
+| Content and changes on the trino.io website | `trino-website` |
 | Updating or debugging the MinIO test container image in core Trino | `trino-minio` |
 
 Add new entries to this table as new `trino-*` skills are created.
