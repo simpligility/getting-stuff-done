@@ -4,25 +4,29 @@ Task tracker for ongoing work in this repo.
 
 ## Backlog
 
-- **Pull the Trino Gateway material out of the `trino` base skill** — the
-  base skill now carries content that is specific to Trino Gateway rather than
-  shared across the project, most recently the configuration validation section
-  for Trino Gateway 21. That material belongs with the product. Decide whether
-  the existing `trino-gateway-development` skill absorbs it, or whether a
-  broader Trino Gateway skill should sit alongside it and cover the product
-  beyond building and testing the repository.
-
-- **Consider renaming the `trino-*` skill family to `trinodb-*`** — the GitHub
-  organization is `trinodb`, so matching it would tie the skill names to the
-  source of the repositories they describe. Against that, the product is Trino
-  and the skills document the product at least as much as the organization, so
-  the current naming may already be the better fit. If the rename goes ahead,
-  it has to cover the skill directories, the `name` field in each front matter,
-  the skill index tables, the entries in `README.md` and
+- **Rename the `trino-*` skill family to `trinodb-*`** — the current prefix
+  collides with the product name. `trino` names the base skill that holds
+  project-wide context, which leaves no natural name for a skill about the
+  `trinodb/trino` repository itself. Taking the GitHub organization name for
+  the family frees the product names for the skills that document individual
+  repositories: a general `trinodb` skill for context that spans the projects,
+  then a skill per repository for `trinodb/trino`, `trinodb/trino-gateway`, and
+  others as they are needed. Settle the per-repository names as part of the
+  rename. The rename has to cover the skill directories, the `name` field in
+  each front matter, the skill index tables, the entries in `README.md` and
   `instructions/AGENTS.md`, and the symlinks created by `install-skills.sh`.
   Take care to change only skill names. Strings such as `trino-gateway`,
   `trino-packages`, and `trino-python-client` also name real upstream
   repositories and must stay as they are, including in the helper scripts.
+
+- **Pull the Trino Gateway material out of the base skill** — the base skill
+  now carries content that is specific to Trino Gateway rather than shared
+  across the project, most recently the configuration validation section for
+  Trino Gateway 21. That material belongs with the product. The likely home is
+  a per-repository Trino Gateway skill from the preceding rename, which would
+  cover the product beyond the build and test focus of the existing
+  `trino-gateway-development` skill. Do this together with the rename, or fold
+  the material into `trino-gateway-development` if the rename does not happen.
 
 - **Confirm the cause of the Trino Gateway 21 configuration validation
   change** — the `trino` skill records that Trino Gateway 21 rejects
