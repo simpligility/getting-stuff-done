@@ -26,7 +26,7 @@ without it.
 
 Ingest the meeting notes markdown file.
 
-Take note of the attendees and any topics that were discussed. 
+Take note of the attendees and any topics that were discussed.
 
 Ingest the [wiki
 page](https://github.com/trinodb/trino/wiki/Contributor-meetings) and locate the
@@ -56,7 +56,8 @@ More details available in the meeting minutes at
 https://github.com/trinodb/trino/wiki/Contributor-meetings
 
 Call organized and hosted by Manfred Moser. Sponsor him at 
-https://github.com/sponsors/mosabua to support this and other open source initiatives.
+https://github.com/sponsors/mosabua to support this and other open source 
+initiatives.
 ```
 
 ### Minutes
@@ -81,35 +82,80 @@ structure and insert data from analyzing the minutes and the video:
 
 ### Attendees list
 
-For the section of attendees, use their GitHub username and link to their
-profile in markdown format. List one attendee per line, followed by a comma. 
+For the section of attendees, use an unordered list with one attendee per item.
+Use the full name of each person followed by their GitHub username linked to
+their profile in markdown format.
 
-Consult the list of [Trino contributors](https://github.com/orgs/trinodb/people)
-for a list of potential attendees. Also look at common attendees from prior
-events from the
+Consult the [Trino roles page](https://trino.io/development/roles) for the
+current maintainers and subproject maintainers, and the list of [Trino
+contributors](https://github.com/orgs/trinodb/people) for anyone else. Also look
+at common attendees from prior events from the
 [wiki](https://github.com/trinodb/trino/wiki/Contributor-meetings).
 
-Typically the first entrance is Manfred Moser aka mosabua with
+Typically the first entry is Manfred Moser aka mosabua, with the role added
+inside the same brackets. Further entries follow the same pattern without a
+role:
 
 ```
-[mosabua](https://github.com/mosabua) (Host and organizer),
+* Manfred Moser ([mosabua](https://github.com/mosabua), host and organizer)
+* Dain Sundstrom ([dain](https://github.com/dain))
 ```
 
-Other commons examples might be
+Attendees introduce themselves and are announced by their full name, and the
+automatic captions often garble those names, so match what you hear against the
+full names in the following tables and use the matching GitHub account.
 
-```
-[dprophet](https://github.com/dprophet),
-[wendigo](https://github.com/wendigo), 
-[pettyjamesm](https://github.com/pettyjamesm),
-[dain](https://github.com/dain),
-[martint](https://github.com/martint),
-[electrum](https://github.com/electrum),
-[sajjoseph](https://github.com/sajjoseph), 
-[raunaqmorarka](https://github.com/raunaqmorarka)
-```
+Trino maintainers are frequent attendees:
 
-If you can't determine the GitHub details, just use the name from the video as
-you can determine it.
+| Name | GitHub |
+| --- | --- |
+| Chen Jian | [chenjian2664](https://github.com/chenjian2664) |
+| Dain Sundstrom | [dain](https://github.com/dain) |
+| Yuya Ebihara | [ebyhr](https://github.com/ebyhr) |
+| David Phillips | [electrum](https://github.com/electrum) |
+| Piotr Findeisen | [findepi](https://github.com/findepi) |
+| Ashhar Hasan | [hashhar](https://github.com/hashhar) |
+| Kasia Findeisen | [kasiafi](https://github.com/kasiafi) |
+| Grzegorz Kokosiński | [kokosing](https://github.com/kokosing) |
+| Łukasz Osipiuk | [losipiuk](https://github.com/losipiuk) |
+| Martin Traverso | [martint](https://github.com/martint) |
+| James Petty | [pettyjamesm](https://github.com/pettyjamesm) |
+| Praveen Krishna | [Praveen2112](https://github.com/Praveen2112) |
+| Raunaq Morarka | [raunaqmorarka](https://github.com/raunaqmorarka) |
+| Karol Sobczak | [sopel39](https://github.com/sopel39) |
+| Mateusz Gajewski | [wendigo](https://github.com/wendigo) |
+
+The maintainers of the subprojects aws-proxy, charts, grafana-trino, trino.io,
+trino-gateway, trino-go-client, trino-js-client, and trino-odbc attend as well:
+
+| Name | GitHub |
+| --- | --- |
+| Jaeho Yoo | [Chaho12](https://github.com/Chaho12) |
+| Cole Bowden | [colebow](https://github.com/colebow) |
+| Erik Anderson | [dprophet](https://github.com/dprophet) |
+| Jan Waś | [nineinchnick](https://github.com/nineinchnick) |
+| Star Poon | [oneonestar](https://github.com/oneonestar) |
+| Jordan Zimmerman | [Randgalt](https://github.com/Randgalt) |
+| Filipe Regadas | [regadas](https://github.com/regadas) |
+| Riley McDowell | [rileymcdowell](https://github.com/rileymcdowell) |
+| Pablo Arteaga | [vagaerg](https://github.com/vagaerg) |
+| Vishal Jadhav | [vishalya](https://github.com/vishalya) |
+
+Other contributors who attended recent calls:
+
+| Name | GitHub |
+| --- | --- |
+| Kent Murra | [kmurra](https://github.com/kmurra) |
+| Nitesh Yadav | [niteshy](https://github.com/niteshy) |
+| Omer Raifler | [OmerRaifler](https://github.com/OmerRaifler) |
+| Oussama Ben Nasr | [oucemabennasr](https://github.com/oucemabennasr) |
+| Sajumon Joseph | [sajjoseph](https://github.com/sajjoseph) |
+
+These tables are references for matching names heard in the video to GitHub
+accounts. Only list people who actually attended the call.
+
+If you can't determine the GitHub details, just use the full name on its own,
+without brackets.
 
 ### Topics list
 
@@ -137,3 +183,21 @@ Format each section in the following manner:
 
 Ask for a review of the files and assist with any further refinement, based on
 the info you already have and any further details received.
+
+### Tracking ticket
+
+Each call has a tracking ticket in Manfred's [contributions
+tracker](https://github.com/simpligility/contributions). Find the open issue
+titled `Trino contributor call {{date}}` with the `Trino community` label using
+the `gh` command line tool.
+
+After the minutes are published to the wiki and the description is added to the
+video, add a comment to the issue that states what was done and links to the
+published wiki section, for example:
+
+```
+hosted and posted meeting notes at
+https://github.com/trinodb/trino/wiki/Contributor-meetings#trino-contributor-call-{{date}}
+```
+
+Confirm with the user before commenting, then close the issue.
