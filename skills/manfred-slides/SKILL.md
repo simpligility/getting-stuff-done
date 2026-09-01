@@ -40,6 +40,21 @@ Because of this, focus effort on content, structure, and flow rather than on
 tool-specific formatting or theming. When the source is Markdown, follow the
 `manfred-writing` markdown house style, including the 80-character hard wrap.
 
+When a Google Slides deck exists and is what Manfred presents from, the deck is
+the authoritative artifact. A markdown outline is a scaffold for building the
+flow — a deck from scratch or an individual slide — and is worth keeping
+whenever it was used that way. When the deck was built directly in Slides and no
+outline was ever authored, the outline is redundant; drop it rather than leave a
+stale stub that lies about the deck. Keep an outline in sync with the deck one
+way only: reconstruct it by exporting the slide text from Slides, because
+markdown edits cannot be pushed back into Slides while preserving the design.
+Treat that export as a draft that needs a cleanup pass: most of the body order
+survives, but slide numbers, the tail order, diagrams, and the split between
+on-slide text and speaker notes do not — and the export can chunk differently
+run to run. See `slides-prep` for the reconstruction losses and the
+diff-and-selectively-apply sync loop that keeps an outline current without
+overwriting curated content.
+
 ## Structure
 
 - Open with a title slide: talk title, Manfred's name, role, and the event or
@@ -111,3 +126,6 @@ alone — the presenter delivers the substance, and the slides reinforce it.
 - Keep one consistent visual style across the deck.
 - Ensure every visual is legible at presentation size and has enough contrast.
 - Use images and memes sparingly and only when they add real value to the point being made.
+- In a markdown outline, capture each diagram, chart, or image in a `## Visual`
+  section (see `slides-prep`) describing what it shows, since visuals do not
+  survive a text export.

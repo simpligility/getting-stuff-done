@@ -42,6 +42,14 @@ each is a discrete step you run when you need it. Treat whichever artifact you
 are actively working in as the source of truth for that session, and reconcile
 the other on purpose rather than assuming they stay in lockstep.
 
+Once a deck exists and is what the talk is presented from, the deck is the
+authoritative artifact. The outline is a pre-deck authoring scaffold: keep it
+when it was used to build the deck or individual slides, and drop it when the
+deck was built directly in the deck tool with no outline behind it, rather than
+leaving a stale stub. Syncing an outline to a live deck is one-way —
+reconstruct it from the deck (see below); markdown edits cannot be pushed back
+into Google Slides while preserving the design.
+
 ## Composing with other skills
 
 This skill is designed to compose with, but never depend on, a personal skill
@@ -151,12 +159,22 @@ generates cleanly into slides.
   deck: a pointer to `index.md`, a rough slide count, and any deck-wide
   conventions such as theme usage, color scheme, or reference decks.
 - One `# Slide N - Title` heading per slide. Write the title as the **takeaway**,
-  not a label: "Sigstore signs without managing keys", not "Sigstore".
+  not a label: "Sigstore signs without managing keys", not "Sigstore". This
+  heading is the outline's navigation label and may differ from the literal
+  title shown on the slide.
 - An optional theme or layout hint as an HTML comment directly under the
   heading, for example `<!-- theme: dark -->`. Comments carry hints for the deck
   build without appearing as slide content.
 - `## On slide` — what the audience actually sees. Keep it short: a few bullets
-  or a single strong line. No paragraphs.
+  or a single strong line. No paragraphs. When the slide shows a title or
+  header, repeat that literal text as the first line here, so the outline
+  mirrors the rendered slide and a re-export diffs cleanly against it; slides
+  with no title simply omit it.
+- `## Visual` — optional. Describe any diagram, chart, screenshot, or image on
+  the slide in plain language: what it depicts and the point it makes, like
+  alt-text. Use it whenever a slide's meaning is carried by a visual, since
+  visuals do not survive a text export. For an image-only slide, `## On slide`
+  may hold just the title (or nothing) and `## Visual` carries the slide.
 - `## Speaker notes` — glanceable reminders only: delivery cues, a number to
   hit, a story to tell, a callback. Never a full script.
 - Use a `---` divider between major sections to keep the arc readable in the
@@ -181,7 +199,12 @@ Conventions: <deck-wide notes — theme usage, ~<n> slides, reference decks>
 
 ## On slide
 
+- <literal slide title, if the slide shows one>
 - <short line or two>
+
+## Visual
+
+- <what a diagram, chart, or image shows — omit the section when there is none>
 
 ## Speaker notes
 
@@ -226,18 +249,64 @@ outline format. Use this to
 - get a base outline you can then extend with new slides.
 
 Reconstruction is manual or tool-assisted and will not be perfectly lossless —
-treat it as a faithful re-derivation, then reconcile by eye.
+treat it as a draft that needs a cleanup pass, then reconcile by eye. A Google
+Slides text export is not only lossy but **unstable between runs** — the same
+deck exported twice can chunk differently. What breaks:
+
+- Slide numbers are internal object ids, not deck order — never trust them.
+- Body order is mostly reliable, but the **tail (closing slides) and section
+  dividers can scramble, merge into a neighbor, split out on their own, or
+  relocate** — a note-only or divider slide is especially prone to this.
+- Diagrams flatten into unordered label soup that must be re-summarized by hand.
+- On-slide text is not delimited from speaker notes; splitting them is a
+  judgment call, and a note can surface as on-slide text (or vice versa) on one
+  run and differently on the next.
+
+Because of this, always verify a fresh export against the deck's known structure
+and slide count rather than trusting any single export. Renumber into
+presentation order and rebuild the diagram slides by eye.
+
+To pull the text out of Google Slides, use the plain-text export endpoint
+`https://docs.google.com/presentation/d/<id>/export/txt`. It needs the deck
+link-shareable (anyone with the link can view) and returns a cross-host redirect
+you follow to fetch the content — the raw material for both a cold
+reconstruction and a sync diff.
+
+### Sync an existing outline after deck edits
+
+When both an outline and a deck exist and the deck has moved ahead — manual edits
+in the deck tool — do **not** regenerate the outline from scratch. That throws
+away hand-curated content the export cannot reproduce: `## Visual` summaries, the
+correct on-slide/notes split, and the renumbered presentation order. Treat the
+outline as the base of truth and the export as a *proposal*, then:
+
+1. Export the current deck and diff it against the outline.
+2. Classify each difference: a real edit made in the deck, an export artifact
+   (mislabeling, chunking shift, dropped/merged/moved slide), or unsure.
+3. Apply only the confirmed real edits. Never delete or overwrite outline
+   content just because an export omitted or moved it — that is almost always
+   export noise, not a deletion.
+4. On anything unsure, ask rather than guess; the deck owner knows what they
+   changed.
+
+This diff-and-selectively-apply loop is the safe way to keep an outline current
+with a deck that is being actively edited, and it protects curated content from
+the export's instability. A `## Visual` block or a hand-rebuilt diagram slide is
+a signal that the content is curated: refresh it only against a real deck change,
+never from raw export text.
 
 ## STATUS.md
 
 Keep a short `STATUS.md` per event so the state is obvious at a glance. Track the
-current stage and, once the talk exists and is delivered, the links.
+current stage and, once the talk exists and is delivered, the links. Do not
+repeat the talk title, dates, location, session type, or other event facts here
+— those live in `index.md`. State once that details live in `index.md` and link
+to it rather than duplicating, so the two files cannot drift apart.
 
 - **Stage:** one of proposed, accepted, outlined, generated, delivered.
-- **Event facts:** final title, date (ISO 8601, `YYYY-MM-DD`), location, session
-  type, length.
 - **Links:** slide deck, recording/video, and the event page. Fill these in as
   they become available; leave a clear placeholder until then.
+- **Open items:** anything still undecided or outstanding.
 
 ## Finalizing
 
