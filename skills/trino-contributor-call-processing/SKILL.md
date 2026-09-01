@@ -39,6 +39,12 @@ sections that discuss different topics, and a short description for each topic.
 Use the content from the {{draftnotes}} as suggestions and further details for
 the topics. Also take note of the title of the video as {{title}}.
 
+Both output files are working documents that stay local. Expect several passes
+over them to refine the wording and to verify each timestamp against the
+recording. Once they are final, copy and paste the content into the YouTube
+video description and the wiki page in the browser. Do not clone the wiki or
+push either file from the command line.
+
 ### YouTube description
 
 Create a text file named `youtube-description.txt` with a list of the topics and
