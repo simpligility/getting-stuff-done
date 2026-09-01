@@ -190,6 +190,14 @@ Format each section in the following manner:
 Ask for a review of the files and assist with any further refinement, based on
 the info you already have and any further details received.
 
+### Announcement
+
+Once the video description and the wiki page are updated, Manfred announces the
+recording and the meeting notes on LinkedIn and in the `#announcements` channel
+on [Trino Slack](https://trino.io/slack), which he has official access to post
+in. Ask him for the URL of the LinkedIn post and remember it as {{linkedinurl}}
+so it can be recorded on the tracking ticket.
+
 ### Tracking ticket
 
 Each call has a tracking ticket in Manfred's [contributions
@@ -206,4 +214,13 @@ hosted and posted meeting notes at
 https://github.com/trinodb/trino/wiki/Contributor-meetings#trino-contributor-call-{{date}}
 ```
 
-Confirm with the user before commenting, then close the issue.
+Add a second comment once the announcements are out, for example:
+
+```
+announced the recording and meeting notes on LinkedIn at {{linkedinurl}} and in
+the announcements channel on Trino Slack
+```
+
+Confirm with the user before commenting, then close the issue. Comments can
+still be added after the issue is closed, so a late announcement does not need
+the issue reopened.
