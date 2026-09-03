@@ -1,18 +1,18 @@
 ---
-name: trino-gateway-development
-description: Development context for the trinodb/trino-gateway repository — the Maven build and what it costs, the Testcontainers setup and the shared container factories, and the database behavior that test assertions depend on. Child skill of the trino family. Load it before building, testing, or changing tests in a trino-gateway clone.
+name: trinodb-gateway-development
+description: Development context for the trinodb/trino-gateway repository — the Maven build and what it costs, the Testcontainers setup and the shared container factories, and the database behavior that test assertions depend on. Child skill of the trinodb family. Load it before building, testing, or changing tests in a trino-gateway clone.
 ---
 
 # Trino Gateway development
 
 Development context for
 [trinodb/trino-gateway](https://github.com/trinodb/trino-gateway), the load
-balancer and proxy that sits in front of Trino clusters. Load the `trino` base
+balancer and proxy that sits in front of Trino clusters. Load the `trinodb` base
 skill first for project-wide facts such as the contribution workflow and the
 commit message conventions.
 
 This skill covers building and testing the repository. For release notes work,
-use the `trino-gateway-release-notes` skill instead.
+use the `trinodb-gateway-release-notes` skill instead.
 
 ## Modules
 
@@ -54,7 +54,7 @@ warm repository, but it is not the complete one. Checkstyle, airstyle, license,
 and sortpom run early enough for `test-compile` to catch them, while
 modernizer, pmd, spotbugs, and the duplicate and dependency analysis bind to
 later phases. Code that compiles cleanly can still fail the real build, so run
-`verify -DskipTests` before pushing. The `trino-java-code-style` skill covers
+`verify -DskipTests` before pushing. The `trinodb-java-code-style` skill covers
 the verifiers in detail.
 
 One modernizer rule worth knowing in advance, because it is easy to hit: it
@@ -144,7 +144,7 @@ blanket change also hides genuine ordering bugs.
 
 Reviews are thorough and iterate over several rounds. The conventions that
 reviewers enforce by hand, along with the ones the build enforces on its own,
-live in the `trino-java-code-style` skill. Load it before opening a pull
+live in the `trinodb-java-code-style` skill. Load it before opening a pull
 request against this repository.
 
 Verify anything version-specific in this skill against the repository, since

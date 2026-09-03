@@ -1,5 +1,5 @@
 ---
-name: trino-packages-update
+name: trinodb-packages-update
 description: Update a local clone of a trino-packages fork to a newer Trino version. Covers the custom tarball, RPM, and custom Docker image packages, the per-version upstream checks, the build and verification steps, and the commit and README conventions. Use this when bumping trino-packages to a newer Trino release.
 ---
 
@@ -24,13 +24,13 @@ bump to the next version is mostly version-string changes plus the per-version
 upstream checks in Step 1.
 
 For shared Trino facts — the versioning scheme, release-artifact distribution,
-the Java version policy, and the contribution workflow — see the `trino` base
-skill.
+the Java version policy, and the contribution workflow — see the `trinodb`
+base skill.
 
 ## How the artifacts are fetched
 
 As of Trino 477 the server tarballs and plugin zips are published only on the
-GitHub release and not to Maven Central, as covered in the `trino` base skill.
+GitHub release and not to Maven Central, as covered in the `trinodb` base skill.
 This project fetches them at build time:
 
 * Both Maven modules run `src/main/script/prefetch.sh` in the Maven `validate`

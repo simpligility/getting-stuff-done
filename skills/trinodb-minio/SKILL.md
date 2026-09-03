@@ -1,5 +1,5 @@
 ---
-name: trino-minio
+name: trinodb-minio
 description: Update and troubleshoot the MinIO test container image in the core trinodb/trino repository and the sibling trinodb/aws-proxy repository. Covers the Chainguard fork the image is built from, where the pinned digest lives in each repository, how to bump it, and the known streaming-flush failure mode. Use when changing or debugging the MinIO test container in Trino.
 ---
 
@@ -7,9 +7,9 @@ description: Update and troubleshoot the MinIO test container image in the core 
 
 Use this skill when updating or debugging the MinIO container image used by the
 Trino test suites in the core [trinodb/trino](https://github.com/trinodb/trino)
-repository. It builds on the shared context in the `trino` skill. To bump the
+repository. It builds on the shared context in the `trinodb` skill. To bump the
 MinIO digest alongside many other dependencies at once, see the
-`trino-dependency-update` skill, which scans a whole repository for available
+`trinodb-dependency-update` skill, which scans a whole repository for available
 updates.
 
 ## The image and its fork

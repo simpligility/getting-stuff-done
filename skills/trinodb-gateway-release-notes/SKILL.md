@@ -1,5 +1,5 @@
 ---
-name: trino-gateway-release-notes
+name: trinodb-gateway-release-notes
 description: Create and maintain release notes pull requests for Trino Gateway. Use this skill in a local clone of a fork of trino-gateway to manage the release notes PR and docs/release-notes.md.
 ---
 
@@ -9,7 +9,7 @@ Use this skill to manage the release notes process for
 [trinodb/trino-gateway](https://github.com/trinodb/trino-gateway).
 
 For shared Trino facts — the trinodb organization, versioning, and the
-fork-and-upstream contribution workflow — see the `trino` base skill.
+fork-and-upstream contribution workflow — see the `trinodb` base skill.
 
 ## Prerequisites
 

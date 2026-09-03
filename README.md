@@ -58,15 +58,15 @@ General skills:
 | Skill | Purpose |
 |---|---|
 | [`slides-prep`](./skills/slides-prep) | Prepare a talk from proposal through a slide-ready markdown outline, then generate a first deck; composes with `manfred-slides`. |
-| [`trino`](./skills/trino) | Shared reference facts about the Trino project for the `trino-*` family. |
-| [`trino-java-code-style`](./skills/trino-java-code-style) | Java code style for Trino, Airlift, and projects using airbase, split by what the build enforces. |
-| [`trino-dependency-update`](./skills/trino-dependency-update) | Update dependencies and tooling in Java-based Trino projects with a local Renovate scan. |
-| [`trino-minio`](./skills/trino-minio) | Update and troubleshoot the MinIO test container image in trino and aws-proxy. |
-| [`trino-packages-update`](./skills/trino-packages-update) | Update a `trino-packages` clone to a newer Trino version. |
-| [`trino-gateway-development`](./skills/trino-gateway-development) | Build and test Trino Gateway, including the Testcontainers setup and database behavior. |
-| [`trino-gateway-release-notes`](./skills/trino-gateway-release-notes) | Create and maintain Trino Gateway release notes pull requests. |
-| [`trino-contributor-call-processing`](./skills/trino-contributor-call-processing) | Turn a Trino contributor call recording into topics and a wiki summary. |
-| [`trino-website`](./skills/trino-website) | Add and edit content on the trino.io website, including the Jekyll setup and blog post conventions. |
+| [`trinodb`](./skills/trinodb) | Shared reference facts about the Trino project for the `trinodb-*` family. |
+| [`trinodb-java-code-style`](./skills/trinodb-java-code-style) | Java code style for Trino, Airlift, and projects using airbase, split by what the build enforces. |
+| [`trinodb-dependency-update`](./skills/trinodb-dependency-update) | Update dependencies and tooling in Java-based Trino projects with a local Renovate scan. |
+| [`trinodb-minio`](./skills/trinodb-minio) | Update and troubleshoot the MinIO test container image in trino and aws-proxy. |
+| [`trinodb-packages-update`](./skills/trinodb-packages-update) | Update a `trino-packages` clone to a newer Trino version. |
+| [`trinodb-gateway-development`](./skills/trinodb-gateway-development) | Build and test Trino Gateway, including the Testcontainers setup and database behavior. |
+| [`trinodb-gateway-release-notes`](./skills/trinodb-gateway-release-notes) | Create and maintain Trino Gateway release notes pull requests. |
+| [`trinodb-contributor-call-processing`](./skills/trinodb-contributor-call-processing) | Turn a Trino contributor call recording into topics and a wiki summary. |
+| [`trinodb-website`](./skills/trinodb-website) | Add and edit content on the trino.io website, including the Jekyll setup and blog post conventions. |
 | [`weekly-asana-task-recap`](./skills/weekly-asana-task-recap) | Assemble a weekly progress summary from Asana task updates. |
 | [`weekly-github-issue-recap`](./skills/weekly-github-issue-recap) | Assemble a weekly progress summary from GitHub issue updates. |
 | [`weekly-linear-issue-recap`](./skills/weekly-linear-issue-recap) | Assemble a weekly progress summary from Linear issue updates. |
@@ -90,7 +90,7 @@ directly from any public GitHub repository. Install a single skill with the
 `owner/repo@skill` shorthand:
 
 ```bash
-npx skills add simpligility/getting-stuff-done@trino-packages-update
+npx skills add simpligility/getting-stuff-done@trinodb-packages-update
 ```
 
 Install every skill in the repository at once by pointing at the repository:
