@@ -11,6 +11,10 @@ recording available on YouTube to create time stamped list of topics for the
 video description and expanded summary for [the contributor meetings wiki
 page](https://github.com/trinodb/trino/wiki/Contributor-meetings).
 
+It builds on the shared context in the `trinodb` skill, which covers the
+organization and points at the development roles page that lists the
+maintainers by name.
+
 ## Processing steps
 
 Ask the user to provide the URL to the video recording on YouTube and remember
