@@ -1,5 +1,5 @@
 ---
-name: trino-dependency-update
+name: trinodb-dependency-update
 description: Update dependencies and tooling in Java-based Trino projects such as trino, trino-gateway, and aws-proxy. Covers scanning for available updates with a local, read-only Renovate run bundled in the skill, then applying Maven dependency and plugin versions, the Maven wrapper distribution, the MinIO container digest, and embedded JavaScript. Use when bumping dependencies in a Trino Java or Maven repository without wiring Renovate into the repository itself.
 ---
 
@@ -9,8 +9,8 @@ Use this skill to keep the Java and Maven Trino projects up to date — the core
 [trinodb/trino](https://github.com/trinodb/trino),
 [trinodb/trino-gateway](https://github.com/trinodb/trino-gateway),
 [trinodb/aws-proxy](https://github.com/trinodb/aws-proxy), and similar
-repositories or their forks. It builds on the shared context in the `trino`
-skill and defers MinIO specifics to the `trino-minio` skill.
+repositories or their forks. It builds on the shared context in the `trinodb`
+skill and defers MinIO specifics to the `trinodb-minio` skill.
 
 These repositories typically run Dependabot, which opens most routine dependency
 bumps automatically. Treat this skill as a periodic sweep to catch what
@@ -91,7 +91,7 @@ Apply them with the matching tool, then verify with a build.
   directly or by running `./mvnw wrapper:wrapper -Dmaven=<version>`, and commit
   the regenerated wrapper files.
 - **MinIO container digest.** Copy the reported `newDigest` into the pin file or
-  files. The `trino-minio` skill is the source of truth for the per-repository
+  files. The `trinodb-minio` skill is the source of truth for the per-repository
   pin locations, digest verification, and the streaming-flush failure mode to
   watch for after a bump.
 - **Embedded JavaScript.** Update the reported version in `package.json` and
@@ -100,7 +100,7 @@ Apply them with the matching tool, then verify with a build.
 ## Verify
 
 Build the affected modules and run the relevant tests before committing. For a
-MinIO digest bump, run the suites called out in the `trino-minio` skill, since
+MinIO digest bump, run the suites called out in the `trinodb-minio` skill, since
 those exercise the container behavior most likely to regress.
 
 ## Commit conventions

@@ -1,6 +1,6 @@
 ---
-name: trino-java-code-style
-description: Java code style for Trino, Airlift, and downstream projects that use airbase as their Maven parent. Covers which rules the build enforces mechanically, which rules only reviewers catch, and how to run the full static check before pushing. Child skill of the trino family. Load it before writing or reviewing Java in any of these projects.
+name: trinodb-java-code-style
+description: Java code style for Trino, Airlift, and downstream projects that use airbase as their Maven parent. Covers which rules the build enforces mechanically, which rules only reviewers catch, and how to run the full static check before pushing. Child skill of the trinodb family. Load it before writing or reviewing Java in any of these projects.
 ---
 
 # Trino and Airlift Java code style
@@ -36,8 +36,8 @@ where to spend attention: the first group needs a command, the second needs
 care while writing.
 
 This skill covers Java code only. A change that touches documentation is held to
-the project writing style as well, which the `trino` base skill documents under
-documentation and writing style. That style applies to the documentation in
+the project writing style as well, which the `trinodb` base skill documents
+under documentation and writing style. That style applies to the documentation in
 `trinodb/trino`, the Trino Gateway documentation, and the website alike, so a
 code contribution with a documentation change is reviewed against both.
 

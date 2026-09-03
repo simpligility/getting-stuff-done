@@ -1,6 +1,6 @@
 ---
-name: trino-website
-description: Work on the Trino project website in the trinodb/trino.io repository. Covers the Jekyll and Netlify setup, the local build, blog post conventions and front matter, the data files behind the ecosystem, users, and sponsors pages, the Trino Community Broadcast episode collection, the custom Liquid tags, and the linking traps. Child skill of the trino family. Load it before adding or editing any content on trino.io.
+name: trinodb-website
+description: Work on the Trino project website in the trinodb/trino.io repository. Covers the Jekyll and Netlify setup, the local build, blog post conventions and front matter, the data files behind the ecosystem, users, and sponsors pages, the Trino Community Broadcast episode collection, the custom Liquid tags, and the linking traps. Child skill of the trinodb family. Load it before adding or editing any content on trino.io.
 ---
 
 # Trino website
@@ -8,13 +8,13 @@ description: Work on the Trino project website in the trinodb/trino.io repositor
 Use this skill when working in a clone of
 [trinodb/trino.io](https://github.com/trinodb/trino.io), the source of the
 [Trino website](https://trino.io). It builds on the shared context in the
-`trino` skill, which covers the organization, the contribution workflow, and the
-documentation style guide that applies to website content as well.
+`trinodb` skill, which covers the organization, the contribution workflow,
+and the documentation style guide that applies to website content as well.
 
 Writing style for all site content follows the
 [Google developer documentation style guide](https://developers.google.com/style),
-as described in the `trino` skill. When writing for Manfred, the conventions in
-`manfred-writing` apply on top of it.
+as described in the `trinodb` skill. When writing for Manfred, the
+conventions in `manfred-writing` apply on top of it.
 
 ## The stack
 
@@ -197,7 +197,7 @@ after the episode number, such as `69.md`. The `episode` layout reads `title`,
 renders the chapter list.
 
 To turn a recording into the topic list and summary that these fields need, use
-the `trino-contributor-call-processing` skill.
+the `trinodb-contributor-call-processing` skill.
 
 ## Custom Liquid tags
 
@@ -207,7 +207,7 @@ Three tags are defined in `_plugins` and available in any page:
 - `{% downloadGH trino-server .tar.gz %}` renders a download button for a GitHub
   release asset of the current Trino version.
 - `{% downloadMC trino-jdbc .jar %}` renders the same for a Maven Central
-  artifact. Note the constraint recorded in the `trino` skill, that
+  artifact. Note the constraint recorded in the `trinodb` skill, that
   server tarballs and plugin archives are no longer published to Maven Central
   as of Trino 477, so new download buttons for those belong on `downloadGH`.
 
@@ -234,7 +234,7 @@ older posts reference images under a `/blog/assets` path.
 
 The website follows the same process as the rest of the project, described on
 the [development process page](https://trino.io/development/process.html) and in
-the `trino` skill. Fork the repository, keep `upstream` pointing at
+the `trinodb` skill. Fork the repository, keep `upstream` pointing at
 `trinodb/trino.io`, work on a branch, and open a pull request.
 
 Commit messages follow the Chris Beams conventions. The process page explicitly

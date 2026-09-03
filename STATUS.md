@@ -4,41 +4,36 @@ Task tracker for ongoing work in this repo.
 
 ## Backlog
 
-- **Rename the `trino-*` skill family to `trinodb-*`** — the current prefix
-  collides with the product name. `trino` names the base skill that holds
-  project-wide context, which leaves no natural name for a skill about the
-  `trinodb/trino` repository itself. Taking the GitHub organization name for
-  the family frees the product names for the skills that document individual
-  repositories: a general `trinodb` skill for context that spans the projects,
-  then a skill per repository for `trinodb/trino`, `trinodb/trino-gateway`, and
-  others as they are needed. Settle the per-repository names as part of the
-  rename. The rename has to cover the skill directories, the `name` field in
-  each front matter, the skill index tables, the entries in `README.md` and
-  `instructions/AGENTS.md`, and the symlinks created by `install-skills.sh`.
-  Take care to change only skill names. Strings such as `trino-gateway`,
-  `trino-packages`, and `trino-python-client` also name real upstream
-  repositories and must stay as they are, including in the helper scripts.
+- **Split the trinodb family by repository** — the prefix rename from
+  `trino-*` to `trinodb-*` is done, so the product names are now free for
+  skills that document individual repositories. What remains is deciding
+  whether to add a skill per repository for `trinodb/trino`,
+  `trinodb/trino-gateway`, and others as they are needed, and settling what
+  those skills are called. The topic skills that already exist, such as
+  `trinodb-gateway-development`, cut across repositories, so the split has to
+  say which material moves and which stays.
 
 - **Pull the Trino Gateway material out of the base skill** — the base skill
   now carries content that is specific to Trino Gateway rather than shared
   across the project, most recently the configuration validation section for
   Trino Gateway 21. That material belongs with the product. The likely home is
-  a per-repository Trino Gateway skill from the preceding rename, which would
+  a per-repository Trino Gateway skill from the preceding item, which would
   cover the product beyond the build and test focus of the existing
-  `trino-gateway-development` skill. Do this together with the rename, or fold
-  the material into `trino-gateway-development` if the rename does not happen.
+  `trinodb-gateway-development` skill. Do this together with that split, or
+  fold the material into `trinodb-gateway-development` if the split does not
+  happen.
 
 - **Confirm the cause of the Trino Gateway 21 configuration validation
-  change** — the `trino` skill records that Trino Gateway 21 rejects
+  change** — the `trinodb` skill records that Trino Gateway 21 rejects
   configuration properties that no module consumes, while Trino Gateway 20
   accepts the same configuration. Both behaviors were verified by running the
   container images against an identical configuration. The section attributes
   the change to the Airlift bump from 435 to 441 as a likely cause only. Trace
   it to the upstream change and either confirm the attribution or correct it.
 
-- **Review the new `trino-website` skill** — written during a working session
-  in a `trinodb/trino.io` clone and verified against the repository, but not
-  reviewed yet. Worth checking closely: the blog post front matter conventions,
+- **Review the new `trinodb-website` skill** — written during a working
+  session in a `trinodb/trino.io` clone and verified against the repository,
+  but not reviewed yet. Worth checking closely: the blog post front matter conventions,
   the author rule that forbids company affiliations, the `_data` schemas for
   the ecosystem, users, and sponsors pages, and the two linking traps. The
   skill also records that around eighteen older posts carry a company name in
@@ -72,7 +67,7 @@ Task tracker for ongoing work in this repo.
   - Whether a plugin `source` of `"./"` is accepted, or whether a
     `plugins/<name>/` subdirectory symlinking back to `skills` is required.
   - Whether to ship one plugin covering all skills or split them into
-    `manfred-*`, `trino-*`, and `weekly-*` groups, which needs either
+    `manfred-*`, `trinodb-*`, and `weekly-*` groups, which needs either
     subdirectories or symlinks because `skills` is currently flat.
 
   Not scheduled. This solves the problem only for Claude tooling while adding

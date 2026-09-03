@@ -1,6 +1,6 @@
 ---
-name: trino
-description: Shared context and reference facts about the Trino project — the trinodb organization and its repositories, the versioning and release cadence, how release artifacts are distributed, the Java version policy, how configuration properties are validated at startup, and the fork-and-upstream contribution workflow. Base skill for the trino-* family. Load it for the shared facts before working with a child skill or on any Trino task that needs project-wide context.
+name: trinodb
+description: Shared context and reference facts about the Trino project — the trinodb organization and its repositories, the versioning and release cadence, how release artifacts are distributed, the Java version policy, how configuration properties are validated at startup, and the fork-and-upstream contribution workflow. Base skill for the trinodb-* family. Load it for the shared facts before working with a child skill or on any Trino task that needs project-wide context.
 ---
 
 # Trino project context
@@ -8,7 +8,7 @@ description: Shared context and reference facts about the Trino project — the 
 This skill holds stable, cross-cutting facts about the
 [Trino](https://trino.io) project that several task-specific skills rely on. It
 is a knowledge base, not a workflow. Use it as the shared reference for the
-`trino-*` child skills and for any Trino task that needs project-wide context.
+`trinodb-*` child skills and for any Trino task that needs project-wide context.
 Verify anything version-specific against the upstream repository, since Trino
 moves fast.
 
@@ -116,7 +116,7 @@ covers the SPI, connectors, and other extension points, and points back to both
 of those for style and process.
 
 For Java code style, including which rules the build enforces and which ones
-only reviewers catch, use the `trino-java-code-style` skill.
+only reviewers catch, use the `trinodb-java-code-style` skill.
 
 ## Configuration validation in Trino Gateway
 
@@ -219,19 +219,19 @@ free from Starburst.
 
 ## Skill index
 
-The following `trino-*` skills build on this shared context. When working on the
-matching topic, invoke the skill by name through the Skill tool rather than only
-reading its `SKILL.md` file:
+The following `trinodb-*` skills build on this shared context. When working
+on the matching topic, invoke the skill by name through the Skill tool rather
+than only reading its `SKILL.md` file:
 
 | Topic | Skill to invoke |
 |---|---|
-| Java code style for Trino, Airlift, and airbase-based projects | `trino-java-code-style` |
-| Dependency updates in Trino Java projects | `trino-dependency-update` |
-| Alternative Trino binary packages — RPM, custom tarball, custom container image — and version bumps | `trino-packages-update` |
-| Building and testing the Trino Gateway repository | `trino-gateway-development` |
-| Trino Gateway release notes pull requests | `trino-gateway-release-notes` |
-| Processing Trino contributor call recordings from YouTube | `trino-contributor-call-processing` |
-| Content and changes on the trino.io website | `trino-website` |
-| Updating or debugging the MinIO test container image in core Trino | `trino-minio` |
+| Java code style for Trino, Airlift, and airbase-based projects | `trinodb-java-code-style` |
+| Dependency updates in Trino Java projects | `trinodb-dependency-update` |
+| Alternative Trino binary packages — RPM, custom tarball, custom container image — and version bumps | `trinodb-packages-update` |
+| Building and testing the Trino Gateway repository | `trinodb-gateway-development` |
+| Trino Gateway release notes pull requests | `trinodb-gateway-release-notes` |
+| Processing Trino contributor call recordings from YouTube | `trinodb-contributor-call-processing` |
+| Content and changes on the trino.io website | `trinodb-website` |
+| Updating or debugging the MinIO test container image in core Trino | `trinodb-minio` |
 
-Add new entries to this table as new `trino-*` skills are created.
+Add new entries to this table as new `trinodb-*` skills are created.

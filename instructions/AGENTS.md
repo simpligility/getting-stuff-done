@@ -16,5 +16,5 @@ preference, a non-obvious project fact, a workflow correction, or a useful
 reference — stop and ask me whether to keep it before moving on.
 
 When I say yes, the default home is one of my skills (for example the `manfred-*`
-or `trino-*` families in this repo), not a memory store. Propose which skill and
-where it should go, and let me decide.
+or `trinodb-*` families in this repo), not a memory store. Propose which
+skill and where it should go, and let me decide.

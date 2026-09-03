@@ -1,5 +1,5 @@
 ---
-name: trino-contributor-call-processing
+name: trinodb-contributor-call-processing
 description: Instructions for processing the video recording from a Trino contributor call recording available on YouTube to create time stamped list of topics and expanded summary for wiki. Use when you uploaded the recording and need to make it consumable for the community.
 ---
 
