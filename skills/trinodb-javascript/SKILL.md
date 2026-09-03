@@ -177,6 +177,16 @@ Releases are automated. Bump the version with
 default branch publishes to npm through trusted publishing and creates the
 GitHub release. See the repository README for the full process.
 
+Opening the release pull request publishes nothing. The release workflow has a
+single trigger, a push to the default branch, and every publishing step is
+gated on the version in `precise/package.json` having changed. The merge is
+what cuts the release.
+
+From 1.0.0 onward every release increments the major version, so 1.0.0 is
+followed by 2.0.0, with no compatibility implied between versions. The scheme
+mirrors the way Trino numbers its own releases. It was agreed between the
+maintainers and confirmed on a Trino contributor call.
+
 The component externalizes its shared libraries as peer dependencies rather than
 bundling them, so the embedding application supplies React, Emotion, MUI, MUI X,
 and `@monaco-editor/react`. Keep peer ranges as wide as the component genuinely
@@ -248,3 +258,37 @@ grep -rnE '<(Box|Typography|Stack|Grid)\b' src/ -A6 \
 Expect false positives worth keeping. `color` and `fontSize` remain valid props
 on `Chip`, `SvgIcon`, and the icon components, and `height` is a legitimate prop
 on `@monaco-editor/react` and on custom components.
+
+## Open work in trino-query-ui
+
+A snapshot taken on 2026-09-03, not a durable fact. Pull request state moves
+quickly, so check the repository before acting on any of it.
+
+* **Release 1.0.0** — pull request 58 carries the version bump, the versioning
+  section, and the removal of the early-stage warning. It was cut from the
+  default branch before the Monaco worker fix and needs a rebase once that
+  merges.
+* **Monaco worker environment** — pull request 57 sets `MonacoEnvironment` so
+  the language services registered by the package entry point stop throwing
+  three uncaught errors on every page load. Merge it before the release, so
+  the first version under the new scheme does not ship with them.
+* **Dependabot lockfile refreshes** — pull requests 47, 48, 49, and 50 bump
+  the locked MUI, MUI X, and React type versions. They touch only
+  `package-lock.json`, and a plain `npm install` does not pick the newer
+  versions up, so they are the only thing moving what the repository builds
+  against. Merge them together after the release.
+* **Vite 8** — pull request 46 bumps `@vitejs/plugin-react` to 6, which needs
+  `vite@^8.0.0` against the `^7.1.7` the manifest declares. It fails CI with an
+  `ERESOLVE` conflict and stays blocked until Vite itself is upgraded.
+* **Contributor pull requests** — pull request 36 has changes requested,
+  because attaching the shared error collector to the phantom re-parser
+  surfaces diagnostics computed against synthetic text as editor markers.
+  Pull requests 56, 37, and 38 are not triaged yet.
+
+Three gaps predate this work and are not tracked as issues anywhere. The
+published package ships no type declarations, because the TypeScript
+configuration sets `noEmit` and the manifest declares no `types` field. The
+example favicon `commander_bunbun.png` is copied into the published tarball.
+The section of the README that describes building for integration into Trino
+assumes an application build, while the Vite configuration has been in library
+mode for some time.
