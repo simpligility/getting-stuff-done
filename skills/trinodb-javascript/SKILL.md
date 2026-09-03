@@ -27,6 +27,10 @@ The web UI module also holds `webapp-legacy`, the older UI. Both are built by
 into a temporary directory and runs the `check` and `package` scripts against
 each directory in turn.
 
+For a routine dependency bump in the web UI, rather than a change to what it
+depends on, use the `trinodb-dependency-update` skill. Its Renovate scan covers
+the embedded `package.json` alongside the Maven side of the repository.
+
 ## Shared frontend stack
 
 The query editor and the web UI share React, Emotion, MUI, and Monaco. "Align

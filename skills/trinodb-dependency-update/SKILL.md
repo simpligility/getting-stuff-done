@@ -31,7 +31,9 @@ stay free of any Renovate configuration.
   setup under `.mvn/wrapper/`.
 - The MinIO test container image, pinned by digest in Java test sources.
 - Embedded JavaScript through `package.json` and its lockfile, when a repository
-  ships a web UI or similar.
+  ships a web UI or similar. The `trinodb-javascript` skill covers the web UI in
+  `trinodb/trino`, including the package manager it uses and the dependency
+  license allowlist that a bump can trip.
 - The Java version the project targets and builds with, set in the Maven
   compiler configuration and the CI workflow. The scan does not surface this. It
   is a manual bump, often to match the version Trino itself uses. Raising it
