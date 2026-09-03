@@ -233,5 +233,6 @@ than only reading its `SKILL.md` file:
 | Processing Trino contributor call recordings from YouTube | `trinodb-contributor-call-processing` |
 | Content and changes on the trino.io website | `trinodb-website` |
 | Updating or debugging the MinIO test container image in core Trino | `trinodb-minio` |
+| JavaScript and TypeScript work in trino-query-ui, the Trino web UI, and trino-js-client | `trinodb-javascript` |
 
 Add new entries to this table as new `trinodb-*` skills are created.

@@ -67,6 +67,7 @@ General skills:
 | [`trinodb-gateway-release-notes`](./skills/trinodb-gateway-release-notes) | Create and maintain Trino Gateway release notes pull requests. |
 | [`trinodb-contributor-call-processing`](./skills/trinodb-contributor-call-processing) | Turn a Trino contributor call recording into topics and a wiki summary. |
 | [`trinodb-website`](./skills/trinodb-website) | Add and edit content on the trino.io website, including the Jekyll setup and blog post conventions. |
+| [`trinodb-javascript`](./skills/trinodb-javascript) | JavaScript and TypeScript work across trino-query-ui, the Trino web UI, and trino-js-client. |
 | [`weekly-asana-task-recap`](./skills/weekly-asana-task-recap) | Assemble a weekly progress summary from Asana task updates. |
 | [`weekly-github-issue-recap`](./skills/weekly-github-issue-recap) | Assemble a weekly progress summary from GitHub issue updates. |
 | [`weekly-linear-issue-recap`](./skills/weekly-linear-issue-recap) | Assemble a weekly progress summary from Linear issue updates. |
