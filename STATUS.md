@@ -10,8 +10,8 @@ Task tracker for ongoing work in this repo.
   whether to add a skill per repository for `trinodb/trino`,
   `trinodb/trino-gateway`, and others as they are needed, and settling what
   those skills are called. The topic skills that already exist, such as
-  `trinodb-gateway-development`, cut across repositories, so the split has to
-  say which material moves and which stays.
+  `trinodb-gateway-development` and `trinodb-javascript`, cut across
+  repositories, so the split has to say which material moves and which stays.
 
 - **Pull the Trino Gateway material out of the base skill** — the base skill
   now carries content that is specific to Trino Gateway rather than shared
