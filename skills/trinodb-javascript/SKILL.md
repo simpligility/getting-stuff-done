@@ -223,7 +223,151 @@ with provenance and creates the GitHub release. The API documentation is built
 with typedoc and deployed to GitHub Pages on every push to the default branch.
 
 Versions up to 0.2.9 were published unscoped as `trino-client`. The scoped name
-`@trinodb/trino-js-client` starts at 0.3.0.
+`@trinodb/trino-js-client` starts at 0.3.0. From 1.0.0 onward this package
+follows the same scheme as trino-query-ui: every release increments the major
+version, so 1.0.0 is followed by 2.0.0 and then 3.0.0, with no compatibility
+implied between them. Read the release notes rather than the version number.
+
+Title the release pull request and its commit `Release
+@trinodb/trino-js-client <version>`, for example
+`Release @trinodb/trino-js-client 0.3.2`. That is 38 characters at a two-digit
+minor, so it stays inside the 50-character Chris Beams subject limit. Naming
+the package rather than writing `Release version <version>` keeps the published
+identity explicit in history, which matters because the package was renamed at
+0.3.0 and release commits are read in aggregated views where the repository is
+not visible.
+
+## Validating trino-js-client against downstream consumers
+
+The client has real consumers that pin it, so a change to the transport or the
+result iteration has to be checked against the way they actually call it, not
+only against the repository's own integration tests. Do this before cutting a
+release, and always before merging a rewrite such as the axios removal.
+
+### Who consumes the client
+
+Find current consumers with a GitHub code search for `trino-client` in
+`package.json` files, which returns roughly 70 repositories. The ones worth
+treating as release gates are Lightdash in
+`packages/warehouses/src/warehouseClients/TrinoWarehouseClient.ts`, Malloy in
+`packages/malloy-db-trino/src/trino_connection.ts`, and Beekeeper Studio in
+`apps/studio`. As of 2026-09-03 all three still pin the unscoped
+`trino-client` at 0.2.x rather than the scoped `@trinodb/trino-js-client`.
+
+Read those two source files before changing the client. Between them they cover
+`Trino.create`, `BasicAuth`, `ConnectionOptions` spread from partial config,
+`Iterator<QueryResult>`, both the `for await` drain and the manual `next()`
+loop, `extraHeaders` on the query object, column metadata through
+`columns[].typeSignature.rawType`, and reading errors off
+`queryResult.value.error` rather than catching a thrown exception.
+
+### The harness
+
+The checks live in the client repository at `tests/compat`, added in pull
+request 970, and run against the **packed tarball** rather than against `src`.
+That is the point of them: they cover the build output, the generated
+declaration file, and the package manifest, none of which `tests/it` touches.
+
+```shell
+docker run -d --name trino-test -p 8080:8080 trinodb/trino:latest
+until curl -s http://localhost:8080/v1/info | grep -q '"starting":false'; do
+  sleep 2
+done
+yarn test:compat
+```
+
+That script builds, packs, installs the tarball into `tests/compat` with npm
+the way a consumer would, type checks, and runs the harness. Point it at
+another coordinator with `TRINO_SERVER`. In CI it runs as a step of the
+existing `it-tests` job, which already has a coordinator up, and costs about
+twenty seconds.
+
+The type check matters as much as the run. `tests/compat/tsconfig.json` sets
+`skipLibCheck: false` deliberately, so `dist/index.d.ts` is checked the way a
+consumer's build checks it rather than trusting the source.
+
+The eight checks are the drain-with-`for await` pattern, the manual `next()`
+streaming loop with the missing-`nextUri` guard, the observable `done` and
+`nextUri` sequence across a full drain, `extraHeaders` propagation, error
+surfacing on the result object, the `queryInfo` and `cancel` round-trip, and
+`SET SESSION` and `RESET SESSION` replaying through the response headers.
+
+Record the output as a baseline from the current release before touching the
+client, then compare candidate builds against it. A check that changes from
+pass to fail is a downstream break; a check whose reported detail changes, such
+as the `done` and `nextUri` sequence, is a behavior change that needs a release
+note even when it still passes.
+
+### Comparing the published surface
+
+A rename or a version bump is only safe for consumers if the declaration file
+did not move. Compare the candidate against what they currently pin:
+
+```shell
+npm pack trino-client@0.2.9 && tar xzf trino-client-0.2.9.tgz
+diff -u package/dist/index.d.ts \
+  node_modules/@trinodb/trino-js-client/dist/index.d.ts
+```
+
+As of 0.3.1 those two files are byte-identical, so moving a consumer from
+`trino-client@0.2.9` to `@trinodb/trino-js-client` is purely a rename of the
+dependency and its import specifiers, with no code changes. Re-run the
+comparison for each release and say so explicitly in the upgrade pull requests,
+because that claim is what makes them cheap to review.
+
+### Sending the rename to a consumer
+
+Every consumer found so far pinned the unscoped `trino-client`, so each needs
+the dependency renamed, the import specifiers changed, and the lockfile
+regenerated with that project's own package manager. Check the manifest for an
+`overrides` or `resolutions` block before writing the pull request. Several
+consumers force axios to a version of their own choosing, which means the
+client's axios pin does not apply to them and a security argument in the
+description would be wrong. Lightdash overrides axios globally, and both
+sqlnotebook-pro and dbeagle pin it below what the client declares.
+
+Two blockers cost real time and are invisible until you hit them.
+
+A freshly published version is not immediately resolvable. The npm packument
+lags behind the version endpoint, sometimes by the better part of an hour, and
+during that window `npm view <pkg>` still reports the previous version while
+`https://registry.npmjs.org/<pkg>/<version>` already returns a full manifest
+with a tarball and signatures. Lockfile regeneration fails with `ETARGET`
+throughout. Wait for `npm view <pkg>@<version> version` to succeed before
+touching any consumer lockfile; that is the check that matches what a package
+manager actually resolves against.
+
+Lightdash does not accept unsolicited pull requests. A bot closes them on
+arrival with "Lightdash only accepts code contributions we have planned
+together" and points at the bug report and feature request templates. This
+fires regardless of the change or whether CI passes, so raise an issue there
+first and only send code once it has been agreed.
+
+Lightdash also enforces a `minimumReleaseAge` of 4320 minutes, three days, in
+`pnpm-workspace.yaml`. A version published today cannot enter their lockfile at
+all, and `pnpm install --lockfile-only` stops with
+`ERR_PNPM_NO_MATURE_MATCHING_VERSION`. Their `minimumReleaseAgeExclude` list is
+reserved for Renovate security updates, so it is not somewhere to add an entry.
+A rename pull request without the regenerated lockfile still passes their
+checks, so the quarantine blocks the lockfile rather than the build.
+
+Beekeeper Studio uses Yarn 1, where a full `yarn install` runs the engine check
+against the local Node version. On Node 26 that fails on `better-sqlite3`, so
+regenerating their lockfile needs `yarn install --ignore-scripts
+--ignore-engines`.
+
+### Traps found this way
+
+The `QueryIterator` emits the terminal result twice, once with `done` false and
+again with `done` true, and Lightdash carries a workaround for a variant where
+a server returns `done` false with no `nextUri` and the client then repeats
+data. Any rewrite of `next()` has to preserve the sequence the harness pins.
+
+Trino has no `system.runtime.session_properties` table. Use `SHOW SESSION LIKE
+'<name>'` to read session state back, which returns the value in the second
+column. A query against a missing table does not throw through this client; it
+resolves with an empty result carrying `error`, so a test helper that ignores
+`error` reports an empty result rather than a failure and hides the bug.
 
 ## Verifying an embedding contract
 
