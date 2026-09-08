@@ -211,6 +211,46 @@ First-time contributors must sign the
 pull request can be merged. A bot verifies the signature automatically on the
 pull request.
 
+### Diagnosing a failing CLA check
+
+A red `verification/cla-signed` check does not prove that the contributor never
+signed. Before asking anyone to sign again, compare the
+[signed contributor list](https://github.com/trinodb/cla/blob/master/contributors)
+against the accounts that GitHub attributes the commits to:
+
+```shell
+curl -s https://raw.githubusercontent.com/trinodb/cla/master/contributors \
+  | grep -i "<username>"
+gh api repos/trinodb/<repo>/pulls/<number>/commits \
+  --jq '.[] | "author=\(.author.login) committer=\(.committer.login) \(.commit.author.email)"'
+```
+
+That file is a JSON array of GitHub usernames, not of names or email addresses.
+The bot matches on the accounts GitHub resolves from the commit metadata, not
+on the account that opened the pull request, so a mismatch between the two is
+the most common cause of a false failure. Three outcomes follow.
+
+The pull request author is on the list, but the commits resolve to a different
+account. The contributor committed with an email address linked to a second
+GitHub account, typically a work address alongside a personal one. The
+agreement itself is fine. Either the contributor re-authors the commits with
+the address tied to the signed account, or the second username is added to the
+contributors file, because the agreement covers the person rather than the
+account.
+
+The commit reports `author.login` as null. The commit email address is linked
+to no GitHub account at all, leaving the bot nothing to match. The contributor
+resolves this by adding the address to their GitHub account or by re-authoring
+the commits.
+
+The account is genuinely absent from the list. Only this case needs a signed
+agreement sent to cla@trino.io, and processing takes a week or two.
+
+Match usernames exactly. A shared fragment between two entries is no evidence
+that they belong to the same person. Re-running the check with a
+`@cla-bot check` comment helps only once the underlying mismatch is resolved,
+since it re-reads the same list against the same commit metadata.
+
 ## Reference material
 
 *Trino: The Definitive Guide* by Matt Fuller, Manfred Moser, and Martin Traverso
