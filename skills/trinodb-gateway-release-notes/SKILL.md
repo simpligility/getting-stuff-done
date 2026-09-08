@@ -1,6 +1,6 @@
 ---
 name: trinodb-gateway-release-notes
-description: Create and maintain release notes pull requests for Trino Gateway. Use this skill in a local clone of a fork of trino-gateway to manage the release notes PR and docs/release-notes.md.
+description: Create and maintain release notes pull requests for Trino Gateway. Use this skill in a local clone of a fork of trino-gateway to manage the release notes PR and docs/release-notes.md, along with the matching Helm chart release PR in trinodb/charts.
 ---
 
 # Trino Gateway release notes
@@ -17,6 +17,9 @@ fork-and-upstream contribution workflow — see the `trinodb` base skill.
     of the `trino-gateway` repository.
 *   **Upstream remote**: Ensure you have an `upstream` remote pointing to
     `https://github.com/trinodb/trino-gateway.git`.
+*   **Charts clone**: The matching Helm chart release PR is created from a local
+    clone of a fork of the `trinodb/charts` repository, with the same `origin`
+    and `upstream` remote setup.
 *   **Authentication**: You must be authenticated with the `gh` CLI.
 
 ## Workflow
@@ -47,6 +50,10 @@ all changes for the next version.
     UTC. Do not use author or committer dates, which retain each contributor's
     timezone and can predate a delayed merge.
     - Command: `gh pr list --repo trinodb/trino-gateway --state merged --base main --limit 100 --json number,title,mergedAt`
+    - Exclude the previous cycle's own release notes PR. It merges after the
+      last release date, but it belongs to the preceding release and is never
+      tracked again. The first entry of the new list is therefore the first PR
+      merged after that release notes PR.
 8.  **Initialize docs/release-notes.md**:
     - Add a new section for the new version at the top of the current year
       section.
@@ -62,6 +69,26 @@ all changes for the next version.
       applicable sections, including "verification" with the PRs found in
       step 6.
     - **Create PR**: `gh pr create --title "Add Trino Gateway <version> release notes" --body-file <path_to_body>`.
+10. **Open the Helm chart release PR**: Every gateway release ships with a
+    matching chart release, so create that PR from the local clone of the
+    [trinodb/charts](https://github.com/trinodb/charts) fork.
+    - Sync `main` with upstream, then create a branch named `tgw<version>`.
+    - Bump the chart version to `1.<version>.0` and the app version to
+      `<version>` in three files:
+        - `charts/gateway/Chart.yaml`, the `version` and `appVersion` fields.
+        - `charts/gateway/README.md`, the version and app version badges.
+        - `README.md`, the `trino/trino-gateway` row of the sample
+          `helm search repo` output.
+    - Commit with the subject "Release Trino Gateway chart <chart-version> for
+      app <version>" and the body "Bump the chart version to <chart-version>
+      and the app version to <version>."
+    - Create the PR with the title
+      `Release Trino Gateway chart <chart-version>` and a body stating that it
+      is pending the Trino Gateway <version> release and that CI fails until
+      the container image for that version is published.
+    - Link the chart PR from the "Additional context and related issues"
+      section of the release notes PR body. The chart PR merges after the
+      gateway release.
 
 ### 2. Maintain release notes
 
