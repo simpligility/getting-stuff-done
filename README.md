@@ -81,6 +81,29 @@ Personal skills:
 | [`manfred-writing`](./skills/manfred-writing) | Writing voice, audience, and markdown formatting conventions. |
 | [`manfred-slides`](./skills/manfred-slides) | Presentation slide deck structure and content conventions. |
 
+### Installing only the Trino skills
+
+The `trinodb-*` family stands on its own and is useful to anyone working on
+Trino, independent of the personal skills in this repository. To install the
+base `trinodb` skill and every child skill in the family, and nothing else, run:
+
+```bash
+cd getting-stuff-done
+./install-trinodb-skills.sh
+```
+
+It wraps `install-skills.sh`, so it installs into the same tool directories
+listed preceding, with the same symlink safety rules, and is idempotent in the
+same way. Any other subset works by passing one or more globs to the main script
+directly:
+
+```bash
+./install-skills.sh 'manfred*' 'weekly-*'
+```
+
+A glob that matches no skill directory is an error rather than a silent no-op,
+so a typo never installs an empty set.
+
 ### Installing individual skills
 
 The `install-skills.sh` script installs every skill for the tools listed
