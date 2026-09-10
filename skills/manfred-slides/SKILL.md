@@ -26,34 +26,69 @@ Manfred's.
 
 ## Tooling and workflow
 
-Slides are tool-agnostic in principle, and Manfred's workflow shifts from deck to
-deck:
-
-- Sometimes the deck is pure Markdown rendered with reveal.js, and that Markdown
-  is the final product.
-- Sometimes he ideates the outline and content in Markdown, generates a
-  PowerPoint from it, then continues refining in Google Slides.
-- He never edits PowerPoint or Keynote files directly — work stays in Markdown
-  or Google Slides.
-
-Because of this, focus effort on content, structure, and flow rather than on
-tool-specific formatting or theming. When the source is Markdown, follow the
+Slides are tool-agnostic in principle, but the default workflow now pairs a
+markdown outline with a Google Slides deck, kept in sync through the `gws`
+Google Workspace CLI. Focus effort on content, structure, and flow rather than
+on tool-specific formatting or theming. When the source is markdown, follow the
 `manfred-writing` markdown house style, including the 80-character hard wrap.
 
-When a Google Slides deck exists and is what Manfred presents from, the deck is
-the authoritative artifact. A markdown outline is a scaffold for building the
-flow — a deck from scratch or an individual slide — and is worth keeping
-whenever it was used that way. When the deck was built directly in Slides and no
-outline was ever authored, the outline is redundant; drop it rather than leave a
-stale stub that lies about the deck. Keep an outline in sync with the deck one
-way only: reconstruct it by exporting the slide text from Slides, because
-markdown edits cannot be pushed back into Slides while preserving the design.
-Treat that export as a draft that needs a cleanup pass: most of the body order
-survives, but slide numbers, the tail order, diagrams, and the split between
-on-slide text and speaker notes do not — and the export can chunk differently
-run to run. See `slides-prep` for the reconstruction losses and the
-diff-and-selectively-apply sync loop that keeps an outline current without
-overwriting curated content.
+### Primary — markdown outline plus Google Slides via gws
+
+- Author and iterate the per-slide flow in a markdown outline, following the
+  `slides-prep` format and the markdown house style.
+- Drive the Google Slides deck with the `gws` CLI from
+  https://github.com/googleworkspace/cli. It reads and writes Docs and Slides
+  through the Workspace REST APIs, so it can ingest source docs, build a deck
+  from the outline, and edit an existing deck in place.
+- One-time requirements and setup:
+  - Install the `gws` CLI and the Google Cloud CLI that `gws auth setup`
+    depends on.
+  - Run `gws auth setup` as the account that owns the target files. Reuse an
+    existing GCP project you can already access to sidestep org-policy limits on
+    creating projects, and enable the Docs, Slides, and Drive APIs on it.
+  - Grant the Docs, Slides, and Drive scopes at the OAuth consent screen.
+- Read a doc with `gws docs documents get`. Read a deck with
+  `gws slides presentations get`, and apply changes with
+  `gws slides presentations batchUpdate`, validating first with `--dry-run`.
+- Content lives in placeholders addressed by object ID. Slide titles, body
+  text, and speaker notes through each slide's `speakerNotesObjectId` are all
+  editable this way.
+
+### Fallback — when gws is unavailable or not wanted
+
+- Pure markdown rendered with reveal.js, where the markdown is the final
+  product.
+- Ideate in markdown, generate a PowerPoint from it — today through Claude
+  Cowork — then import into Google Slides and refine there.
+- Manfred never edits PowerPoint or Keynote files directly. Work stays in
+  markdown or Google Slides.
+
+### Keeping the outline and deck in sync
+
+The markdown outline and the Google Slides deck are both living artifacts and
+stay in sync going forward. Manfred edits either one and says which file he
+changed. Design, layout, images, and other visual work live in Slides, so every
+deck change must be surgical.
+
+- Target only the specific slides, placeholders, or notes that changed with a
+  minimal `batchUpdate`. Never delete the deck and rebuild it from the outline
+  — that destroys the visual work.
+- When Manfred changes the outline, apply only the matching slide edits. When he
+  changes the deck, pull just those changes back into the outline.
+- On the deck-to-outline direction, write the markdown immediately and show the
+  diff inline rather than waiting for approval, since git is the safety net.
+  Commit the markdown at checkpoints, not once per sync.
+- A full rebuild is only for the first build of a deck from an outline, or when
+  Manfred explicitly asks to start over.
+- Design does not round-trip through markdown. Keep the outline on content,
+  structure, and speaker notes, and describe visuals in a `## Visual` section
+  rather than mirroring the styling. For the deck-to-outline direction, see the
+  export-and-selectively-apply loop in `slides-prep`, which still applies when
+  reconciling deck edits back into the outline.
+
+When the deck was built directly in Slides and no outline was ever authored, the
+outline is redundant. Drop it rather than leave a stale stub that lies about the
+deck.
 
 ## Structure
 
