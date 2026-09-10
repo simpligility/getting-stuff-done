@@ -107,6 +107,7 @@ not just read its `SKILL.md` file:
 | Git, commits, PRs, branching, code review | `manfred-git` |
 | Writing, blogs, marketing, docs, markdown, skill files (`SKILL.md`) | `manfred-writing` |
 | Slide decks, presentations, talks | `manfred-slides` |
+| Open source contribution tracking, `simpligility/contributions`, sponsors | `manfred-contributions` |
 
 Add new entries to this table as new `manfred-*` skills are created.
 
