@@ -46,9 +46,12 @@ Once a deck exists and is what the talk is presented from, the deck is the
 authoritative artifact. The outline is a pre-deck authoring scaffold: keep it
 when it was used to build the deck or individual slides, and drop it when the
 deck was built directly in the deck tool with no outline behind it, rather than
-leaving a stale stub. Syncing an outline to a live deck is one-way —
-reconstruct it from the deck (see below); markdown edits cannot be pushed back
-into Google Slides while preserving the design.
+leaving a stale stub. Content moves both ways: with a tool like `gws` you can
+push text and speaker-note edits from the outline into Google Slides surgically
+while preserving the design, and you can reconstruct the outline from the deck.
+What does not round-trip is design — layout, theming, images, and sizing live in
+the deck and are not driven from markdown. See "Driving Google Slides with gws"
+and the reconstruction sections that follow.
 
 ## Composing with other skills
 
@@ -216,6 +219,77 @@ Conventions: <deck-wide notes — theme usage, ~<n> slides, reference decks>
 The markdown outline and the deck are two representations of the same talk.
 Moving between them is deliberate — each direction is a discrete operation you
 run when you need it, not an automatic sync.
+
+### Driving Google Slides with gws
+
+`gws`, the Google Workspace CLI at https://github.com/googleworkspace/cli, reads
+and writes Google Docs and Slides through the Workspace REST APIs. It makes both
+directions scriptable and lets you edit an existing deck in place without a
+regeneration. It is one concrete tool, not the only path — treat it the way this
+section treats generators.
+
+One-time setup:
+
+- Install the `gws` CLI and the Google Cloud CLI that `gws auth setup` needs.
+- Run `gws auth setup` as the account that owns the target files. Reuse an
+  existing GCP project you can already access to avoid org-policy limits on
+  creating projects, and enable the Docs, Slides, and Drive APIs on it.
+- Grant the Docs, Slides, and Drive scopes at the OAuth consent screen.
+
+Core operations:
+
+- Read a source doc with `gws docs documents get`, and a deck with
+  `gws slides presentations get`.
+- Apply changes with `gws slides presentations batchUpdate`, validating the
+  request first with `--dry-run`.
+- Content lives in placeholders addressed by object ID. Slide titles, body
+  text, and speaker notes through each slide's `speakerNotesObjectId` are all
+  editable this way. Any new object ID you assign must be at least five
+  characters.
+
+Surgical edits and sync:
+
+- Push outline edits into the deck as targeted `batchUpdate` calls against only
+  the slides, placeholders, or notes that changed. Never delete the whole deck
+  and rebuild it from the outline — that destroys the visual work. A full
+  rebuild is only for the first build from an outline, or on an explicit request
+  to start over.
+- Going the other way, reconstruct or reconcile the outline from the deck as
+  the following sections describe. Prefer writing the reconciled markdown and
+  showing the diff over silently rewriting, and commit the markdown at
+  checkpoints rather than once per sync.
+
+Turning off autofit:
+
+- Auto shrink-to-fit resizes body text per slide and makes font sizes look
+  inconsistent. Disable it on a text placeholder with `updateShapeProperties`,
+  setting `autofit.autofitType` to `NONE` and `fields` to
+  `autofit.autofitType`. With autofit off, rely on the template's placeholder
+  sizes and let an overflowing slide signal that it carries too much content.
+
+Images and backgrounds:
+
+- Setting a slide background or inserting an image needs a publicly fetchable
+  URL. The Slides API fetches the URL anonymously at insert time, so a private
+  Drive file fails even when `gws` is authenticated as its owner. The image is
+  copied into the deck at insert, so it only needs to be reachable for that one
+  moment.
+- Confirm the deck owner is fine with changing sharing before you touch it —
+  making a file public is a change they did not necessarily request.
+- Workflow for a Drive image: confirm dimensions with `gws drive files get` and
+  match the deck aspect ratio, since a 1920x1080 PNG fills a 16:9 slide
+  full-bleed; temporarily share it link-readable with
+  `gws drive permissions create` and a body of
+  `{"role":"reader","type":"anyone"}`; set the background with
+  `updatePageProperties` and a `stretchedPictureFill` `contentUrl` of
+  `https://drive.google.com/uc?export=download&id=<fileId>`, or insert a
+  foreground image with `createImage`; verify the stored `contentUrl` now points
+  at `googleusercontent.com`, which confirms the copy; then revoke the public
+  permission with `gws drive permissions delete` and confirm the file reads
+  `shared: false`.
+- Apply a background only to the slides that need it. A logo or wordmark in a
+  corner usually lives on the layout or master, so it renders on every slide
+  using that layout and must be removed there, not per slide.
 
 ### Generate the whole deck
 
