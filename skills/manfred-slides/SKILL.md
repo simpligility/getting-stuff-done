@@ -63,8 +63,10 @@ alone — the presenter delivers the substance, and the slides reinforce it.
 
 - Use itemized lists only when a list is genuinely the right shape for the
   content. Use numbered lists only when the order matters.
-- Keep any list well under seven items. Even near that count, consider breaking
-  it across several slides instead.
+- Cap a bullet list at seven items, optionally followed by one related line — a
+  conclusion, takeaway, or short quote that ties the list together. Past seven,
+  split across slides. Even near seven, consider whether a tighter split reads
+  better.
 - More slides with tighter focus beat one dense slide that lingers on screen and
   never changes. A slide that stays up for a long time is usually a sign it is
   doing too much.
