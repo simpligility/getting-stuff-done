@@ -93,21 +93,23 @@ patterns to copy.
 
 ### Labels
 
-Four labels are in use. The repository also carries the GitHub default set,
-such as `bug` and `enhancement`, which this repository never uses.
+Four labels are in use. They follow the same lowercase, hyphenated,
+`trinodb`-prefixed naming as the `trinodb-*` skill family. The repository also
+carries the GitHub default set, such as `bug` and `enhancement`, which this
+repository never uses.
 
 | Label | Applies to |
 |---|---|
-| `Trino` | Work on Trino itself, the website, and trino-packages |
-| `Trino Gateway` | Work on Trino Gateway and its charts |
-| `Trino community` | Community, coordination, and cross-project work |
-| `Trino Community Broadcast` | Work on a Trino Community Broadcast episode |
+| `trinodb` | Work on Trino itself, the website, and trino-packages |
+| `trinodb-gateway` | Work on Trino Gateway and its charts |
+| `trinodb-community` | Community, coordination, and cross-project work |
+| `trinodb-community-broadcast` | Work on a Trino Community Broadcast episode |
 
 Combine labels when the work spans areas. A release that is both project work
-and community work carries `Trino` and `Trino community`. Contributor calls
-carry `Trino community`, and development syncs carry `Trino Gateway`. Episode
-work always carries both `Trino community` and `Trino Community Broadcast`,
-never the broadcast label on its own.
+and community work carries `trinodb` and `trinodb-community`. Contributor
+calls carry `trinodb-community`, and development syncs carry
+`trinodb-gateway`. Episode work always carries both `trinodb-community` and
+`trinodb-community-broadcast`, never the broadcast label on its own.
 
 ### Bodies
 
@@ -136,7 +138,7 @@ Create the issue, then add it and set its status:
 ```bash
 gh issue create --repo simpligility/contributions \
     --title "Update Ruby gem dependencies on trino.io" \
-    --label "Trino" \
+    --label "trinodb" \
     --body "..."
 
 ITEM=$(gh project item-add 1 --owner simpligility \
