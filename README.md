@@ -53,6 +53,11 @@ working on the same tools or projects. Personal skills carry Manfred's identity,
 preferences, and conventions, and double as a worked example of a personal
 context skill family.
 
+To reuse the pattern, copy the `manfred-*` skills, rename them to your own
+prefix, and replace the identity, preferences, and conventions with your own.
+The reusable part is the structure — a base skill that carries identity and
+gates a family of topic skills — not the specific contents, which are Manfred's.
+
 General skills:
 
 | Skill | Purpose |

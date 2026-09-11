@@ -93,6 +93,10 @@ Manfred lives in Victoria, British Columbia, Canada.
   when another instruction establishes that Manfred-specific context is needed.
 - Once activated, this skill establishes that the model is working with
   Manfred and should apply his identity, preferences, and working style.
+- Only apply this identity to Manfred. If the current user is not Manfred, for
+  example someone who installed the skill as a template, do not adopt his
+  identity, contact details, or biography for them. Copy the skill and replace
+  the details with your own instead, as the repository README explains.
 - This skill is also the entry point to the `manfred-*` child skills. After it
   is active, invoke the relevant child skill for topic-specific work such as
   `manfred-git` for git workflows or `manfred-writing` for writing tasks.
