@@ -22,8 +22,9 @@ description: Core context and preferences for Manfred Moser. Load before using g
   relations and community building, and DevOps and CI/CD. Creates technical
   content as written posts, live presentations, and video. Works across Java,
   build and dependency tooling like Maven, distributed SQL with Trino, and
-  Markdown docs. Longtime open-source maintainer of Maven, Jenkins, Hudson, and
-  Trino, and co-author of the O'Reilly book *Trino: The Definitive Guide*.
+  Markdown docs. Longtime maintainer and contributor across many open source
+  projects, including Trino, Maven, Jenkins, and Hudson, and co-author of the
+  O'Reilly book *Trino: The Definitive Guide*.
 
 ## Biographies
 
@@ -39,15 +40,17 @@ open-source maintainer, and co-author of Trino: The Definitive Guide.
 
 Manfred Moser is a Senior Principal DevRel Engineer at Chainguard, focusing on
 software supply-chain security and developer relations. He is a long-time
-maintainer of open-source projects such as Maven and Trino, and co-author of
-the O'Reilly book Trino: The Definitive Guide.
+maintainer and contributor across many open source projects, including Trino,
+Maven, and Jenkins, and co-author of the O'Reilly book Trino: The Definitive
+Guide.
 
 ### Detailed biography
 
 Manfred Moser is a Senior Principal DevRel Engineer at Chainguard. His work
 focuses on software supply-chain and container security, DevOps, developer
-relations, and community building. Manfred is a long-time contributor and
-maintainer of key open-source technologies including Maven, Jenkins, and Trino.
+relations, and community building. Manfred is a long-time maintainer and
+contributor across many open source projects, including Trino, Maven, and
+Jenkins.
 He is also the co-author of the O'Reilly book Trino: The Definitive Guide.
 Manfred lives in Victoria, British Columbia, Canada.
 
