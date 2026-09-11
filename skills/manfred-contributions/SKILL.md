@@ -126,6 +126,23 @@ including the `json` update that carries the fix for CVE-2026-71847.
 - https://github.com/trinodb/trino.io/pull/850
 ```
 
+An issue for work that is still in flight ends with a single line naming the
+next step, so the issue stays actionable when Manfred returns to it cold:
+
+```markdown
+Record a Trino Community Broadcast episode with Chris Lu from the SeaweedFS
+project, covering the project itself and a demo of using it with Trino.
+
+- https://github.com/trinodb/trino.io/pull/846
+- [Chris Lu on LinkedIn](https://www.linkedin.com/in/chrislu)
+
+Next step is to reach out by email to arrange a date.
+```
+
+Links to people and to projects outside GitHub use descriptive link text rather
+than a bare URL. Reserve bare URLs for pull requests and issues, which GitHub
+renders as references.
+
 ## Add the issue to the project board
 
 **This step is manual and easy to miss.** The project has no auto-add workflow
@@ -169,6 +186,13 @@ exist on the board and are empty on every item, so leave them alone.
 
 Set `In review` when the pull request is open, and `In progress` for
 coordination work that has no review step.
+
+Filing an issue is often itself an act of starting. When the work is already
+moving informally, through conversations on Slack, outreach on LinkedIn, or
+connections made at an event, the issue goes straight to `In progress` rather
+than `Backlog`. Writing it down is the point at which the thread becomes
+visible and trackable, not the point at which it begins. Reserve `Backlog` for
+work that genuinely has not started.
 
 Never set `Done` by hand. Closing the issue moves it to `Done` through the
 `Item closed` workflow, and the two have matched on every item in the tracker.
