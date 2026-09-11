@@ -85,6 +85,7 @@ Recurring work follows a fixed form so the board reads consistently:
 | Trino contributor call | `Trino contributor call <date>` |
 | Trino Gateway release | `Manage Trino Gateway <number> release` |
 | Other release | `Manage <project> <version> release` |
+| Trino Community Broadcast episode | `Record a TCB episode about <topic>` |
 
 Write every date as `YYYY-MM-DD`. Older issues carry `20260121`, `Jan 2026`,
 and a transposed `202060722`, which are inconsistencies to avoid rather than
@@ -92,7 +93,7 @@ patterns to copy.
 
 ### Labels
 
-Three labels are in use. The repository also carries the GitHub default set,
+Four labels are in use. The repository also carries the GitHub default set,
 such as `bug` and `enhancement`, which this repository never uses.
 
 | Label | Applies to |
@@ -100,10 +101,13 @@ such as `bug` and `enhancement`, which this repository never uses.
 | `Trino` | Work on Trino itself, the website, and trino-packages |
 | `Trino Gateway` | Work on Trino Gateway and its charts |
 | `Trino community` | Community, coordination, and cross-project work |
+| `Trino Community Broadcast` | Work on a Trino Community Broadcast episode |
 
 Combine labels when the work spans areas. A release that is both project work
 and community work carries `Trino` and `Trino community`. Contributor calls
-carry `Trino community`, and development syncs carry `Trino Gateway`.
+carry `Trino community`, and development syncs carry `Trino Gateway`. Episode
+work always carries both `Trino community` and `Trino Community Broadcast`,
+never the broadcast label on its own.
 
 ### Bodies
 
