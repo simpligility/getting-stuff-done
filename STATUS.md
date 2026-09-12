@@ -75,3 +75,74 @@ Task tracker for ongoing work in this repo.
   tool-agnostic through the open `SKILL.md` format. The other five tools in
   `install-skills.sh` gain nothing from it. Revisit if a comparable packaging
   story emerges for the other tools, or if the Cowork gap starts to hurt.
+
+## Skillcraft review
+
+An ongoing pass of every skill in this repository against the ten-rule
+skillcraft rubric, taken one skill at a time. The skillcraft skill itself lives
+in a separate repository, `mosabua/chainguard-sandbox-skills`, under
+`public-skill-candidates/skillcraft`.
+
+Two decisions are settled and should not be reopened:
+
+- **Rule 9, `allowed-tools`** — do not add it as a bounding mechanism. It only
+  pre-approves tools to skip permission prompts where a runtime honors it,
+  enforcement is inconsistent, and it is not portable. Rely instead on the
+  in-prose dry-run and confirmation gate, which every runtime reads. skillcraft's
+  own rule 9 wording was corrected to match.
+- **Rule 8, `derived_from`** — not applicable. These skills are original works,
+  not distillations of prior skills, and authorship and license are already
+  established in the root README, so nothing needs duplicating per skill.
+
+Done so far:
+
+- **skillcraft rule 9 wording** — corrected on branch
+  `skillcraft-rule9-allowed-tools`; pull request
+  https://github.com/mosabua/chainguard-sandbox-skills/pull/1 is open for review.
+- **`manfred` guard and README template note** — committed as `79f1ffb`.
+- **`trinodb-javascript`** — dated open-work snapshot removed and a stray date
+  reworded, committed as `76d3646`. The two untracked package gaps moved to
+  upstream issues trinodb/trino-query-ui#62 for missing type declarations and
+  #63 for the example favicon in the tarball, both verified against the published
+  1.0.0 tarball. The README build-versus-library-mode gap is already handled by
+  the open trinodb/trino-query-ui#60.
+
+Remaining, in priority order:
+
+- **Review and merge skillcraft pull request #1** at
+  https://github.com/mosabua/chainguard-sandbox-skills/pull/1.
+- **`trinodb-gateway-development`, rule 10** — the "Not merged yet" blockquote in
+  the Test containers section is gated on trinodb/trino-gateway#1222 with a note
+  to remove it once merged, which rots. If #1222 has merged, apply the section as
+  durable fact and drop the note; if not, move the transient tracking out.
+- **`weekly-github-issue-recap` and `weekly-linear-issue-recap`** — replace
+  "quote the user to install" with "prompt the user", and normalize the
+  first-person voice such as "confirm with me" to third-person "the user".
+- **`slides-prep`, rules 3 and 10** — the description enumerates the whole
+  workflow, which an agent follows as a shortcut past the body; rewrite it to
+  state what it is for and when not to use it. Reword the "today" and "future"
+  generator framing so it does not rot, keeping the Cowork specifics.
+- **`manfred-contributions`, rule 9** — creating a public issue and adding it to
+  the board has no confirmation step. Add a "show the drafted title, body, and
+  label, and confirm before creating" instruction, matching `asana` and
+  `trinodb-contributor-call-processing`.
+- **`trinodb-gateway-release-notes`** — add a confirmation step before
+  `gh pr create`; add a "when not to use" clause to the description; normalize
+  the inconsistent bullet indentation to house style; and review the placeholder
+  templates against rule 6, which may need only one worked example alongside
+  them.
+- **`trinodb-contributor-call-processing`, rule 3** — rewrite the rough
+  description into clean third-person prose; the body's action-safety stays.
+- **`trinodb-minio`, rule 10** — reword "now source-only and effectively
+  unmaintained" to drop the temporal "now". Minor.
+- **Repository hygiene, rule 7** — decide what belongs in
+  `skills/weekly-linear-issue-recap/recap/`, which holds a committed Go binary, a
+  sample update file, and Go sources, against stray build output. Confirm whether
+  the `STATUS.md` files inside the `asana`, `weekly-asana-task-recap`, and
+  `weekly-linear-issue-recap` skill directories are intentional.
+
+Skills confirmed clean so far: `manfred`, `manfred-git`, `manfred-writing`,
+`manfred-slides`, `trinodb`, `trinodb-java-code-style` where the deferral of
+upstream rules is deliberate, `trinodb-dependency-update`,
+`trinodb-packages-update`, `trinodb-website`, `asana`, and
+`weekly-asana-task-recap`.
