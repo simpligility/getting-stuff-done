@@ -126,7 +126,8 @@ single slide and reconstructing the outline from an existing deck — live in
    `# Slide N` heading per slide, a title that states the takeaway, a short
    `## On slide` list, and glanceable `## Speaker notes`. Build the narrative
    arc: set up the problem, build tension, resolve it, and end with a call to
-   action, a Q&A slide, and a thank-you/contact slide.
+   action, a resources slide gathering the key references and links, a Q&A slide,
+   and a thank-you/contact slide.
 
 5. **Content iteration.** Refine `outline.md` until it is good enough to
    generate from. Keep one idea per slide, keep on-slide text minimal, split
@@ -135,9 +136,13 @@ single slide and reconstructing the outline from an existing deck — live in
 
 6. **Speaker-notes trim.** Trim each slide's notes down to what is not already
    on the slide — delivery cues, pacing, extra facts, callbacks — so notes stay
-   prompts, not a script. Apply the trim directly in the outline (and later in
-   the deck). A `speaker-notes-trim.md` scratch file is fine if you want a place
-   to work, but treat it as temporary and delete it once the notes are updated.
+   prompts, not a script. Keep the `**Presenting**` and `**Reference**` split
+   while trimming: tighten the presenting cues hardest, drop any forward-pointing
+   references to later slides, and preserve the source citations that let a claim
+   be traced. Apply the trim directly in the outline
+   and later in the deck. A `speaker-notes-trim.md` scratch file is fine if you
+   want a place to work, but treat it as temporary and delete it once the notes
+   are updated.
 
 7. **Generate.** Generate a `.pptx` from the outline, then import it into Google
    Slides. See "Moving between the markdown and the deck" for how. Update
@@ -178,8 +183,23 @@ generates cleanly into slides.
   alt-text. Use it whenever a slide's meaning is carried by a visual, since
   visuals do not survive a text export. For an image-only slide, `## On slide`
   may hold just the title (or nothing) and `## Visual` carries the slide.
-- `## Speaker notes` — glanceable reminders only: delivery cues, a number to
-  hit, a story to tell, a callback. Never a full script.
+- `## Speaker notes` — glanceable reminders only, never a full script. Split
+  them into two labeled subsections so delivery cues stay separate from the
+  supporting record:
+  - `**Presenting**` — cues for the talk itself: a pacing note, a number to
+    hit, a story to tell, or a callback to an earlier slide. Only ever point
+    backward, never forward. A callback to a slide the audience has already seen
+    reinforces the point; a forward-pointing reference to a later slide is
+    useless as a live cue, since that content has not been shown yet. Drop such
+    forward pointers rather than writing them.
+  - `**Reference**` — the supporting facts and source citations that back the
+    slide but are not spoken verbatim, so any claim can be traced later. Omit
+    this subsection on a slide that has nothing to cite.
+- An important reference belongs in two audience-visible places, not only in the
+  `**Reference**` notes: small on the slide it supports, and again on a resources
+  slide near the end of the deck. The `**Reference**` block is the working
+  record; the on-slide credit and the resources slide are what the audience can
+  see and follow up on.
 - Use a `---` divider between major sections to keep the arc readable in the
   markdown.
 - Dates anywhere in the event files (`index.md`, `STATUS.md`) use ISO 8601
@@ -211,7 +231,13 @@ Conventions: <deck-wide notes — theme usage, ~<n> slides, reference decks>
 
 ## Speaker notes
 
+**Presenting**
+
 - <delivery cue, not a script>
+
+**Reference**
+
+- <supporting fact or source citation — omit the section when there is none>
 ```
 
 ## Moving between the markdown and the deck
