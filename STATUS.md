@@ -135,14 +135,16 @@ Done so far:
   before `gh issue create`, matching `asana` and `trinodb-contributor-call-processing`,
   while exempting read-only tracker access. Manfred separately added the
   assignment convention in the same skill.
+- **`trinodb-gateway-release-notes`** — added a "Confirm before creating" note
+  covering both `gh pr create` steps while exempting the git and read-only work,
+  added a when-not-to-use clause to the description, normalized the Prerequisites
+  bullets from `*   ` to house-style `-`, and satisfied rule 6 by adding real
+  worked examples next to both placeholder templates — the actual Trino Gateway
+  20 release notes entry and a Trino Gateway 21 verification section with real
+  merge dates — so the shape is shown with real values rather than only brackets.
 
 Remaining, in priority order:
 
-- **`trinodb-gateway-release-notes`** — add a confirmation step before
-  `gh pr create`; add a "when not to use" clause to the description; normalize
-  the inconsistent bullet indentation to house style; and review the placeholder
-  templates against rule 6, which may need only one worked example alongside
-  them.
 - **`trinodb-contributor-call-processing`, rule 3** — rewrite the rough
   description into clean third-person prose; the body's action-safety stays.
 - **`trinodb-minio`, rule 10** — reword "now source-only and effectively
@@ -157,5 +159,5 @@ Skills confirmed clean so far: `manfred`, `manfred-git`, `manfred-writing`,
 `manfred-slides`, `trinodb`, `trinodb-java-code-style` where the deferral of
 upstream rules is deliberate, `trinodb-dependency-update`,
 `trinodb-packages-update`, `trinodb-website`, `asana`,
-`weekly-asana-task-recap`, `weekly-github-issue-recap`, `slides-prep`, and
-`manfred-contributions`.
+`weekly-asana-task-recap`, `weekly-github-issue-recap`, `slides-prep`,
+`manfred-contributions`, and `trinodb-gateway-release-notes`.

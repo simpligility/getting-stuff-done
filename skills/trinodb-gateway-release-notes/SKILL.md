@@ -1,6 +1,6 @@
 ---
 name: trinodb-gateway-release-notes
-description: Create and maintain release notes pull requests for Trino Gateway. Use this skill in a local clone of a fork of trino-gateway to manage the release notes PR and docs/release-notes.md, along with the matching Helm chart release PR in trinodb/charts.
+description: Create and maintain release notes pull requests for Trino Gateway. Use this skill in a local clone of a fork of trino-gateway to manage the release notes PR and docs/release-notes.md, along with the matching Helm chart release PR in trinodb/charts. Not for cutting or tagging the release itself, building or publishing artifacts, or writing release notes for other Trino projects such as Trino or Trino Python.
 ---
 
 # Trino Gateway release notes
@@ -13,16 +13,22 @@ fork-and-upstream contribution workflow — see the `trinodb` base skill.
 
 ## Prerequisites
 
-*   **Local clone**: You must run this skill from within a local clone of a fork
-    of the `trino-gateway` repository.
-*   **Upstream remote**: Ensure you have an `upstream` remote pointing to
-    `https://github.com/trinodb/trino-gateway.git`.
-*   **Charts clone**: The matching Helm chart release PR is created from a local
-    clone of a fork of the `trinodb/charts` repository, with the same `origin`
-    and `upstream` remote setup.
-*   **Authentication**: You must be authenticated with the `gh` CLI.
+- **Local clone**: You must run this skill from within a local clone of a fork
+  of the `trino-gateway` repository.
+- **Upstream remote**: Ensure you have an `upstream` remote pointing to
+  `https://github.com/trinodb/trino-gateway.git`.
+- **Charts clone**: The matching Helm chart release PR is created from a local
+  clone of a fork of the `trinodb/charts` repository, with the same `origin`
+  and `upstream` remote setup.
+- **Authentication**: You must be authenticated with the `gh` CLI.
 
 ## Workflow
+
+Both pull requests this skill opens go to public repositories, so treat their
+creation as an outward-facing action. Before running `gh pr create` — for the
+release notes PR in step 9 and the Helm chart PR in step 10 — show the user the
+drafted title and body and get approval before creating. The git sync, branch
+work, and read-only `gh` commands throughout need no confirmation.
 
 ### 1. Initialize release cycle
 
@@ -205,6 +211,26 @@ All dates in this tracking list use UTC and are based on PR merge timestamps.
 * #<PR_NUMBER> ❌ rn ❌ docs
 ```
 
+A filled-in verification section, using real Trino Gateway 21 merges, reads:
+
+```markdown
+## 22 Jul 2026
+
+* #1198 ✅ rn ✅ docs
+
+## 27 Jul 2026
+
+* #1145 ✅ rn ✅ docs
+
+## 05 Aug 2026
+
+* #1205 ✅ rn ❌ docs
+```
+
+The dated headings are in chronological order with the most recent at the
+bottom, each date is the UTC `mergedAt` day, and #1205 still shows `❌ docs`
+because its documentation is not yet resolved.
+
 ### Release notes file template
 
 Use the following structure in `docs/release-notes.md`:
@@ -243,3 +269,39 @@ more user-visible UI changes:
 * <Change description>
   ([#<PR_NUMBER_OR_ISSUE_NUMBER>](https://github.com/trinodb/trino-gateway/<pull_or_issues>/<NUMBER>))
 ```
+
+A filled-in example, the actual Trino Gateway 20 entry:
+
+```markdown
+### Trino Gateway 20 (25 Jun 2026) { id="20" }
+
+Artifacts:
+
+* [JAR file gateway-ha-20-jar-with-dependencies.jar](https://repo1.maven.org/maven2/io/trino/gateway/gateway-ha/20/gateway-ha-20-jar-with-dependencies.jar)
+* Container image `trinodb/trino-gateway:20`
+* Source code as
+  [tar.gz](https://github.com/trinodb/trino-gateway/archive/refs/tags/20.tar.gz)
+  or [zip](https://github.com/trinodb/trino-gateway/archive/refs/tags/20.zip)
+* [Trino Helm chart](https://trinodb.github.io/charts/) `trino/trino-gateway` version `1.20.0`
+
+Changes:
+
+**General**
+
+* Fix runtime Jetty compression failures with the Docker image.
+  ([#1094](https://github.com/trinodb/trino-gateway/pull/1094))
+* Improve security of the `/webapp/findQueryHistory` endpoint.
+  ([#991](https://github.com/trinodb/trino-gateway/issues/991))
+* Prevent silent routing mistakes for `SHOW BRANCHES`, `CREATE`/`DROP BRANCH`,
+  `REFRESH VIEW`, and column `SET`/`DROP DEFAULT` statements.
+  ([#1121](https://github.com/trinodb/trino-gateway/pull/1121))
+
+More details and a list of all merged pull requests are [available in the
+milestone 20
+list](https://github.com/trinodb/trino-gateway/pulls?q=is%3Apr+milestone%3A20+is%3Aclosed)
+and the [GitHub release section for version
+20](https://github.com/trinodb/trino-gateway/releases/tag/20).
+```
+
+Note the linking rule at work: #991 points at an issue while #1094 and #1121
+point at pull requests, because #991 is the issue the change resolved.
