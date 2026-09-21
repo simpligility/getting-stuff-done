@@ -109,13 +109,17 @@ Done so far:
   #63 for the example favicon in the tarball, both verified against the published
   1.0.0 tarball. The README build-versus-library-mode gap is already handled by
   the open trinodb/trino-query-ui#60.
+- **`trinodb-gateway-development`, rule 10** — the "Not merged yet" blockquote
+  gated on trinodb/trino-gateway#1222 rotted, since #1222 is still open. Trimmed
+  the Test containers section to current reality — the `createPostgreSqlContainer`
+  factory and the hardcoded MySQL and Trino images — and moved the full
+  shared-factory context, covering the planned factories, `test-versions.properties`
+  filtering, and the image substitutor, into contribution tracker issue
+  simpligility/contributions#107, which also notes to update the skill when #1222
+  merges.
 
 Remaining, in priority order:
 
-- **`trinodb-gateway-development`, rule 10** — the "Not merged yet" blockquote in
-  the Test containers section is gated on trinodb/trino-gateway#1222 with a note
-  to remove it once merged, which rots. If #1222 has merged, apply the section as
-  durable fact and drop the note; if not, move the transient tracking out.
 - **`weekly-github-issue-recap` and `weekly-linear-issue-recap`** — replace
   "quote the user to install" with "prompt the user", and normalize the
   first-person voice such as "confirm with me" to third-person "the user".

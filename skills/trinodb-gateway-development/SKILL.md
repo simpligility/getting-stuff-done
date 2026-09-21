@@ -70,48 +70,11 @@ guessing at the order.
 
 ## Test containers
 
-> **Not merged yet.** Everything in this section apart from
-> `createPostgreSqlContainer` describes
-> [trino-gateway#1222](https://github.com/trinodb/trino-gateway/pull/1222),
-> which is still open. Until it merges, `createMySqlContainer` and
-> `createTrinoContainer` do not exist, `test-versions.properties` is not
-> present, and the tests construct the MySQL and Trino containers with hardcoded
-> image names. Check the state of that pull request before relying on this
-> section, and remove this note once it merges.
-
 `TestcontainersUtils` in `gateway-ha/src/test/java/io/trino/gateway/ha/util`
-holds the factory methods that create containers. Always create containers
-through these factories rather than calling a container constructor directly,
-so that image versions stay in one place:
-
-| Factory | Image |
-|---|---|
-| `createPostgreSqlContainer()` | Pinned PostgreSQL image |
-| `createMySqlContainer()` | Pinned MySQL image |
-| `createTrinoContainer()` | `trinodb/trino` at the version the project depends on |
-
-The Trino image version is read at test runtime from
-`test-versions.properties`, a test resource that Maven filters to expose the
-`dep.trino.version` property from `gateway-ha/pom.xml`. A Dependabot update of
-the Trino dependency therefore also moves the Trino release under test. Do not
-hardcode a Trino version in a test.
-
-Maven test resource filtering is scoped to `test-versions.properties` alone.
-The other test resources are configuration templates holding `${...}`
-placeholders that the tests substitute themselves at runtime. Filtering those
-would let Maven consume the placeholders before the tests ever see them. Keep
-the include and exclude lists in the `testResources` block intact when adding
-resources.
-
-`CustomTrinoImageNameSubstitutor` allows overriding the Trino image through the
-`TESTCONTAINERS_TRINO_IMAGE_SUBSTITUTE` environment variable, wired up in
-`testcontainers.properties`. It matches on the unversioned image name, so
-pinning a tag does not interfere with it.
-
-`TrinoGatewayRunner` is a `main` class under `src/test/java` that starts a local
-Trino Gateway with backing containers for manual testing. It reads the same
-filtered properties file, so any change to how versions are resolved must keep
-working outside Surefire.
+provides `createPostgreSqlContainer()`, which pins the PostgreSQL image in one
+place. Create PostgreSQL containers through that factory rather than calling the
+container constructor directly. MySQL and Trino containers are constructed
+directly in the tests with hardcoded image names.
 
 Testcontainers moved the database container classes into per-database packages.
 Use `org.testcontainers.postgresql.PostgreSQLContainer`,
