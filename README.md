@@ -187,6 +187,18 @@ This project is inspired by my own experience and the shared learning of many
 others. Find more details in the following, very **incomplete** [RESOURCES
 documentation](./RESOURCES.md).
 
+## Task tracking
+
+Planned and in-progress work on this repository — new skills, skill reviews,
+and tooling changes — is tracked as issues in the
+[simpligility/contributions](https://github.com/simpligility/contributions)
+repository under the
+[`getting-stuff-done`](https://github.com/simpligility/contributions/issues?q=is%3Aissue+label%3Agetting-stuff-done)
+label, and appears on the public
+[Contributions project board](https://github.com/orgs/simpligility/projects/1)
+that also serves as the evidence base for GitHub Sponsors. Completed work lives
+in the git history of this repository rather than in a separate status file.
+
 ## License and sponsorship
 
 Created and maintained by Manfred Moser. The contents of this repository,
