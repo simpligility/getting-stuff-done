@@ -1,6 +1,6 @@
 ---
 name: trinodb-gateway-development
-description: Development context for the trinodb/trino-gateway repository — the Maven build and what it costs, the Testcontainers setup and the shared container factories, and the database behavior that test assertions depend on. Child skill of the trinodb family. Load it before building, testing, or changing tests in a trino-gateway clone.
+description: Development context for the trinodb/trino-gateway repository — the Maven build and what it costs, the Testcontainers setup and the shared container factories, the database behavior that test assertions depend on, and the startup configuration validation that rejects unknown properties. Child skill of the trinodb family. Load it before building, testing, or changing tests in a trino-gateway clone.
 ---
 
 # Trino Gateway development
@@ -102,6 +102,31 @@ When an assertion covers a result set with no guaranteed order, use
 naming the query that lacks the ordering. Narrow the change to the assertions
 that actually fail rather than converting every assertion in the file, since a
 blanket change also hides genuine ordering bugs.
+
+## Configuration validation
+
+Trino Gateway 21 rejects configuration properties that no module consumes.
+Startup fails with `Configuration is invalid` naming the unused property, and
+the process exits with code 100 before it serves traffic. Trino Gateway 20
+accepts the same configuration and starts normally, so this is a behavior
+change that surfaces on upgrade rather than a long-standing rule.
+
+A property belonging to a feature that is turned off still counts as unused.
+With `http-server.http.enabled` set to `false`, a leftover
+`http-server.http.port` is enough to stop startup. This affected the Trino
+Gateway Helm chart in `trinodb/charts`, where the default values set both
+properties and a values merge for an HTTPS-only deployment kept the port. The
+fix was to omit the property from the rendered configuration when HTTP is
+disabled.
+
+The behavior most likely comes from the Airlift configuration framework, which
+moved from version 435 to 441 during the Trino Gateway 21 development cycle.
+That cause is not confirmed against the upstream change, so verify it before
+relying on it.
+
+When upgrading a deployment, a Helm chart, or documentation to Trino Gateway
+21, review the rendered configuration for properties that belong to disabled
+features.
 
 ## Review expectations
 
