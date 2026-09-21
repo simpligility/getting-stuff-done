@@ -1,6 +1,6 @@
 ---
 name: slides-prep
-description: Prepare a conference talk end to end, from proposal through a slide-ready markdown outline to a finalized deck. Covers the CFP/abstract, an idea dump, a per-slide outline in a fixed markdown format, a speaker-notes trim pass, generating a PowerPoint — today via Claude Cowork — that gets imported into Google Slides, and reviewing the deck through to finished. Enter at any point and move in either direction — draft from scratch, review an existing deck, generate a single new slide to paste in, or reconstruct the markdown outline from an existing Google Slides or PowerPoint deck. Use when planning a talk, writing a proposal, turning talk ideas into an outline, adding or reworking slides, or reviewing the resulting deck. General and tool-agnostic; the manfred-slides and manfred-writing skills are optional helpers that layer in when available.
+description: Prepare a conference talk from proposal to finished deck, authoring in a markdown outline that generates into slides and staying in charge through review and finalization. Enter at any stage — a rough idea, an existing outline, or a deck you only want reviewed — and move in either direction between the outline and the deck. Use when planning a talk, writing a CFP or abstract, turning talk ideas into a per-slide outline, adding or reworking slides, or reviewing and finalizing a deck. Not for general prose or non-slide documents, and not a one-click outline-to-deck sync, since each conversion is a deliberate step. General and tool-agnostic; the manfred-slides and manfred-writing skills layer in as optional helpers when available.
 ---
 
 # slides-prep — from talk proposal to a finished deck
@@ -319,14 +319,16 @@ Images and backgrounds:
 
 ### Generate the whole deck
 
-- **Today: Claude Cowork.** Generate the `.pptx` from `outline.md` in Claude
-  Cowork, using its slide and brand-style skills — and a reusable template deck
-  only if that setup needs one. Claude Code in a terminal cannot produce or
-  drive the deck directly, so this step moves to Cowork. Then import the
-  generated `.pptx` into Google Slides.
-- **Future: other generators.** This should become a choice, not a single path —
-  for example a markdown-to-`pptx` CLI, or a reveal.js render when the markdown
-  itself is the final product. Add them here as they are proven out.
+The generator is a pluggable step. Any tool that turns `outline.md` into a deck
+works, and the choice is meant to stay open — a markdown-to-`pptx` CLI, or a
+reveal.js render when the markdown itself is the final product, belong here as
+they are proven out.
+
+The established path is Claude Cowork. Generate the `.pptx` from `outline.md` in
+Claude Cowork, using its slide and brand-style skills — and a reusable template
+deck only if that setup needs one. Claude Code in a terminal cannot produce or
+drive the deck directly, so generation runs in Cowork. Then import the generated
+`.pptx` into Google Slides.
 
 ### Generate or update a single slide
 

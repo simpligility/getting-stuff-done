@@ -122,13 +122,14 @@ Done so far:
   first-person voice, so "confirm with me" and "so I can" now read as "the user".
   `weekly-github-issue-recap` is clean; `weekly-linear-issue-recap` still has the
   rule 7 repository-hygiene question below.
+- **`slides-prep`, rules 3 and 10** — rewrote the description so it states the
+  purpose and when not to use the skill instead of enumerating every phase as a
+  shortcut past the body, and reworded the "today/future" generator framing into
+  a durable pluggable-generator paragraph plus the established Claude Cowork path,
+  dropping every temporal marker while keeping the Cowork specifics.
 
 Remaining, in priority order:
 
-- **`slides-prep`, rules 3 and 10** — the description enumerates the whole
-  workflow, which an agent follows as a shortcut past the body; rewrite it to
-  state what it is for and when not to use it. Reword the "today" and "future"
-  generator framing so it does not rot, keeping the Cowork specifics.
 - **`manfred-contributions`, rule 9** — creating a public issue and adding it to
   the board has no confirmation step. Add a "show the drafted title, body, and
   label, and confirm before creating" instruction, matching `asana` and
@@ -152,4 +153,4 @@ Skills confirmed clean so far: `manfred`, `manfred-git`, `manfred-writing`,
 `manfred-slides`, `trinodb`, `trinodb-java-code-style` where the deferral of
 upstream rules is deliberate, `trinodb-dependency-update`,
 `trinodb-packages-update`, `trinodb-website`, `asana`,
-`weekly-asana-task-recap`, and `weekly-github-issue-recap`.
+`weekly-asana-task-recap`, `weekly-github-issue-recap`, and `slides-prep`.
