@@ -1,0 +1,5 @@
+# Compiled binary from `go build -o recap .`
+/recap
+
+# Generated weekly update output
+update-*.md
