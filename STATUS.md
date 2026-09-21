@@ -96,9 +96,12 @@ Two decisions are settled and should not be reopened:
 
 Done so far:
 
-- **skillcraft rule 9 wording** — corrected on branch
-  `skillcraft-rule9-allowed-tools`; pull request
-  https://github.com/mosabua/chainguard-sandbox-skills/pull/1 is open for review.
+- **skillcraft rule 9 wording** — corrected and merged. The first attempt as
+  https://github.com/mosabua/chainguard-sandbox-skills/pull/1 was wrong and was
+  closed; the corrected change landed through
+  https://github.com/chainguard-sandbox/skills/pull/1 and is merged. The fork
+  and local clone in the `mosabua` folder are synced and the working branch is
+  cleaned up.
 - **`manfred` guard and README template note** — committed as `79f1ffb`.
 - **`trinodb-javascript`** — dated open-work snapshot removed and a stray date
   reworded, committed as `76d3646`. The two untracked package gaps moved to
@@ -109,8 +112,6 @@ Done so far:
 
 Remaining, in priority order:
 
-- **Review and merge skillcraft pull request #1** at
-  https://github.com/mosabua/chainguard-sandbox-skills/pull/1.
 - **`trinodb-gateway-development`, rule 10** — the "Not merged yet" blockquote in
   the Test containers section is gated on trinodb/trino-gateway#1222 with a note
   to remove it once merged, which rots. If #1222 has merged, apply the section as
