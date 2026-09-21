@@ -18,7 +18,7 @@ conventions in `manfred-writing` apply on top of it.
 
 ## The stack
 
-The site is built with [Jekyll](https://jekyllrb.com) 4.4 and hosted on
+The site is built with [Jekyll](https://jekyllrb.com) and hosted on
 [Netlify](https://www.netlify.com). Content is Markdown and HTML with Liquid
 templating. Netlify builds with `bundle exec jekyll build` and publishes
 `_site`, using the Ruby version declared in `netlify.toml`. Plugins in use are
@@ -44,39 +44,26 @@ templating. Netlify builds with `bundle exec jekyll build` and publishes
 
 ## Build and preview locally
 
-The README documents the setup. The essentials:
+The [README in the repository](https://github.com/trinodb/trino.io/blob/master/README.md)
+documents the full local setup and the commands to run the site, and it is kept
+current. Follow it rather than any version recorded in this skill, because the
+required Ruby, bundler, and Netlify CLI versions change over time. Read the
+README in the clone at hand before the first build.
 
-```bash
-PATH=`brew --prefix`/opt/ruby/bin:$PATH
-gem install bundler -v '=2.6.9'
-bundle install
-./jekyllRun.sh
-```
+Three things the README does not spell out:
 
-The site then runs on `http://localhost:4000`.
-
-Install the bundler version recorded at the end of `Gemfile.lock` rather than
-whatever is current. A mismatch fails with a `cannot load such file` error
-pointing at a missing `bundler-<version>/exe/bundle`, which reads like a broken
-Ruby install but is only a missing gem version. Reinstall the pinned version and
-run `bundle install` again.
-
-Posts and episodes with a future date do not render by default. Pass `--future`
-to see them:
-
-```bash
-./jekyllRun.sh --future
-netlify dev -c 'bundle exec jekyll serve --future'
-```
-
-Use `netlify dev` instead of the helper script to exercise the redirects in
-`netlify.toml`, which plain Jekyll does not apply. Verify anything that depends
-on a redirect that way. Use `netlify dev --live` for a public tunnel when
-checking rendering on a phone.
-
-A plain `bundle exec jekyll build --future` is the quickest way to confirm that
-new content compiles and that Liquid tags such as `post_url` resolve. It writes
-to `_site`, which is ignored by git.
+- **A bundler mismatch looks like a broken Ruby.** The README says to install
+  the bundler version recorded at the end of `Gemfile.lock`. Skipping that step
+  fails with a `cannot load such file` error naming a missing bundler
+  executable, which reads like a broken Ruby install but is only a missing gem
+  version. Install the recorded version and run `bundle install` again.
+- **Plain Jekyll ignores redirects.** The helper script does not apply the
+  redirects in `netlify.toml`. Verify anything that depends on a redirect
+  through `netlify dev` instead.
+- **A build is faster than a server.** Running
+  `bundle exec jekyll build --future` is the quickest way to confirm that new
+  content compiles and that Liquid tags such as `post_url` resolve. It writes
+  to `_site`, which is ignored by git.
 
 ## Blog posts
 
