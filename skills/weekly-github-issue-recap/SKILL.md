@@ -18,7 +18,7 @@ Required variables:
 - `RECAP_GITHUB_REPO` — the target repository in `owner/repo` format
 
 Confirm the `gh` command line tool is installed and available in the `PATH`. If
-not, quote the user to install and configure it. Provide the link to the
+not, prompt the user to install and configure it. Provide the link to the
 documentation for installation and configuration at
 https://cli.github.com/manual/installation
 
@@ -47,8 +47,8 @@ gh issue list --repo "{{repository}}" --assignee "{{username}}" --state all
 ```
 
 Verify that today is a Friday with the `date` command. If that is not the case,
-confirm with me that you should proceed with the assembly of the weekly update,
-or if you should wait until Friday to do so.
+confirm with the user whether to proceed with the assembly of the weekly update
+or to wait until Friday to do so.
 
 ## Processing
 
@@ -98,8 +98,8 @@ current week only. If the comments and changes for an issue are very long,
 summarize them. Use markdown syntax, especially for links. Wrap the summary text
 at 80 characters and use bullet points as applicable.
 
-Once you are done, ask me to review the file and add the summary for this week
-and plans for next week.
+Once you are done, ask the user to review the file and add the summary for this
+week and plans for next week.
 
 Confirm that everything is done, then create a new issue in the repository
 {{repository}}:
@@ -108,5 +108,5 @@ Confirm that everything is done, then create a new issue in the repository
 * Use the full content of the markdown file as the description
 * Assign the issue to {{username}}
 
-Display the full URL to the issue you just created, so I can do further actions
-easily. If possible open the new issues in a browser tab automatically.
+Display the full URL to the issue you just created, so the user can do further
+actions easily. If possible open the new issues in a browser tab automatically.

@@ -19,7 +19,7 @@ Required variables:
 - `RECAP_LINEAR_TEAM` — the team in Linear that owns the project
 
 Ensure the `go-linear` command is installed and available in the `PATH`. If
-not, quote the user to install it and configure it, and provide the link to the
+not, prompt the user to install it and configure it, and provide the link to the
 documentation for installation and configuration at
 https://github.com/chainguard-sandbox/go-linear
 
@@ -51,8 +51,8 @@ go-linear issue list --team "{{team}}" --project "{{project}}" --assignee "{{lin
 ```
 
 Verify that today is a Friday with the `date` command. If that is not the case,
-confirm with me that you should proceed with the assembly of the weekly update,
-or if you should wait until Friday to do so.
+confirm with the user whether to proceed with the assembly of the weekly update
+or to wait until Friday to do so.
 
 ## Processing
 
@@ -103,8 +103,8 @@ current week only. Ignore any comments from apps and agents, specifically the
 them. Use markdown syntax, especially for links. Wrap the summary text at 80
 characters and use bullet points as applicable.
 
-Once you are done, ask me to review the file and add the summary for this week
-and plans for next week.
+Once you are done, ask the user to review the file and add the summary for this
+week and plans for next week.
 
 Confirm that everything is done, then create a new issue in the project
 {{project}} on team {{team}}:
@@ -113,5 +113,5 @@ Confirm that everything is done, then create a new issue in the project
 * Use the full content of the markdown file as the description
 * Assign the issue to {{linear-user-id}}
 
-Display the full URL to the issue you just created, so I can do further actions
-easily. If possible open the new issues in a browser tab automatically.
+Display the full URL to the issue you just created, so the user can do further
+actions easily. If possible open the new issues in a browser tab automatically.

@@ -117,12 +117,14 @@ Done so far:
   filtering, and the image substitutor, into contribution tracker issue
   simpligility/contributions#107, which also notes to update the skill when #1222
   merges.
+- **`weekly-github-issue-recap` and `weekly-linear-issue-recap`** — replaced
+  "quote the user to install" with "prompt the user" and normalized the
+  first-person voice, so "confirm with me" and "so I can" now read as "the user".
+  `weekly-github-issue-recap` is clean; `weekly-linear-issue-recap` still has the
+  rule 7 repository-hygiene question below.
 
 Remaining, in priority order:
 
-- **`weekly-github-issue-recap` and `weekly-linear-issue-recap`** — replace
-  "quote the user to install" with "prompt the user", and normalize the
-  first-person voice such as "confirm with me" to third-person "the user".
 - **`slides-prep`, rules 3 and 10** — the description enumerates the whole
   workflow, which an agent follows as a shortcut past the body; rewrite it to
   state what it is for and when not to use it. Reword the "today" and "future"
@@ -149,5 +151,5 @@ Remaining, in priority order:
 Skills confirmed clean so far: `manfred`, `manfred-git`, `manfred-writing`,
 `manfred-slides`, `trinodb`, `trinodb-java-code-style` where the deferral of
 upstream rules is deliberate, `trinodb-dependency-update`,
-`trinodb-packages-update`, `trinodb-website`, `asana`, and
-`weekly-asana-task-recap`.
+`trinodb-packages-update`, `trinodb-website`, `asana`,
+`weekly-asana-task-recap`, and `weekly-github-issue-recap`.
