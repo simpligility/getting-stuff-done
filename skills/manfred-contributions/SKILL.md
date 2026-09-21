@@ -143,6 +143,17 @@ Links to people and to projects outside GitHub use descriptive link text rather
 than a bare URL. Reserve bare URLs for pull requests and issues, which GitHub
 renders as references.
 
+### Assignment
+
+Assign every issue to Manfred. The tracker records his own work, so an
+unassigned issue reads as unclaimed on the board and in the sponsor-facing
+views. Pass `--assignee "@me"` when creating the issue, or add the assignment
+afterwards:
+
+```bash
+gh issue edit <number> --repo simpligility/contributions --add-assignee "@me"
+```
+
 ## Add the issue to the project board
 
 **This step is manual and easy to miss.** The project has no auto-add workflow
@@ -156,6 +167,7 @@ Create the issue, then add it and set its status:
 gh issue create --repo simpligility/contributions \
     --title "Update Ruby gem dependencies on trino.io" \
     --label "trinodb" \
+    --assignee "@me" \
     --body "..."
 
 ITEM=$(gh project item-add 1 --owner simpligility \
