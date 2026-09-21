@@ -246,13 +246,19 @@ The markdown outline and the deck are two representations of the same talk.
 Moving between them is deliberate — each direction is a discrete operation you
 run when you need it, not an automatic sync.
 
+Once a deck exists, the preferred way to work is to edit it in place with `gws`
+through small, targeted changes, rather than regenerating it. Regeneration
+discards the visual work the deck already carries, so it is only for the very
+first build. The rest of this section leads with that gws-driven approach.
+
 ### Driving Google Slides with gws
 
-`gws`, the Google Workspace CLI at https://github.com/googleworkspace/cli, reads
-and writes Google Docs and Slides through the Workspace REST APIs. It makes both
-directions scriptable and lets you edit an existing deck in place without a
-regeneration. It is one concrete tool, not the only path — treat it the way this
-section treats generators.
+Editing the live deck in place with `gws` is the preferred approach for any deck
+that already exists. `gws`, the Google Workspace CLI at
+https://github.com/googleworkspace/cli, reads and writes Google Docs and Slides
+through the Workspace REST APIs, so both directions are scriptable and you edit
+the deck directly without a regeneration. It is the established tool here, not
+the only one possible, but reach for it first once a deck exists.
 
 One-time setup:
 
@@ -284,6 +290,13 @@ Surgical edits and sync:
   the following sections describe. Prefer writing the reconciled markdown and
   showing the diff over silently rewriting, and commit the markdown at
   checkpoints rather than once per sync.
+- Elements you place by hand at a fixed position — page numbers, footnotes, and
+  similar — are usually static text boxes rather than dynamic fields, so they do
+  not follow slides that move, get cut, or get reordered. This will not always be
+  how a given deck is built, but when it is, treat these boxes as something to
+  re-run rather than trust: after any change to slide order or count, delete the
+  affected boxes and re-add them from scratch, keying them by a stable id such as
+  `pgnumNNN` or `fnNNN` so they are easy to find and replace.
 
 Turning off autofit:
 
@@ -319,16 +332,22 @@ Images and backgrounds:
 
 ### Generate the whole deck
 
-The generator is a pluggable step. Any tool that turns `outline.md` into a deck
-works, and the choice is meant to stay open — a markdown-to-`pptx` CLI, or a
-reveal.js render when the markdown itself is the final product, belong here as
-they are proven out.
+Generating a whole deck is for the **first build only**. Once a deck exists in
+Google Slides and carries manual visual work, treat it as authoritative and make
+every further change with targeted `gws` edits as described above. Regenerating a
+deck that has diverged only discards the work it already carries, so retire the
+generator at that point rather than rebuilding from the outline.
+
+The generator is a pluggable step. Any tool that turns `outline.md` into that
+first deck works, and the choice is meant to stay open — a markdown-to-`pptx`
+CLI, or a reveal.js render when the markdown itself is the final product, belong
+here as they are proven out.
 
 The established path is Claude Cowork. Generate the `.pptx` from `outline.md` in
 Claude Cowork, using its slide and brand-style skills — and a reusable template
 deck only if that setup needs one. Claude Code in a terminal cannot produce or
 drive the deck directly, so generation runs in Cowork. Then import the generated
-`.pptx` into Google Slides.
+`.pptx` into Google Slides, and from there work the deck in place with `gws`.
 
 ### Generate or update a single slide
 
