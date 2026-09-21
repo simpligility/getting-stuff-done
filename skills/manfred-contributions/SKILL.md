@@ -166,7 +166,7 @@ FID=$(gh project field-list 1 --owner simpligility --format json \
     --jq '.fields[] | select(.name=="Status") | .id')
 OPT=$(gh project field-list 1 --owner simpligility --format json \
     --jq '.fields[] | select(.name=="Status") | .options[]
-          | select(.name=="In review") | .id')
+          | select(.name=="In progress") | .id')
 gh project item-edit --id "$ITEM" --project-id "$PID" \
     --field-id "$FID" --single-select-option-id "$OPT"
 ```
@@ -181,11 +181,11 @@ exist on the board and are empty on every item, so leave them alone.
 | `Backlog` | Intended work, not started |
 | `Ready` | Ready to pick up |
 | `In progress` | Work underway |
-| `In review` | Work delivered, pull request open and awaiting merge |
 | `Done` | Complete |
 
-Set `In review` when the pull request is open, and `In progress` for
-coordination work that has no review step.
+The board also carries an `In review` option, but it is not used. Set
+`In progress` once work is underway, whether that means a pull request is open
+or coordination work has begun, and leave it there until the work is done.
 
 Filing an issue is often itself an act of starting. When the work is already
 moving informally, through conversations on Slack, outreach on LinkedIn, or
