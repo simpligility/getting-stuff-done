@@ -142,13 +142,15 @@ Done so far:
   worked examples next to both placeholder templates — the actual Trino Gateway
   20 release notes entry and a Trino Gateway 21 verification section with real
   merge dates — so the shape is shown with real values rather than only brackets.
+- **`trinodb-contributor-call-processing`, rule 3** — rewrote the rough
+  description into clean third-person prose stating what the skill does and when
+  to use it, dropping the doubled "recording", the second-person "you", and
+  "time stamped"; the body's action-safety is unchanged.
+- **`trinodb-minio`, rule 10** — dropped the temporal "now" from "now source-only
+  and effectively unmaintained".
 
 Remaining, in priority order:
 
-- **`trinodb-contributor-call-processing`, rule 3** — rewrite the rough
-  description into clean third-person prose; the body's action-safety stays.
-- **`trinodb-minio`, rule 10** — reword "now source-only and effectively
-  unmaintained" to drop the temporal "now". Minor.
 - **Repository hygiene, rule 7** — decide what belongs in
   `skills/weekly-linear-issue-recap/recap/`, which holds a committed Go binary, a
   sample update file, and Go sources, against stray build output. Confirm whether
@@ -160,4 +162,5 @@ Skills confirmed clean so far: `manfred`, `manfred-git`, `manfred-writing`,
 upstream rules is deliberate, `trinodb-dependency-update`,
 `trinodb-packages-update`, `trinodb-website`, `asana`,
 `weekly-asana-task-recap`, `weekly-github-issue-recap`, `slides-prep`,
-`manfred-contributions`, and `trinodb-gateway-release-notes`.
+`manfred-contributions`, `trinodb-gateway-release-notes`,
+`trinodb-contributor-call-processing`, and `trinodb-minio`.

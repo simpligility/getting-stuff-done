@@ -16,8 +16,8 @@ updates.
 
 Trino tests pull `cgr.dev/chainguard/minio`, which is built from Chainguard's
 fork [chainguard-forks/minio](https://github.com/chainguard-forks/minio), not
-upstream `minio/minio`. Upstream MinIO's community edition is now source-only
-and effectively unmaintained, so the fork carries best-effort CVE and dependency
+upstream `minio/minio`. Upstream MinIO's community edition is source-only and
+effectively unmaintained, so the fork carries best-effort CVE and dependency
 patches on a frozen upstream base and produces `RELEASE.YYYY-MM-DD...` builds.
 
 The practical consequence is that a newer image can change behavior through the
