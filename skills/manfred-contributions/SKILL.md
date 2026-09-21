@@ -224,6 +224,14 @@ Four project workflows are enabled, which shapes what needs doing manually:
 No workflow adds a newly created top-level issue, which is why the manual step
 in the preceding section matters.
 
+## Confirm before creating
+
+Creating an issue publishes to a public repository and puts the work on the
+sponsor-facing board, so it is an outward-facing action rather than a private
+note. Before running `gh issue create`, show the user the drafted title, label,
+and body, and confirm. Only create and add it to the board once the user
+approves. Reading the tracker, its issues, and the board needs no confirmation.
+
 ## Relationship to other skills
 
 This skill follows `manfred-git`. Finish the pull request under those

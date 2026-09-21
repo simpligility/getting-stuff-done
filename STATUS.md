@@ -126,14 +126,18 @@ Done so far:
   purpose and when not to use the skill instead of enumerating every phase as a
   shortcut past the body, and reworded the "today/future" generator framing into
   a durable pluggable-generator paragraph plus the established Claude Cowork path,
-  dropping every temporal marker while keeping the Cowork specifics.
+  dropping every temporal marker while keeping the Cowork specifics. A later pass
+  made gws in-place editing the preferred path for an existing deck, scoped
+  whole-deck generation to the first build, and folded in the static
+  page-number and footnote caution.
+- **`manfred-contributions`, rule 9** — added a "Confirm before creating" section
+  that requires showing the drafted title, label, and body and getting approval
+  before `gh issue create`, matching `asana` and `trinodb-contributor-call-processing`,
+  while exempting read-only tracker access. Manfred separately added the
+  assignment convention in the same skill.
 
 Remaining, in priority order:
 
-- **`manfred-contributions`, rule 9** — creating a public issue and adding it to
-  the board has no confirmation step. Add a "show the drafted title, body, and
-  label, and confirm before creating" instruction, matching `asana` and
-  `trinodb-contributor-call-processing`.
 - **`trinodb-gateway-release-notes`** — add a confirmation step before
   `gh pr create`; add a "when not to use" clause to the description; normalize
   the inconsistent bullet indentation to house style; and review the placeholder
@@ -153,4 +157,5 @@ Skills confirmed clean so far: `manfred`, `manfred-git`, `manfred-writing`,
 `manfred-slides`, `trinodb`, `trinodb-java-code-style` where the deferral of
 upstream rules is deliberate, `trinodb-dependency-update`,
 `trinodb-packages-update`, `trinodb-website`, `asana`,
-`weekly-asana-task-recap`, `weekly-github-issue-recap`, and `slides-prep`.
+`weekly-asana-task-recap`, `weekly-github-issue-recap`, `slides-prep`, and
+`manfred-contributions`.
