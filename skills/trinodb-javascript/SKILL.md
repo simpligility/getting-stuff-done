@@ -18,7 +18,7 @@ move faster than the engine and the numbers here go stale.
 
 | Repository | What it is | Package manager | Where the code lives |
 |---|---|---|---|
-| [trinodb/trino-query-ui](https://github.com/trinodb/trino-query-ui) | Embeddable React query editor published as `@trinodb/trino-query-ui` | npm | `precise/`, not the repository root |
+| [trinodb/trino-query-ui](https://github.com/trinodb/trino-query-ui) | Embeddable React query editor published as `@trinodb/trino-query-ui` | npm | repository root |
 | [trinodb/trino](https://github.com/trinodb/trino) | The Trino web UI served by the coordinator | Bun, driven by Maven | `core/trino-web-ui/src/main/resources/webapp` |
 | [trinodb/trino-js-client](https://github.com/trinodb/trino-js-client) | Node.js client published as `@trinodb/trino-js-client` | Yarn 4 | `src/index.ts`, a single file |
 
@@ -40,10 +40,11 @@ it is
 branch. Read it rather than a release tag, since the alignment target is usually
 unreleased master.
 
-As of Trino 484-SNAPSHOT that manifest carries React 19.2.8, MUI Material and
-icons 9.4.0, Emotion 11.14, and `@monaco-editor/react` 4.7. It does **not**
+As of Trino master in late 2026 that manifest carries React 19.3.0, MUI Material
+and icons 9.4.0, Emotion 11.14, and `@monaco-editor/react` 4.7. It does **not**
 depend on `monaco-editor` directly, so anything embedded into the web UI cannot
-assume that package is present.
+assume that package is present. Verify the exact versions against the manifest
+rather than trusting these numbers, which go stale.
 
 The web UI enforces a dependency license allowlist through its `check:licenses`
 script, which compares every license found under `node_modules` against
@@ -155,11 +156,11 @@ Poll `"starting":false` rather than the HTTP status. The coordinator answers
 
 ## trino-query-ui
 
-Everything lives under `precise/`. Running npm from the repository root does
-nothing useful. The package requires Node 24.
+Everything lives at the repository root. The project was historically nested in
+a `precise/` directory, moved to the root in September 2026, so older references
+to that path are stale. The package requires Node 24.
 
 ```shell
-cd precise
 npm install
 npm run dev      # Vite dev server, proxies /v1 to http://localhost:8080
 npm run check    # install, eslint, and prettier, as CI runs it
@@ -172,14 +173,14 @@ bundle rather than a deployable site. The standalone example under
 not part of the published package.
 
 Releases are automated. Bump the version with
-`npm version <version> --no-git-tag-version` from `precise/` so that
+`npm version <version> --no-git-tag-version` from the repository root so that
 `package-lock.json` records it too, then commit both files. Pushing that to the
 default branch publishes to npm through trusted publishing and creates the
 GitHub release. See the repository README for the full process.
 
 Opening the release pull request publishes nothing. The release workflow has a
 single trigger, a push to the default branch, and every publishing step is
-gated on the version in `precise/package.json` having changed. The merge is
+gated on the version in `package.json` having changed. The merge is
 what cuts the release.
 
 From 1.0.0 onward every release increments the major version, so 1.0.0 is
@@ -192,6 +193,34 @@ bundling them, so the embedding application supplies React, Emotion, MUI, MUI X,
 and `@monaco-editor/react`. Keep peer ranges as wide as the component genuinely
 supports. Repeating the exact versions the Trino web UI pins forces an unmet
 peer dependency on any embedder running a slightly older release.
+
+### Dependency policy
+
+`dependencies` and `devDependencies` are pinned to exact versions, not caret
+ranges. The lockfile already pins what the repository builds against, so exact
+pins buy two things on top of it: every update is a visible `package.json` diff
+that is easy to review and merge, and the declared version always equals the
+tested version. `peerDependencies` are the deliberate exception and stay wide,
+because they are the embedding contract, not something to make strict. This
+distinction matters because the web UI will embed the query editor, so the two
+projects must agree on a single React, Emotion, MUI, and Monaco instance at
+runtime, while external embedders on slightly older releases still need to
+resolve.
+
+The shared runtime libraries are kept in lockstep with the web UI manifest, and
+the build toolchain is kept close for consistency. `npm run sync:check` runs
+`scripts/check-webui-sync.mjs`, which fetches the web UI `package.json` from
+Trino master and compares the shared packages. It fails on a runtime-library
+mismatch and only warns on the toolchain, which is build-time only and does not
+affect the embed. The `dependency-sync.yml` workflow runs it on every pull
+request and weekly.
+
+Dependabot rewrites the exact pins with `versioning-strategy: increase`, groups
+the React and MUI stack and the toolchain into one pull request each, and
+ignores major bumps on the shared packages so the component never runs ahead of
+the web UI on a major. Majors are deliberate and land when the web UI adopts
+them. That is why TypeScript stays a major behind at times, since the web UI
+moved to TypeScript 6 while the component still builds on 5.
 
 ## trino-js-client
 
@@ -236,6 +265,70 @@ the package rather than writing `Release version <version>` keeps the published
 identity explicit in history, which matters because the package was renamed at
 0.3.0 and release commits are read in aggregated views where the repository is
 not visible.
+
+### Node-only transport and the browser plan
+
+The client is Node-only today, which matters because the plan is to have the
+query editor consume it in place of its own partial Trino protocol handling.
+`src/index.ts` imports the Node core modules `https` and `tls`, and at
+construction it builds `new https.Agent(options.ssl ?? {})` and hands it to axios
+as `httpsAgent`. That import and that construction run at module load, so a
+browser bundle cannot resolve them and the client cannot be consumed in the
+browser as it stands. axios itself is browser-capable through XHR, so the hard
+blocker is the Node transport rather than axios.
+
+axios is the single runtime dependency. Replacing it with native `fetch` and
+dropping the `https` and `tls` usage makes the client isomorphic and dependency
+free, which is the clean way to line its dependencies up with the query editor
+and the web UI. The client pins axios to an exact version while the web UI
+requires a newer minor, so the current pin would duplicate axios in a shared
+dependency tree rather than resolve to one copy. The open pull request
+[trino-js-client#956](https://github.com/trinodb/trino-js-client/pull/956)
+removes axios in favor of the global `fetch` plus an `undici.Agent` used only
+when `ssl` is set. It keeps the public API unchanged, but `undici` is a Node
+package, so that pull request alone does not make the client browser-ready; it is
+the first half of the transport rework.
+
+Browser support and the query editor integration are tracked in
+[trino-js-client issue 985](https://github.com/trinodb/trino-js-client/issues/985),
+which is the client side of
+[trino-query-ui issue 61](https://github.com/trinodb/trino-query-ui/issues/61).
+It specifies a `WebUiSessionAuth` mode that submits through `/ui/api/statement`,
+follows every returned `nextUri` unmodified, adds an `X-Trino-UI-Request: true`
+CSRF header, omits the default `X-Trino-User` so the server derives identity from
+the web UI session, and cancels through `PUT /ui/api/query/{id}/killed`. Its
+`browserCredentialsMode` option maps onto the fetch `credentials` option, so the
+design is already a fetch design. The feature is gated on the Trino server pull
+request [trinodb/trino#31023](https://github.com/trinodb/trino/pull/31023), which
+adds the `/ui/api/statement` submission and pagination but not cancellation.
+Independent SQL sessions, the per-tab `createSession` and `execute` API, are an
+explicit separate follow-up and not a prerequisite for web UI session reuse.
+
+As of late 2026 this work is deliberately parked until the outstanding pull
+requests merge and a 1.0.0 release is out, so the browser transport rework lands
+on a released baseline rather than tangled into dependency hygiene.
+
+### Large integer precision and the parse hook
+
+The client parses every response body straight through `JSON.parse`, so 64-bit
+integer types lose precision.
+[trino-js-client issue 983](https://github.com/trinodb/trino-js-client/issues/983)
+reports that Trino returns `BIGINT`, and `DECIMAL` values that fit an integer, as
+JSON numbers, and any value past `Number.MAX_SAFE_INTEGER`, which is 2^53 - 1,
+silently rounds to the nearest float64 with no error. This affects the current
+query editor too, since it parses responses the same way, and it will remain once
+the editor switches to the client.
+
+The concern reads like a reason to keep axios, because a consumer works around it
+today by reaching into the client's internal axios instance and installing a
+`transformResponse` that quotes long integers, and the fetch migration removes
+that escape hatch. It is not a reason. The agreed direction is a transport
+agnostic `parseJson` option that defaults to `JSON.parse` and lets a consumer opt
+into a precise parser such as `json-bigint`. That option wires into axios through
+`transformResponse` and into `fetch` by parsing `response.text()`, so it works
+either way and does not tie the client to axios. Exposing it as a supported
+option also removes the need for consumers to monkey-patch internals. The default
+stays fast native parsing, and precision is opt-in.
 
 ## Validating trino-js-client against downstream consumers
 
@@ -376,7 +469,7 @@ A peer dependency contract cannot be checked by reading `package.json`. Pack the
 package and consume it:
 
 ```shell
-cd precise && npm pack --pack-destination /tmp
+npm pack --pack-destination /tmp
 cd /tmp/consumer && npm install /tmp/trinodb-trino-query-ui-<version>.tgz
 ```
 
