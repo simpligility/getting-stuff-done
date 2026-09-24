@@ -171,6 +171,26 @@ defaulting to 5 minutes before expiry.
 Assisted-by: Claude Opus 4.8 <noreply@anthropic.com>
 ```
 
+## Commit author identity
+
+The commit author email depends on the repository. Only Chainguard repos use the
+Chainguard email; everything else uses the personal email.
+
+| Repo | Author email |
+|---|---|
+| Chainguard repos — see [Detecting a Chainguard repo](#detecting-a-chainguard-repo) | `manfred.moser@chainguard.dev` |
+| Anything else, including Trino, simpligility, and personal repos | `manfred@simpligility.ca` |
+
+The author name is always `Manfred Moser`.
+
+Before committing, check that `git config user.email` matches this table for the
+repository. A common failure is a global git config or an inherited environment
+that sets the Chainguard email everywhere, which then leaks into open-source
+commits. When the configured email is wrong for the repo, set it locally with
+`git config user.email <correct-email>` and, if a commit was already made with
+the wrong address, amend it with
+`git commit --amend --reset-author --no-edit` before pushing.
+
 ## Commit execution and signing
 
 ### Multi-line messages: never embed `\n`
