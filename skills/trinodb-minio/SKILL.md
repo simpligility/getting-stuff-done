@@ -25,16 +25,24 @@ frozen upstream base or dependency bumps, not only through version updates.
 Treat the fork as the source of truth, and when something breaks after a bump,
 compare against the previous working digest. Confirm the version and build of
 any image with `docker run --rm <image> --version`, which reports the
-`RELEASE...` or `DEVELOPMENT...` tag and a `github.com/chainguard-forks/minio`
-commit.
+`RELEASE.YYYY-MM-DD...` or `DEVELOPMENT...` tag and a bare `commit-id=` hash,
+for example `minio version RELEASE.2026-09-22T19-25-18Z (commit-id=df34868...)`.
+The `commit-id` is the fork's build commit, not an upstream `minio/minio` one.
 
 ## Where the digest is pinned
 
-The image is pinned by digest in three files, and all three must match:
+The image is pinned by digest in a single file, the `Minio.DEFAULT_IMAGE`
+constant:
 
 - `testing/trino-testing-containers/src/main/java/io/trino/testing/containers/Minio.java`
-- `testing/trino-product-tests-launcher/src/main/java/io/trino/tests/product/launcher/env/common/Minio.java`
-- `testing/trino-product-tests-launcher/src/main/java/io/trino/tests/product/launcher/env/environment/SpoolingMinio.java`
+
+This used to live in three files. The other two belonged to the
+`testing/trino-product-tests-launcher` module — `env/common/Minio.java` and
+`env/environment/SpoolingMinio.java` — but upstream removed that module when the
+product test suite and launcher were dropped and rewritten (confirmed gone as of
+September 2026, PR [#31360](https://github.com/trinodb/trino/pull/31360)). If you
+still see references to those two paths, the guidance is stale. Confirm with
+`git grep -l "chainguard/minio"`, which should return only the file above.
 
 ## The sibling aws-proxy repository
 
@@ -65,20 +73,28 @@ does not change with it.
      | grep -i docker-content-digest
    ```
 
-2. Replace the `sha256:...` digest in all three files with the resolved value.
+2. Replace the `sha256:...` digest in the file with the resolved value.
 3. Verify the version with `docker run --rm cgr.dev/chainguard/minio@<digest> --version`.
-4. Run the affected suites, especially `suite-delta-lake-oss`, which exercises
-   MinIO bucket notifications.
+4. Run the tests that consume the container. Since the product test suites were
+   removed, the current consumers are the S3 filesystem tests in
+   `lib/trino-filesystem-s3` (`TestS3FileSystemMinIo`) and the exchange
+   filesystem test containers in `plugin/trino-exchange-filesystem`
+   (`MinioStorage`). CI on the pull request exercises these; a local run needs a
+   running Docker daemon.
 
 ## Known failure modes
 
-Bucket notification tests such as `TestDeltaLakeDatabricksMinioReads` and
-`TestDeltaLakeOssDeltaLakeMinioReads` depend on the `ListenBucketNotification`
-streaming endpoint. A whole class of regressions there presents as "no
-notifications arrive," but the real cause is usually that the chunked
-`text/event-stream` response is never flushed to the client, so no HTTP headers
-or events reach it at all. A 2026 example was a response wrapper that stopped
-forwarding `Flush`, documented with a standalone reproducer at
+The historical bucket notification tests such as `TestDeltaLakeDatabricksMinioReads`
+and `TestDeltaLakeOssDeltaLakeMinioReads` lived in the product test suite that
+upstream has since removed, so the current Trino suites no longer exercise the
+`ListenBucketNotification` streaming path directly. The lesson still holds if it
+resurfaces, in the aws-proxy repository, or in a future reproducer. Those tests
+depended on the `ListenBucketNotification` streaming endpoint. A whole class of
+regressions there presents as "no notifications arrive," but the real cause is
+usually that the chunked `text/event-stream` response is never flushed to the
+client, so no HTTP headers or events reach it at all. A 2026 example was a
+response wrapper that stopped forwarding `Flush`, documented with a standalone
+reproducer at
 [mosabua/minio-listen-repro](https://github.com/mosabua/minio-listen-repro). Its
 `-raw` mode shows whether response headers reach the client, which quickly
 separates a server publish problem from a streaming flush problem.
