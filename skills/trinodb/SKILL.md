@@ -178,8 +178,12 @@ specific target repository; do not substitute a generic Trino template or one
 from another Trino project. Trino repositories follow the
 [Chris Beams commit message conventions](https://cbea.ms/git-commit/): a short
 imperative subject, a blank line, and a body that explains what changed and why.
-Do not add `Co-authored-by:` or `Assisted-by:` footers to attribute AI tooling
-to Trino commits, including when preparing Trino project work for Manfred.
+Do not add `Co-authored-by:` or `Assisted-by:` footers, or any other AI-tooling
+attribution, to Trino commits, including when preparing Trino project work for
+Manfred. This applies across every trinodb-org repository, including trino,
+trino-gateway, and aws-proxy, and to every surface, not only commit messages:
+pull request descriptions, pull request and review comments, and issues and
+issue comments must likewise carry no AI attribution.
 
 First-time contributors must sign the
 [Trino Contributor License Agreement](https://github.com/trinodb/cla) before a

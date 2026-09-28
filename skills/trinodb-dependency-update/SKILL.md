@@ -108,5 +108,8 @@ those exercise the container behavior most likely to regress.
 ## Commit conventions
 
 Follow the repository's own convention, which for the Trino projects is the
-Chris Beams style. Keep each commit to one logical group of updates, and add an
-`Assisted-by:` trailer when AI tooling helped.
+Chris Beams style. Keep each commit to one logical group of updates. Do not add
+`Co-authored-by:` or `Assisted-by:` footers to attribute AI tooling on any
+trinodb-org repository, including trino, trino-gateway, and aws-proxy, and
+including both the commit message and the pull request description — see the
+base `trinodb` skill for the authoritative rule.

@@ -227,7 +227,10 @@ the `trinodb` skill. Fork the repository, keep `upstream` pointing at
 Commit messages follow the Chris Beams conventions. The process page explicitly
 prohibits AI attribution footers such as `Co-authored-by:` or `Assisted-by:` on
 Trino commits, and that applies to this repository too, including when preparing
-work for Manfred.
+work for Manfred. As the base `trinodb` skill spells out, the prohibition covers
+every surface, not only commits: pull request descriptions, pull request and
+review comments, and issues and issue comments must carry no AI attribution
+either.
 
 Before opening a pull request:
 
