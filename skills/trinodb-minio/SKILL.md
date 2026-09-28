@@ -73,8 +73,13 @@ does not change with it.
      | grep -i docker-content-digest
    ```
 
-2. Replace the `sha256:...` digest in the file with the resolved value.
-3. Verify the version with `docker run --rm cgr.dev/chainguard/minio@<digest> --version`.
+2. Verify the version with `docker run --rm cgr.dev/chainguard/minio@<digest> --version`
+   and note the `RELEASE.YYYY-MM-DD...` string it reports.
+3. Replace the `sha256:...` digest in the file with the resolved value, and update
+   the adjacent `// cgr.dev/chainguard/minio RELEASE....` comment above the pin
+   with the RELEASE string from the previous step, so the immutable digest keeps a
+   human-readable label. The aws-proxy `S3Container` carries the same comment
+   convention above its `IMAGE` constant.
 4. Run the tests that consume the container. Since the product test suites were
    removed, the current consumers are the S3 filesystem tests in
    `lib/trino-filesystem-s3` (`TestS3FileSystemMinIo`) and the exchange
