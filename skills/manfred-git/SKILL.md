@@ -118,6 +118,13 @@ use for git. Reserve it for people; never use it to attribute AI tooling. If a
 commit was produced with AI help and no human collaborator co-authored it, do
 not emit any `Co-authored-by:` trailer at all.
 
+Do not add a `Signed-off-by:` trailer whose email matches the commit author's
+email. It only restates the author and adds noise. Add sign-off only when a repo
+genuinely requires DCO from a different signer, for example a maintainer signing
+off a contributor's work. When continuing someone else's pull request, follow
+the repo's DCO convention rather than signing off Manfred's own authored
+commits.
+
 ### AI tooling attribution
 
 For projects other than Trino project work, always include an `Assisted-by:`
