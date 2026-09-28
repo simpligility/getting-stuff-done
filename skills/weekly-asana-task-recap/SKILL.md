@@ -90,6 +90,15 @@ candidate set is assignee-scoped. Since {{project}} is the working project,
 this is a close proxy. When a task's project membership matters, confirm it in
 the Asana web interface before including the task.
 
+Do not infer project membership from the `permalink_url`. A task can belong to
+several projects at once, and the gid embedded in `permalink_url` reflects only
+whichever project Asana chose to render the link under, not the task's full
+membership. The `aslan task <gid> --json` output does not expose the project or
+membership list either, so a differing gid in the permalink is not a signal that
+a task lives outside {{project}}. In practice a task routinely belongs to
+{{project}} plus another tracker such as a marketing tracker, so treat a
+differing permalink gid as expected and do not flag it as cross-project.
+
 ## Processing
 
 Determine where to write the output file:
