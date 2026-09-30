@@ -58,6 +58,10 @@ conventions, so activate this skill before writing one.
 - Titles and headings must use sentence case at all times. Only capitalize the
   first word and proper nouns.
 - Leave exactly one empty line after every title or heading.
+- Keep blog post headings to a single `##` level. The headings group themes and
+  ideas rather than building a strict hierarchy, so a long post gets more
+  sections rather than nested subsections. Documentation and skill files nest
+  further where the structure is genuinely hierarchical.
 - Hard-wrap all markdown files at 80 characters.
 - Use Merriam-Webster as the reference dictionary.
 - Follow the Google Developer Documentation Style Guide for technical writing
