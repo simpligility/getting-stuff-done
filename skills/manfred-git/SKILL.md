@@ -78,9 +78,29 @@ that must stay on one line.
 
 ### Body structure
 
-When a commit covers multiple distinct changes, write the body as a bulleted
-list rather than a single long paragraph, with each bullet describing one
-change. This applies regardless of commit style.
+Keep the body short. Most commits need no body at all, because a good subject
+line already says what changed. Add one only when the reason for the change is
+not obvious from the diff, and stop as soon as that reason is on the page.
+
+When a commit covers more than one distinct change, write the body as a
+bulleted list, one bullet per change, and skip the prose entirely. Do not
+introduce the list with a paragraph of background. A list on its own is the
+default shape, not a section that follows an essay. This applies regardless of
+commit style.
+
+Aim for three to six lines of body in total. A prose body that runs past one
+short paragraph, or a body that pairs several paragraphs with a list, is too
+long. Cut it rather than polishing it.
+
+Leave out anything the reader can get elsewhere:
+
+- What the diff already shows, restated in words
+- Background on how the bug was found, or what was tried first
+- Detail that belongs in the pull request description or a linked issue
+- Reproduction steps, sample output, and version tables
+
+The test is whether a reviewer reading `git log` a year later needs the line to
+understand why the change was made. If not, drop it.
 
 ### Per-repository mapping
 
