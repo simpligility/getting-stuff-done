@@ -178,6 +178,14 @@ Releases are automated. Bump the version with
 default branch publishes to npm through trusted publishing and creates the
 GitHub release. See the repository README for the full process.
 
+Title the release pull request and its commit `Release
+@trinodb/trino-query-ui <version>`, for example
+`Release @trinodb/trino-query-ui 2.0.0`. That is 37 characters, well inside
+the 50-character Chris Beams subject limit. Naming the package rather than
+writing `Release v<version>` keeps the published identity explicit in history,
+because release commits are read in aggregated views where the repository name
+is not visible. Both npm packages in this family follow this convention.
+
 Opening the release pull request publishes nothing. The release workflow has a
 single trigger, a push to the default branch, and every publishing step is
 gated on the version in `package.json` having changed. The merge is
@@ -259,12 +267,10 @@ implied between them. Read the release notes rather than the version number.
 
 Title the release pull request and its commit `Release
 @trinodb/trino-js-client <version>`, for example
-`Release @trinodb/trino-js-client 0.3.2`. That is 38 characters at a two-digit
-minor, so it stays inside the 50-character Chris Beams subject limit. Naming
-the package rather than writing `Release version <version>` keeps the published
-identity explicit in history, which matters because the package was renamed at
-0.3.0 and release commits are read in aggregated views where the repository is
-not visible.
+`Release @trinodb/trino-js-client 0.3.2`, following the same convention as
+trino-query-ui. That is 38 characters at a two-digit minor, so it stays inside
+the 50-character Chris Beams subject limit. Naming the package matters even
+more here, because the package was renamed at 0.3.0.
 
 ### Node-only transport and the browser plan
 
