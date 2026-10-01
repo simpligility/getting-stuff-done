@@ -8,3 +8,6 @@ outputs
 
 # Packaged Gemini CLI skills
 *.skill
+
+# macOS Finder metadata
+.DS_Store
