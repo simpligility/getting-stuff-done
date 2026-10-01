@@ -364,6 +364,24 @@ upstream owner needed to detect a Chainguard repo.
   and just before merge, crafting a clean final commit message rather than
   relying on the auto-generated squash message from the merge UI
 
+### PR description
+
+- **Never add an AI tooling footer** to a pull request description. Do not
+  append "Generated with Claude Code", "Created by Copilot", a 🤖 attribution
+  line, or any similar generated-by marker, regardless of which tool drafted
+  it. The PR body should read as Manfred's own, with no tool signature. This
+  holds for every repo, including ones where an `Assisted-by:` commit trailer
+  is expected — commit-level AI attribution lives in the commit trailer, never
+  in the PR description.
+- **Short and digestible.** Include every relevant detail a reviewer needs —
+  what changed, why, and anything they must know to review or test — but no
+  more. Keep it concise and easy to scan; prefer a few tight bullets over long
+  prose, and cut anything that does not help the reader.
+- **Expect the description to be edited.** Manfred typically revises the PR
+  body after it is drafted, so write it as a clean starting point he can take
+  over rather than a final, decorated artifact. Keep it focused on what the
+  change does and why; leave out filler he would only strip out.
+
 ## Code review
 
 - Reviews should be specific and actionable
