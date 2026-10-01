@@ -39,7 +39,39 @@ change:
   `https://github.com/trinodb/trino.git` or its SSH equivalent.
 - **Default branch**: The Trino default branch is `master`, not `main`.
 - **Authentication**: You must be authenticated with the `gh` CLI.
-- **Tools**: `jq` is required by the bundled script.
+- **Tools**: `jq` and Python 3 are required by the bundled scripts.
+
+## Working tools
+
+The skill bundles two scripts in `scripts/`:
+
+- `get_merged_prs.sh` creates the tracking list for the PR body.
+- `rn.py` runs the cycle. It keeps the entries as structured data in
+  `entries.json`, renders `release-<version>.md` from the authoritative
+  template, flips tracking marks and adds pending questions in the PR body,
+  dumps PR details for triage, validates and applies triage proposals, and
+  publishes each update. Run `rn.py` without arguments for its usage.
+
+Run `rn.py` from the root of the trino clone with these environment variables:
+
+```bash
+export RN_WORK=<work-dir>   # outside the repository, for example a scratch directory
+export RN_VERSION=484
+export RN_PR=31411          # once the PR exists
+```
+
+The work directory holds `entries.json`, the PR body as `body.md`, the batch
+dumps `bNN.txt`, and the proposals `proposal-bNN.json`. Keep it for the whole
+cycle. Treat `entries.json` as the source of the release notes file while
+triage is running, since `rn.py render` overwrites the file. Once the user
+starts editing `release-<version>.md` by hand during review, stop rendering
+and edit the file directly.
+
+The PR body is the shared record of the cycle. Open questions do not go into
+PR comments. They go into a `### Pending` list under "Additional context and
+related issues", one line per question in the form `#<PR> - <question>`, added
+with `rn.py pending`. PRs with missing documentation additionally keep
+`❌ docs` in the tracking list.
 
 ## Workflow
 
@@ -103,9 +135,13 @@ for the next version.
       1000, so check that the count looks plausible.
     - Exclude the previous release notes PR. It merges on the release day but
       belongs to the preceding release.
-    - Exclude PRs merged on the release day before the release was cut. Compare
-      with the last commit included in the release tag,
-      `git log -1 <previous-version>`, when the boundary is unclear.
+    - Exclude PRs merged around the release day that are already part of the
+      previous release. Check each candidate's merge commit against the release
+      tag rather than relying on dates, for example
+      `git merge-base --is-ancestor <merge-commit-sha> <previous-version>`,
+      with the SHA from `gh pr view <n> --json mergeCommit`.
+    - Save the PR body as `$RN_WORK/body.md`, since `rn.py` maintains it from
+      there.
 10. **Open the PR**:
     - Push with `git push -u origin release-notes-<version>`.
     - Title: `Add Trino <version> release notes`.
@@ -130,10 +166,12 @@ the release is ready.
       the remote branch may have changes made elsewhere, inspect them with
       `git fetch origin` and `git log origin/release-notes-<version>` first.
 3.  **Read the current PR body**:
-    `gh pr view <number> --repo trinodb/trino --json body --jq .body > body.md`.
+    `gh pr view <number> --repo trinodb/trino --json body --jq .body > "$RN_WORK/body.md"`.
+    Skip this when the work directory is current and nobody else edited the
+    body.
 4.  **Determine the last check date**: Use the most recent dated heading in the
     tracking list.
-5.  **Fetch new merges**: Run the script with the last check date. Including
+5.  **Fetch new merges**: Run `get_merged_prs.sh -a` with the last check date. Including
     that date avoids missing PRs merged later on the same day. Drop the PRs
     already in the list.
 6.  **Update the tracking list**:
@@ -144,31 +182,39 @@ the release is ready.
       at the bottom.
     - Mark new entries `❌ rn ❌ docs`, and keep the PR title and resolved
       issues that the `-a` option appends.
-7.  **Triage and write entries**: Work through every `❌` entry. Run the script
-    with `-l` for a local working view that also shows the component labels,
-    but never paste that output into the PR body. For each PR, read its
-    description, the suggested release note in
-    the "Release notes" section of the PR template, and the diff where the
-    effect is unclear.
-    - Write or refine the entry following the
-      [Writing entries](#writing-entries) rules, then mark it `✅ rn`.
-    - If no entry is needed, still mark it `✅ rn` to record the review.
-      Dependency bumps, tests, build and CI changes, refactoring, and internal
-      cleanups usually need no entry. A dependency bump that fixes a
-      user-visible bug or a CVE in a shipped library may need one.
-    - Mark `✅ docs` when the needed documentation is merged or none is needed.
-      Leave `❌ docs` while it is missing, and list such PRs in the
-      "Additional context and related issues" section so maintainers can chase
-      them. The `needs-docs` label flags some of these.
-    - When the effect of a PR is unclear, leave it `❌ rn` and list it in the
-      same section with a short question rather than guessing. Ask the user
-      before commenting on the upstream PR.
-8.  **Commit and push**:
-    - Amend the single commit, leaving its message unchanged:
-      `git commit --amend --no-edit`.
-    - `git push --force-with-lease origin release-notes-<version>`.
-    - Update the body with
-      `gh pr edit <number> --repo trinodb/trino --body-file body.md`.
+7.  **Triage in batches**: Work through the `❌` entries in batches of three
+    calendar days, oldest first, and publish after each batch with step 8.
+    For each batch:
+    - Dump the PR details with
+      `rn.py dump <from> <to-exclusive> [<numbers to skip>] > "$RN_WORK/bNN.txt"`.
+      The dump shows the title, labels, closing issues, touched modules, and
+      the trimmed description with the author's suggested release note.
+      Dependency bump bodies are reduced to a marker. Use
+      `gh pr view` or `gh pr diff` where the effect is still unclear.
+    - Decide each PR by the [Triage rules](#triage-rules) and write the
+      proposal as `$RN_WORK/proposal-bNN.json`, in the format described in
+      `references/triage-guide.md`.
+    - Review it with `rn.py check bNN`, which also validates that every PR of
+      the batch is listed exactly once and that sections, groups, and issue
+      references are well formed.
+    - Tighten wording with `rn.py edit bNN`, which reads rules such as
+      `[{"match": "<substring>", "text": "<new entry>", "group": 2}]` from
+      standard input. A `"text": null` rule drops the entry.
+    - Apply it with `rn.py apply bNN`. This adds the entries, flips the marks,
+      adds the pending questions, and renders the file.
+
+    For a large backlog, delegate drafting the proposals to subagents running
+    in parallel, each with a few batches and its own copy of
+    `references/triage-guide.md` with the placeholders filled in. Pre-fetch
+    all batch dumps first. Review and apply the proposals yourself, one batch
+    at a time in date order, and publish after each. Subagents only write
+    proposal files and never touch the repository, the PR, or GitHub.
+8.  **Publish**: Run `rn.py publish`. It amends the single commit with its
+    message unchanged, force-pushes with lease, and updates the PR body from
+    `$RN_WORK/body.md`. Without the script, do the same with
+    `git commit --amend --no-edit`,
+    `git push --force-with-lease origin release-notes-<version>`, and
+    `gh pr edit <number> --repo trinodb/trino --body-file "$RN_WORK/body.md"`.
 
 ### 3. Finalize for the release
 
@@ -190,13 +236,38 @@ days before the release.
     final body keeps only the numbers and marks:
 
     ```bash
-    sed -E 's/^(\* #[0-9]+ [✅❌] rn [✅❌] docs) - .*/\1/' body.md > final.md
+    sed -E 's/^(\* #[0-9]+ [✅❌] rn [✅❌] docs) - .*/\1/' \
+      "$RN_WORK/body.md" > "$RN_WORK/final.md"
     ```
 
     Update the PR body with the result, then request review from the release
     manager. The release manager merges the PR as part of the release.
 
 ## Writing entries
+
+### Triage rules
+
+- Release notes have a user focus. Only changes users notice get an entry:
+  features, SQL and function support, configuration properties, performance
+  and memory improvements, bug fixes, security, breaking changes, client and
+  Docker image changes, and SPI changes relevant to plugin authors.
+- If no entry is needed, still mark the PR `✅ rn` to record the review.
+  Dependency bumps, tests, build and CI changes, refactoring, internal
+  cleanups, and log changes usually need no entry. A dependency bump that
+  fixes a user-visible bug or a CVE in a shipped library may need one.
+- No entry for a fix to a regression or feature that another PR introduced in
+  the same cycle, since users of the previous release never saw it. Check the
+  merge date of the PR that introduced the problem. A regression from an
+  earlier release does get an entry.
+- Authors often mark "no release notes required" for changes users do notice,
+  such as fixes for failures or performance gains. Judge independently.
+- Mark `✅ docs` when the needed documentation is merged or none is needed.
+  Leave `❌ docs` while it is missing and add a pending question so
+  maintainers can chase it. The `needs-docs` label flags some of these.
+- When unsure about the effect, the breaking status, or the section, still
+  write the best entry and add a pending question rather than leaving the PR
+  open. Leave `❌ rn` only when the PR genuinely cannot be assessed. Ask the
+  user before commenting on the upstream PR.
 
 ### Sections
 
@@ -392,8 +463,9 @@ Include the milestone link only when the milestone exists on GitHub. Each
 entry keeps the PR title and any resolved issues from the script's `-a`
 option until just before the merge, as described in phase 3. Track pull
 request numbers only, not issue numbers, since the list mirrors what
-merged. Follow-up items go into "Additional context and related issues", for
-example:
+merged. Open questions go into a `### Pending` list under "Additional context
+and related issues", never into PR comments, so the body stays the single
+record of the cycle. `rn.py pending` maintains the list, for example:
 
 ```markdown
 ### Pending
@@ -401,6 +473,8 @@ example:
 * #30312 - missing docs for `iceberg.new-property`, requested from the author
 * #30340 - unclear whether the UI link fix is user-visible
 ```
+
+Resolve each item with the user during review, then remove it from the list.
 
 ## Out of scope
 
