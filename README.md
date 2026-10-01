@@ -6,6 +6,30 @@ tools from Manfred Moser.
 All material in this repo is created, tested, and maintained by myself and for
 myself. 
 
+## Install or remove everything
+
+To install everything this repo provides — the canonical global instructions
+file and every skill — into each supported AI tool at once:
+
+```bash
+cd getting-stuff-done
+./install-all.sh
+```
+
+It is a thin orchestrator over `install-instructions.sh` and `install-skills.sh`,
+idempotent in the same way. For a subset, run those scripts directly, as the
+sections below describe. To remove the symlinks it created:
+
+```bash
+./uninstall-all.sh
+```
+
+The uninstall is safe by design: it removes a destination only when it is a
+symlink pointing back into this repo, and leaves real files and symlinks to
+anywhere else untouched. Both scripts read their per-tool destination paths from
+the shared `tool-targets.sh`, the same source of truth the install scripts use,
+so they never drift apart.
+
 ## Skills
 
 The [`skills/`](./skills) directory holds reusable agent skills in the open

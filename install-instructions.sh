@@ -15,22 +15,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SRC="$SCRIPT_DIR/instructions/AGENTS.md"
 
-# Tool -> user-level instructions file. One entry per destination. Tools whose
-# global instructions live in app settings rather than a file (Cursor user
-# rules, GitHub Copilot personal instructions) have no entry; paste the same
-# text there by hand. To support another tool, add a single
-# "name:$HOME/path/INSTRUCTIONS_FILE" entry below.
-#
-# The Gemini family (Gemini CLI and Antigravity) reads AGENTS.md under
-# ~/.gemini as cross-tool global rules (v1.20.3+), so a single entry covers
-# both. Antigravity also reads ~/.gemini/GEMINI.md, but pointing it at the same
-# file would just make Antigravity load identical rules twice.
-TOOLS=(
-  "claude:$HOME/.claude/CLAUDE.md"
-  "codex:$HOME/.codex/AGENTS.md"
-  "opencode:$HOME/.config/opencode/AGENTS.md"
-  "gemini:$HOME/.gemini/AGENTS.md"
-)
+# The destination list lives in tool-targets.sh so the install and uninstall
+# scripts share one source of truth. Add or change a tool there, not here.
+# shellcheck source=tool-targets.sh
+source "$SCRIPT_DIR/tool-targets.sh"
 
 # Create or refresh a single symlink. Refreshes an existing symlink but never
 # clobbers a real file the tool or user may have placed there.
@@ -46,7 +34,7 @@ link_file() {
   echo "  link  $dest"
 }
 
-for entry in "${TOOLS[@]}"; do
+for entry in "${INSTRUCTION_TARGETS[@]}"; do
   name="${entry%%:*}"
   dest="${entry#*:}"
   echo "$name -> $dest"

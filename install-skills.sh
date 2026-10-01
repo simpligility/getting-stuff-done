@@ -27,16 +27,10 @@ SKILLS_SRC="$SCRIPT_DIR/skills"
 PATTERNS=("$@")
 [ ${#PATTERNS[@]} -gt 0 ] || PATTERNS=("*")
 
-# Tool -> user-level skills directory. One entry per destination; Antigravity
-# gets two because its global path changed across versions and we cover both.
-TOOLS=(
-  "claude:$HOME/.claude/skills"
-  "opencode:$HOME/.config/opencode/skills"
-  "codex:$HOME/.codex/skills"
-  "copilot:$HOME/.copilot/skills"
-  "antigravity:$HOME/.gemini/antigravity/skills"
-  "antigravity:$HOME/.gemini/config/skills"
-)
+# The destination list lives in tool-targets.sh so the install and uninstall
+# scripts share one source of truth. Add or change a tool there, not here.
+# shellcheck source=tool-targets.sh
+source "$SCRIPT_DIR/tool-targets.sh"
 
 # Create or refresh a single skill symlink. Refreshes an existing symlink, and
 # aborts on anything that is not a symlink rather than clobbering a real file or
@@ -54,7 +48,7 @@ link_skill() {
   echo "  link  $dest"
 }
 
-for entry in "${TOOLS[@]}"; do
+for entry in "${SKILL_TARGETS[@]}"; do
   name="${entry%%:*}"
   dir="${entry#*:}"
   echo "$name -> $dir"
