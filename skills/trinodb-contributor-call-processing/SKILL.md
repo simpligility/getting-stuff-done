@@ -49,6 +49,59 @@ recording. Once they are final, copy and paste the content into the YouTube
 video description and the wiki page in the browser. Do not clone the wiki or
 push either file from the command line.
 
+### Transcription
+
+Analyzing the video requires a timestamped transcript. Keep all downloaded and
+generated files in a scratch directory, not next to the output files.
+
+First, try the YouTube captions with `yt-dlp`. This also prints the video title
+and duration:
+
+```
+yt-dlp --skip-download --write-auto-subs --write-subs --sub-langs "en.*" \
+  --sub-format vtt --print "%(title)s | %(duration_string)s" --no-simulate \
+  -o transcript "{{url}}"
+```
+
+Automatic captions are usually missing for a few hours after the upload. If
+`yt-dlp` reports that there are no subtitles, transcribe the audio locally with
+whisper-cpp instead. It requires `ffmpeg` and `whisper-cpp` from Homebrew and
+the large-v3-turbo model of about 1.6 GB. Confirm with the user before
+installing anything that is missing:
+
+```
+brew install ffmpeg whisper-cpp
+mkdir -p ~/.cache/whisper-cpp
+curl -L -o ~/.cache/whisper-cpp/ggml-large-v3-turbo.bin \
+  https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin
+```
+
+Download the audio, convert it to 16 kHz mono, and transcribe it. Pass the
+expected attendee names and project terms with `--prompt` to improve the
+spelling of names:
+
+```
+yt-dlp -f bestaudio -x --audio-format wav -o "audio.%(ext)s" "{{url}}"
+ffmpeg -i audio.wav -ar 16000 -ac 1 audio16.wav
+whisper-cli -m ~/.cache/whisper-cpp/ggml-large-v3-turbo.bin -f audio16.wav \
+  -l en -ovtt -of transcript \
+  --prompt "Trino contributor call. Manfred Moser, Dain Sundstrom, ..."
+```
+
+On Apple silicon, whisper-cpp transcribes a one-hour call in about two minutes.
+The timestamps are accurate enough for the topic list. Expect garbled product
+names, people's names, and occasional wrong words, so verify facts against the
+draft notes, the linked pull requests, and the wiki. The transcript has no
+speaker labels, so infer speakers from context and flag any attribution that
+is uncertain.
+
+Condense the VTT file to one timestamped line per cue before reading it:
+
+```
+awk '/-->/{t=substr($1,1,8); next} NF && !/WEBVTT/{print t" "$0}' \
+  transcript.vtt > transcript.txt
+```
+
 ### YouTube description
 
 Create a text file named `youtube-description.txt` with a list of the topics and
@@ -112,7 +165,7 @@ role:
 ```
 
 Attendees introduce themselves and are announced by their full name, and the
-automatic captions often garble those names, so match what you hear against the
+transcript often garbles those names, so match what you hear against the
 full names in the following tables and use the matching GitHub account.
 
 Trino maintainers are frequent attendees:
@@ -155,11 +208,15 @@ Other contributors who attended recent calls:
 
 | Name | GitHub |
 | --- | --- |
+| Ben Breakstone | [bbreak](https://github.com/bbreak) |
 | Kent Murra | [kmurra](https://github.com/kmurra) |
+| Peter Kosztolanyi | [koszti](https://github.com/koszti) |
 | Nitesh Yadav | [niteshy](https://github.com/niteshy) |
 | Omer Raifler | [OmerRaifler](https://github.com/OmerRaifler) |
 | Oussama Ben Nasr | [oucemabennasr](https://github.com/oucemabennasr) |
+| Roey Ogen | [RoeyoOgen](https://github.com/RoeyoOgen) |
 | Sajumon Joseph | [sajjoseph](https://github.com/sajjoseph) |
+| Tony Baeg | [tbaeg](https://github.com/tbaeg) |
 
 These tables are references for matching names heard in the video to GitHub
 accounts. Only list people who actually attended the call.
