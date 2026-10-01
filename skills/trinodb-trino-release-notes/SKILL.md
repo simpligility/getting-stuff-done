@@ -92,7 +92,7 @@ for the next version.
     date:
 
     ```bash
-    <skill-dir>/scripts/get_merged_prs.sh <yyyy-mm-dd>
+    <skill-dir>/scripts/get_merged_prs.sh -a <yyyy-mm-dd>
     ```
 
     The script lists PRs merged into `master` on or after the date, grouped by
@@ -142,10 +142,12 @@ the release is ready.
     - Append new entries under their UTC date, add new date headings as
       needed, and keep the headings in chronological order with the most recent
       at the bottom.
-    - Mark new entries `❌ rn ❌ docs`.
+    - Mark new entries `❌ rn ❌ docs`, and keep the PR title and resolved
+      issues that the `-a` option appends.
 7.  **Triage and write entries**: Work through every `❌` entry. Run the script
-    with `-a` for a working view with titles, component labels, and closing
-    issues. For each PR, read its description, the suggested release note in
+    with `-l` for a local working view that also shows the component labels,
+    but never paste that output into the PR body. For each PR, read its
+    description, the suggested release note in
     the "Release notes" section of the PR template, and the diff where the
     effect is unclear.
     - Write or refine the entry following the
@@ -183,8 +185,16 @@ days before the release.
 5.  Build the documentation to check the syntax, at least with the fast
     Docker-based `docs/build`, and fix any warnings from the new file.
 6.  Confirm every tracking entry is `✅ rn ✅ docs` or has an agreed exception
-    noted in the PR body, then request review from the release manager. The
-    release manager merges the PR as part of the release.
+    noted in the PR body.
+7.  Strip the titles from the tracking list just before the merge, so the
+    final body keeps only the numbers and marks:
+
+    ```bash
+    sed -E 's/^(\* #[0-9]+ [✅❌] rn [✅❌] docs) - .*/\1/' body.md > final.md
+    ```
+
+    Update the PR body with the result, then request review from the release
+    manager. The release manager merges the PR as part of the release.
 
 ## Writing entries
 
@@ -200,11 +210,26 @@ template can be updated.
 
 - Component labels on the PR, such as `iceberg`, `hive`, `delta-lake`, or `ui`,
   hint at the section, but verify against the diff.
-- A change in shared code appears in every affected section with the same
-  wording. Changes to the shared file system, S3, Parquet, or ORC code
-  typically apply to the Delta Lake, Hive, Hudi, Iceberg, and Lakehouse
-  connectors. The Lakehouse connector wraps the other lakehouse connectors, so
-  it usually repeats their entries.
+- Duplicate entries on purpose. The release notes have a user focus, and many
+  users read only the section for the connector or plugin they run. When one
+  change affects several connectors, add the same entry, with the same wording
+  and the same issue reference, to every affected section. Never consolidate
+  them into a single entry under General or one connector, and never write
+  "see the Hive connector" or similar cross-references.
+- Look for these shared-code changes in particular, since one PR often reaches
+  many sections:
+  - Object storage and the shared file system support, such as S3, Azure
+    Storage, Google Cloud Storage, HDFS, and the related `s3.*`, `azure.*`, and
+    `gcs.*` configuration properties.
+  - File formats, such as Parquet, ORC, Avro, and text formats.
+  - The Hive metastore, AWS Glue, and other shared catalog code.
+  - Base JDBC code, which affects every JDBC-based connector, such as MySQL,
+    PostgreSQL, Oracle, and SQL Server.
+- The Delta Lake, Hive, Hudi, Iceberg, and Lakehouse connectors share most of
+  the object storage and file format code. The Lakehouse connector wraps the
+  other lakehouse connectors, so it repeats their entries as well.
+- To find every affected section, check which modules depend on the changed
+  code, not only the component labels on the PR.
 - Changes to the engine, SQL support, functions, and the coordinator go into
   General. Authentication and access control go into Security.
 
@@ -360,10 +385,13 @@ All dates in this tracking list use UTC and are based on PR merge timestamps.
 
 ## <d Mmm yyyy>
 
-* #<PR_NUMBER> ❌ rn ❌ docs
+* #<PR_NUMBER> ❌ rn ❌ docs - <PR title> (resolves #<ISSUE_NUMBER>)
 ```
 
-Track pull request numbers only, not issue numbers, since the list mirrors what
+Include the milestone link only when the milestone exists on GitHub. Each
+entry keeps the PR title and any resolved issues from the script's `-a`
+option until just before the merge, as described in phase 3. Track pull
+request numbers only, not issue numbers, since the list mirrors what
 merged. Follow-up items go into "Additional context and related issues", for
 example:
 
