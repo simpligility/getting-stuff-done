@@ -53,8 +53,28 @@ commit style that does not follow Chris Beams, not only conventional commits.
 
 #### Detecting a Chainguard repo
 
-Chainguard repos use conventional commits. Treat a repo as a Chainguard repo
-when `chainguard` or `wolfi`, case-insensitive, appears in any of the following:
+Chainguard repos use conventional commits. A repo counts as a Chainguard repo
+when either of the following holds.
+
+First, the repo is owned by, or is a fork whose upstream is owned by, one of
+Chainguard's GitHub organizations:
+
+- `chainguard-dev`
+- `chainguard-forks`
+- `chainguard-demo`
+- `wolfi-dev`
+- `driftlessaf`
+
+This list is authoritative but not necessarily complete — add organizations as
+they come up. The owning organization decides, so the rule applies even when
+neither `chainguard` nor `wolfi` appears in the repo name, as with
+`driftlessaf`. A fork often configures only `origin` pointing at the personal
+fork, so the upstream organization never appears in `git remote -v`. Check the
+fork parent with `gh repo view <owner>/<repo> --json parent` to find the real
+upstream owner.
+
+Second, as a fallback heuristic, treat a repo as a Chainguard repo when
+`chainguard` or `wolfi`, case-insensitive, appears in any of the following:
 
 - the repository name or its local directory
 - the name of any configured git remote, for example a remote literally named
@@ -62,13 +82,9 @@ when `chainguard` or `wolfi`, case-insensitive, appears in any of the following:
 - the URL of any remote, including `origin`, `upstream`, and the source repo a
   fork was created from
 
-In practice, check `git remote -v` and the repo path. If `chainguard` or
-`wolfi` shows up anywhere in that output, use conventional commits. Wolfi is
-Chainguard's Linux distribution, so its repos follow the same convention — this
-includes the `wolfi-dev` org.
-
-**Exception:** `chainguard-progress` is not a Chainguard repo. It is a local
-folder Manfred manages with git and uses Chris Beams, despite the name match.
+This fallback catches personal repos whose name matches, such as
+`mosabua/chainguard-libraries-{java,javascript,python}`. Wolfi is Chainguard's
+Linux distribution, so its repos follow the same convention.
 
 ### Body wrapping exceptions
 
@@ -113,8 +129,7 @@ overrides an org-wide row.
 
 | Repo / organization | Style |
 |---|---|
-| Chainguard and Wolfi repos | Conventional commits — see [Detecting a Chainguard repo](#detecting-a-chainguard-repo). Covers repos under the Chainguard org, the `wolfi-dev` org, and personal repos whose name matches, such as `mosabua/chainguard-libraries-{java,javascript,python}` |
-| mosabua/chainguard-progress | Chris Beams — local folder Manfred manages with git, not a real Chainguard repo; existing history uses `Add weekly recap as of …` |
+| Chainguard and Wolfi repos | Conventional commits — see [Detecting a Chainguard repo](#detecting-a-chainguard-repo). Covers repos owned by or forked from any Chainguard organization, including `chainguard-dev`, `chainguard-forks`, `chainguard-demo`, `wolfi-dev`, and `driftlessaf`, plus personal repos whose name matches, such as `mosabua/chainguard-libraries-{java,javascript,python}` |
 | Trino, Trino Gateway, Airlift | Chris Beams. For Trino project work, do not add `Co-authored-by:` or `Assisted-by:` footers to attribute AI tooling. |
 | simpligility repos | Chris Beams |
 | Anything else | Chris Beams by default; if the repo clearly uses another convention, inspect history and `CONTRIBUTING` and follow that |
@@ -324,6 +339,17 @@ git co master
 git pull upstream master
 git push
 ```
+
+When a fork has no `upstream` remote configured, add one rather than working
+without it. Find the parent repository with `gh repo view --json parent`, then
+point `upstream` at it:
+
+```
+git remote add upstream git@github.com:<parent-owner>/<repo>.git
+```
+
+This keeps sync, rebase, and PR workflows consistent, and it exposes the
+upstream owner needed to detect a Chainguard repo.
 
 ## PR preferences
 
