@@ -21,7 +21,7 @@ description: >-
 > first for full context, or proceed anyway?" Once `manfred` is active (or the
 > user confirms), continue without asking again.
 
-Manfred tracks his open source work in
+Manfred tracks his volunteer open source work in
 [simpligility/contributions](https://github.com/simpligility/contributions), a
 public repository that holds no code. Every contribution is an issue, and the
 issues are the evidence base for
@@ -50,8 +50,15 @@ those README links into a 404 for the sponsors they are meant to serve.
 
 ## When to file a tracking issue
 
-File an issue for a unit of work that stands on its own and that Manfred would
-want a sponsor to see:
+The tracker records only Manfred's volunteer open source work — the unpaid
+contributions that sponsorship is meant to support. Work he does as part of his
+paid job, such as his DevRel role at Chainguard, does not belong here even when
+it ships as open source in a public repository. Sponsors fund the volunteer
+effort, so filing job-funded work would misrepresent what they are backing. When
+a contribution is clearly job work, do not file it, and do not suggest filing it.
+
+File an issue for a unit of volunteer work that stands on its own and that
+Manfred would want a sponsor to see:
 
 - A merged or open pull request that carries real work, such as a dependency
   upgrade, a fix, or a new ecosystem entry
