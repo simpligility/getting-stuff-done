@@ -249,6 +249,7 @@ than only reading its `SKILL.md` file:
 | Alternative Trino binary packages — RPM, custom tarball, custom container image — and version bumps | `trinodb-trino-packages` |
 | Building and testing the Trino Gateway repository | `trinodb-trino-gateway-development` |
 | Trino Gateway release notes pull requests | `trinodb-trino-gateway-release-notes` |
+| Trino release notes pull requests | `trinodb-trino-release-notes` |
 | Processing Trino contributor call recordings from YouTube | `trinodb-contributor-call-processing` |
 | Content and changes on the trino.io website | `trinodb-website` |
 | Updating or debugging the MinIO test container image in core Trino | `trinodb-minio` |

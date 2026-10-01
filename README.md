@@ -94,6 +94,7 @@ General skills:
 | [`trinodb-trino-packages`](./skills/trinodb-trino-packages) | Update a `trino-packages` clone to a newer Trino version. |
 | [`trinodb-trino-gateway-development`](./skills/trinodb-trino-gateway-development) | Build and test Trino Gateway, including the Testcontainers setup and database behavior. |
 | [`trinodb-trino-gateway-release-notes`](./skills/trinodb-trino-gateway-release-notes) | Create and maintain Trino Gateway release notes pull requests. |
+| [`trinodb-trino-release-notes`](./skills/trinodb-trino-release-notes) | Create and maintain Trino release notes pull requests. |
 | [`trinodb-contributor-call-processing`](./skills/trinodb-contributor-call-processing) | Turn a Trino contributor call recording into topics and a wiki summary. |
 | [`trinodb-website`](./skills/trinodb-website) | Add and edit content on the trino.io website, including the Jekyll setup and blog post conventions. |
 | [`trinodb-javascript`](./skills/trinodb-javascript) | JavaScript and TypeScript work across trino-query-ui, the Trino web UI, and trino-js-client. |
