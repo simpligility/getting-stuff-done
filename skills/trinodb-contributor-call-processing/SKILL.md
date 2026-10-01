@@ -104,6 +104,12 @@ awk '/-->/{t=substr($1,1,8); next} NF && !/WEBVTT/{print t" "$0}' \
   transcript.vtt > transcript.txt
 ```
 
+Keep the raw full transcript next to the output files as
+`tcc-{{compactdate}}-transcript.vtt`, so it stays available for later
+refinement and for comparing transcription sources. The YouTube captions
+download as `transcript.en.vtt` or similar, the whisper-cpp output as
+`transcript.vtt`. Delete the remaining scratch files such as the audio.
+
 ### YouTube description
 
 Create a text file named `tcc-{{compactdate}}-youtube-description.txt` with a
