@@ -26,9 +26,32 @@ meeting and to create a new section if it does not exist. Also remember the
 date without dashes in the format YYYYMMDD as {{compactdate}} for the names of
 the output files.
 
+Keep all files for the call in a folder named `tcc-{{compactdate}}` in the
+current working directory, and create it if it does not exist. The folder holds
+the draft notes, both raw transcripts, the output files from each transcript,
+and the merged final output files:
+
+| File | Content |
+| --- | --- |
+| `tcc-{{compactdate}}.md` | Draft notes |
+| `tcc-{{compactdate}}.png` | Screenshot for the run of show, the video edit, and the YouTube thumbnail |
+| `tcc-{{compactdate}}-transcript-whisper.vtt` | Raw whisper-cpp transcript |
+| `tcc-{{compactdate}}-transcript-youtube.vtt` | Raw YouTube captions |
+| `tcc-{{compactdate}}-whisper-minutes.md` | Minutes from the whisper-cpp transcript |
+| `tcc-{{compactdate}}-whisper-youtube-description.txt` | Description from the whisper-cpp transcript |
+| `tcc-{{compactdate}}-youtube-minutes.md` | Minutes from the YouTube captions |
+| `tcc-{{compactdate}}-youtube-youtube-description.txt` | Description from the YouTube captions |
+| `tcc-{{compactdate}}-final-minutes.md` | Merged final minutes |
+| `tcc-{{compactdate}}-final-youtube-description.txt` | Merged final description |
+
+The screenshot belongs to the user and is not part of the processing. Leave it
+in place.
+
 Ask the user for the path to the local file with the rough meeting notes
-markdown file and remember it as {{draftnotes}}. If there is no file, proceed
-without it.
+markdown file and remember it as {{draftnotes}}. Suggest
+`tcc-{{compactdate}}/tcc-{{compactdate}}.md` as the default, and move a file
+from another location into the folder after confirming with the user. If there
+is no file, proceed without it.
 
 Ingest the meeting notes markdown file.
 
@@ -45,31 +68,70 @@ sections that discuss different topics, and a short description for each topic.
 Use the content from the {{draftnotes}} as suggestions and further details for
 the topics. Also take note of the title of the video as {{title}}.
 
-Both output files are working documents that stay local. Expect several passes
-over them to refine the wording and to verify each timestamp against the
+Run the analysis twice, once for each of the two transcripts described in the
+following section, write the output files for each transcript, and merge the
+results into the final output files. Each source catches details and
+corrects errors that the other misses, so the merged result is clearly better
+than either one alone.
+
+The final output files are working documents that stay local. Expect several
+passes over them to refine the wording and to verify each timestamp against the
 recording. Once they are final, copy and paste the content into the YouTube
 video description and the wiki page in the browser. Do not clone the wiki or
 push either file from the command line.
 
 ### Transcription
 
-Analyzing the video requires a timestamped transcript. Keep all downloaded and
-generated files in a scratch directory, not next to the output files.
+Analyzing the video requires timestamped transcripts from two sources, the
+YouTube automatic captions and a local whisper-cpp transcription. Keep all
+downloaded and generated files in a scratch directory, not next to the output
+files.
 
-First, try the YouTube captions with `yt-dlp`. This also prints the video title
+Automatic captions are usually missing for a few hours after the upload. If
+only one transcript is available, create the output files for that transcript,
+copy them to the final output files, and tell the user to run the second pass
+once the other transcript is available. The second pass writes the output files
+for the other transcript and merges them into the existing final output files
+as described in [Compare and merge](#compare-and-merge), so it keeps any manual
+edits.
+
+#### YouTube captions
+
+Download the automatic captions with `yt-dlp`. This also prints the video title
 and duration:
 
 ```
-yt-dlp --skip-download --write-auto-subs --write-subs --sub-langs "en.*" \
+yt-dlp --skip-download --write-auto-subs --sub-langs "en-orig" \
   --sub-format vtt --print "%(title)s | %(duration_string)s" --no-simulate \
   -o transcript "{{url}}"
 ```
 
-Automatic captions are usually missing for a few hours after the upload. If
-`yt-dlp` reports that there are no subtitles, transcribe the audio locally with
-whisper-cpp instead. It requires `ffmpeg` and `whisper-cpp` from Homebrew and
-the large-v3-turbo model of about 1.6 GB. Confirm with the user before
-installing anything that is missing:
+Request the `en-orig` track. The `en` track is the same speech recognition
+output, but downloading it often fails with `HTTP Error 429: Too Many
+Requests`. If `yt-dlp` reports that there are no subtitles, the captions are not
+ready yet.
+
+The automatic captions repeat each line across consecutive cues and contain
+inline timing tags. Condense them to one timestamped line per unique text:
+
+```
+awk '/-->/{t=substr($1,1,8); next}
+  NF && !/^(WEBVTT|Kind:|Language:)/ {
+    gsub(/<[^>]*>/, ""); gsub(/&gt;/, ">")
+    if (!($0 in seen)) { seen[$0] = 1; print t " " $0 }
+  }' transcript.en-orig.vtt > youtube.txt
+```
+
+The captions mark each change of speaker with `>>`, which makes them the
+better source for attributing statements to people. They garble names, project
+terms, and numbers more than whisper-cpp does, and their timestamps at the
+start of the call can run several seconds late.
+
+#### Local whisper-cpp transcript
+
+Transcribe the audio locally with whisper-cpp. It requires `ffmpeg` and
+`whisper-cpp` from Homebrew and the large-v3-turbo model of about 1.6 GB.
+Confirm with the user before installing anything that is missing:
 
 ```
 brew install ffmpeg whisper-cpp
@@ -91,29 +153,52 @@ whisper-cli -m ~/.cache/whisper-cpp/ggml-large-v3-turbo.bin -f audio16.wav \
 ```
 
 On Apple silicon, whisper-cpp transcribes a one-hour call in about two minutes.
-The timestamps are accurate enough for the topic list. Expect garbled product
-names, people's names, and occasional wrong words, so verify facts against the
-draft notes, the linked pull requests, and the wiki. The transcript has no
-speaker labels, so infer speakers from context and flag any attribution that
-is uncertain.
-
 Condense the VTT file to one timestamped line per cue before reading it:
 
 ```
 awk '/-->/{t=substr($1,1,8); next} NF && !/WEBVTT/{print t" "$0}' \
-  transcript.vtt > transcript.txt
+  transcript.vtt > whisper.txt
 ```
 
-Keep the raw full transcript next to the output files as
-`tcc-{{compactdate}}-transcript.vtt`, so it stays available for later
-refinement and for comparing transcription sources. The YouTube captions
-download as `transcript.en.vtt` or similar, the whisper-cpp output as
-`transcript.vtt`. Delete the remaining scratch files such as the audio.
+The whisper-cpp transcript is the better source for names, project terms,
+numbers, and timestamps. It has no speaker labels, and during crosstalk it
+sometimes squashes several cues into a few seconds.
+
+#### Compare and merge
+
+Analyze each transcript on its own first and write its output files. Do not
+edit these per-transcript files afterwards, so they stay a record of what each
+source produced. Then compare the two results topic by topic and merge them into
+the final output files. When no final output files exist yet, start from a copy
+of the whisper-cpp output files:
+
+* Timestamps: use the whisper-cpp timestamps. Where whisper-cpp squashed cues
+  together, check the YouTube timestamps instead.
+* Speakers: use the `>>` markers in the YouTube captions to decide who said
+  what. Flag any attribution that is still uncertain.
+* Names, terms, and numbers: prefer the whisper-cpp spelling. Where the two
+  transcripts disagree on a fact such as a version or a pull request number,
+  verify it against the linked pull requests, the releases on GitHub, the draft
+  notes, and the wiki.
+* Content: add details and topics that only one transcript picked up, for
+  example a short side remark that the other transcript garbled.
+
+When the final output files already exist from an earlier pass, merge into them
+rather than replacing them, since they may contain the user's manual edits.
+Summarize what the comparison found and changed, and ask the user to decide on
+uncertain speakers, ambiguous attendees, and whether to include minor details
+before finalizing.
+
+Keep both raw transcripts in the call folder as
+`tcc-{{compactdate}}-transcript-youtube.vtt` and
+`tcc-{{compactdate}}-transcript-whisper.vtt`, so they stay available for later
+refinement. Delete the remaining scratch files such as the audio.
 
 ### YouTube description
 
-Create a text file named `tcc-{{compactdate}}-youtube-description.txt` with a
-list of the topics and their start time formatted in minutes and seconds:
+Create a text file named `tcc-{{compactdate}}-final-youtube-description.txt`,
+or the per-transcript variant from the table of files, with a list of the topics
+and their start time formatted in minutes and seconds:
 
 ```
 - mm:ss topic one
@@ -135,9 +220,11 @@ initiatives.
 
 Use the same information as stored in the YouTube description you just created.
 
-Create a second file named `tcc-{{compactdate}}-minutes.md` using markdown
-formatting for the content with a 80 character hard wrap for paragraphs. Use the following
-structure and insert data from analyzing the minutes and the video:
+Create a second file named `tcc-{{compactdate}}-final-minutes.md`, or the
+per-transcript variant from the table of files, using markdown
+formatting for the content with a 80 character hard wrap for paragraphs. Use
+the following structure and insert data from analyzing the minutes and the
+video:
 
 ```
 # <video title>
