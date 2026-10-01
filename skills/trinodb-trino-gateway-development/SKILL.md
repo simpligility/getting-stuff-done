@@ -1,5 +1,5 @@
 ---
-name: trinodb-gateway-development
+name: trinodb-trino-gateway-development
 description: Development context for the trinodb/trino-gateway repository — the Maven build and what it costs, the Testcontainers setup and the shared container factories, the database behavior that test assertions depend on, and the startup configuration validation that rejects unknown properties. Child skill of the trinodb family. Load it before building, testing, or changing tests in a trino-gateway clone.
 ---
 
@@ -12,7 +12,7 @@ skill first for project-wide facts such as the contribution workflow and the
 commit message conventions.
 
 This skill covers building and testing the repository. For release notes work,
-use the `trinodb-gateway-release-notes` skill instead.
+use the `trinodb-trino-gateway-release-notes` skill instead.
 
 ## Modules
 

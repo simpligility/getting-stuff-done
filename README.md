@@ -67,9 +67,9 @@ General skills:
 | [`trinodb-java-code-style`](./skills/trinodb-java-code-style) | Java code style for Trino, Airlift, and projects using airbase, split by what the build enforces. |
 | [`trinodb-dependency-update`](./skills/trinodb-dependency-update) | Update dependencies and tooling in Java-based Trino projects with a local Renovate scan. |
 | [`trinodb-minio`](./skills/trinodb-minio) | Update and troubleshoot the MinIO test container image in trino and aws-proxy. |
-| [`trinodb-packages-update`](./skills/trinodb-packages-update) | Update a `trino-packages` clone to a newer Trino version. |
-| [`trinodb-gateway-development`](./skills/trinodb-gateway-development) | Build and test Trino Gateway, including the Testcontainers setup and database behavior. |
-| [`trinodb-gateway-release-notes`](./skills/trinodb-gateway-release-notes) | Create and maintain Trino Gateway release notes pull requests. |
+| [`trinodb-trino-packages`](./skills/trinodb-trino-packages) | Update a `trino-packages` clone to a newer Trino version. |
+| [`trinodb-trino-gateway-development`](./skills/trinodb-trino-gateway-development) | Build and test Trino Gateway, including the Testcontainers setup and database behavior. |
+| [`trinodb-trino-gateway-release-notes`](./skills/trinodb-trino-gateway-release-notes) | Create and maintain Trino Gateway release notes pull requests. |
 | [`trinodb-contributor-call-processing`](./skills/trinodb-contributor-call-processing) | Turn a Trino contributor call recording into topics and a wiki summary. |
 | [`trinodb-website`](./skills/trinodb-website) | Add and edit content on the trino.io website, including the Jekyll setup and blog post conventions. |
 | [`trinodb-javascript`](./skills/trinodb-javascript) | JavaScript and TypeScript work across trino-query-ui, the Trino web UI, and trino-js-client. |
@@ -119,7 +119,7 @@ directly from any public GitHub repository. Install a single skill with the
 `owner/repo@skill` shorthand:
 
 ```bash
-npx skills add simpligility/getting-stuff-done@trinodb-packages-update
+npx skills add simpligility/getting-stuff-done@trinodb-trino-packages
 ```
 
 Install every skill in the repository at once by pointing at the repository:

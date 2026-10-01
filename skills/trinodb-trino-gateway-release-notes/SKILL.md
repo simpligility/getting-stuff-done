@@ -1,5 +1,5 @@
 ---
-name: trinodb-gateway-release-notes
+name: trinodb-trino-gateway-release-notes
 description: Create and maintain release notes pull requests for Trino Gateway. Use this skill in a local clone of a fork of trino-gateway to manage the release notes PR and docs/release-notes.md, along with the matching Helm chart release PR in trinodb/charts. Not for cutting or tagging the release itself, building or publishing artifacts, or writing release notes for other Trino projects such as Trino or Trino Python.
 ---
 

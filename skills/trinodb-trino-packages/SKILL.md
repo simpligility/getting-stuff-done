@@ -1,5 +1,5 @@
 ---
-name: trinodb-packages-update
+name: trinodb-trino-packages
 description: Update a local clone of a trino-packages fork to a newer Trino version. Covers the custom tarball, RPM, and custom Docker image packages, the per-version upstream checks, the build and verification steps, and the commit and README conventions. Use this when bumping trino-packages to a newer Trino release.
 ---
 

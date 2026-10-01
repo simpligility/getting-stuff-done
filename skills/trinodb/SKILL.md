@@ -246,9 +246,9 @@ than only reading its `SKILL.md` file:
 |---|---|
 | Java code style for Trino, Airlift, and airbase-based projects | `trinodb-java-code-style` |
 | Dependency updates in Trino Java projects | `trinodb-dependency-update` |
-| Alternative Trino binary packages — RPM, custom tarball, custom container image — and version bumps | `trinodb-packages-update` |
-| Building and testing the Trino Gateway repository | `trinodb-gateway-development` |
-| Trino Gateway release notes pull requests | `trinodb-gateway-release-notes` |
+| Alternative Trino binary packages — RPM, custom tarball, custom container image — and version bumps | `trinodb-trino-packages` |
+| Building and testing the Trino Gateway repository | `trinodb-trino-gateway-development` |
+| Trino Gateway release notes pull requests | `trinodb-trino-gateway-release-notes` |
 | Processing Trino contributor call recordings from YouTube | `trinodb-contributor-call-processing` |
 | Content and changes on the trino.io website | `trinodb-website` |
 | Updating or debugging the MinIO test container image in core Trino | `trinodb-minio` |
