@@ -22,7 +22,9 @@ it as {{url}}.
 
 Ask the user for the date of the meeting in the format YYYY-MM-DD and remember
 it as {{date}}. This will be used to locate the section in the wiki for the
-meeting and to create a new section if it does not exist.
+meeting and to create a new section if it does not exist. Also remember the
+date without dashes in the format YYYYMMDD as {{compactdate}} for the names of
+the output files.
 
 Ask the user for the path to the local file with the rough meeting notes
 markdown file and remember it as {{draftnotes}}. If there is no file, proceed
@@ -104,8 +106,8 @@ awk '/-->/{t=substr($1,1,8); next} NF && !/WEBVTT/{print t" "$0}' \
 
 ### YouTube description
 
-Create a text file named `youtube-description.txt` with a list of the topics and
-their start time formatted in minutes and seconds:
+Create a text file named `tcc-{{compactdate}}-youtube-description.txt` with a
+list of the topics and their start time formatted in minutes and seconds:
 
 ```
 - mm:ss topic one
@@ -127,8 +129,8 @@ initiatives.
 
 Use the same information as stored in the YouTube description you just created.
 
-Create a second file named `minutes.md` using markdown formatting for the
-content with a 80 character hard wrap for paragraphs. Use the following
+Create a second file named `tcc-{{compactdate}}-minutes.md` using markdown
+formatting for the content with a 80 character hard wrap for paragraphs. Use the following
 structure and insert data from analyzing the minutes and the video:
 
 ```
