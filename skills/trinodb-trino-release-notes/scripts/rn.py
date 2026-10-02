@@ -3,27 +3,34 @@
 
 Keeps the release notes entries as structured data, renders the release notes
 file from the authoritative template, and maintains the tracking list and the
-pending questions in the PR body.
+pending questions on the PR.
+
+GitHub links only the first 500 references in a body or comment, so the
+tracking list lives in tracking comments of whole days with at least
+TRACKING_CHUNK entries each, the pending questions in a single Pending comment,
+and the PR body links to the tracking comments.
 
 Run it from the root of the trino clone, on the release notes branch.
 
 Environment:
   RN_WORK     work directory, outside the repository, holding entries.json,
-              body.md, batch dumps, and proposals
+              body.md, tracking.md, pending.md, batch dumps, and proposals
   RN_VERSION  release version, for example 484
   RN_PR       number of the release notes pull request, needed for publish
   RN_DATE     release date for the heading, defaults to "dd MMM <year>"
 
 Commands:
   render                      write release-<version>.md from entries.json
-  mark rn|docs|both <n>...    flip tracking marks to ✅ in body.md
-  pending <text>              add an item to the "### Pending" list in body.md
+  mark rn|docs|both <n>...    flip tracking marks to ✅ in tracking.md
+  pending <text>              add an item to the Pending comment in pending.md
   dump <from> <to> [<n>...]   print details of PRs merged in [from, to), UTC
                               dates as yyyy-mm-dd, skipping the given numbers
   check <batch>               validate proposal-<batch>.json and print it
   edit <batch>                apply edit rules from stdin to a proposal
   apply <batch>               add a validated proposal and render
-  publish                     amend the commit, force-push, and update the PR
+  publish                     amend the commit, force-push, create or update the
+                              tracking and Pending comments, and update the PR
+                              body with the links to the tracking comments
 
 entries.json is a list of {"section", "group", "text"}. The group orders
 entries within a section: 1 Add or Allow, 2 other behavior changes and most
@@ -43,6 +50,12 @@ if not WORK or not VERSION:
     sys.exit('set RN_WORK and RN_VERSION')
 ENTRIES = os.path.join(WORK, 'entries.json')
 BODY = os.path.join(WORK, 'body.md')
+TRACKING_FILE = os.path.join(WORK, 'tracking.md')
+TRACKING_CHUNK = 200
+BODY_END = 'All dates in this tracking list use UTC and are based on PR merge timestamps.\n'
+PENDING = os.path.join(WORK, 'pending.md')
+PENDING_HEADER = ('### Pending\n\n'
+                  'Open questions for the release notes, one line per pull request.\n\n')
 TEMPLATE = 'docs/release-template.md'
 OUTPUT = f'docs/src/main/sphinx/release/release-{VERSION}.md'
 TRACKING = re.compile(r'^(\* #(\d+) )([✅❌]) rn ([✅❌]) docs', re.M)
@@ -92,7 +105,7 @@ def render():
 
 
 def mark(kind, numbers):
-    with open(BODY) as f:
+    with open(TRACKING_FILE) as f:
         body = f.read()
     for n in numbers:
         m = next((m for m in TRACKING.finditer(body) if m.group(2) == str(n)), None)
@@ -101,22 +114,96 @@ def mark(kind, numbers):
         rn = '✅' if kind in ('rn', 'both') else m.group(3)
         docs = '✅' if kind in ('docs', 'both') else m.group(4)
         body = body[:m.start()] + f'{m.group(1)}{rn} rn {docs} docs' + body[m.end():]
-    with open(BODY, 'w') as f:
+    with open(TRACKING_FILE, 'w') as f:
         f.write(body)
 
 
 def pending(text):
+    if not re.match(r'#\d+ - [A-Z`$]', text) or not text.endswith(('.', '?')):
+        sys.exit(f'expected "#<PR> - <Question>." as a full sentence: {text}')
+    content = PENDING_HEADER
+    if os.path.exists(PENDING):
+        with open(PENDING) as f:
+            content = f.read()
+    content = content.replace('No open questions.\n', '')
+    with open(PENDING, 'w') as f:
+        f.write(content + f'* {text}\n')
+
+
+def gh_login():
+    return subprocess.run(['gh', 'api', 'user', '--jq', '.login'], check=True,
+                          capture_output=True, text=True).stdout.strip()
+
+
+def own_comments(pr, prefix):
+    """Return [(id, url)] of the user's comments starting with prefix, oldest first."""
+    out = subprocess.run(
+        ['gh', 'api', '--paginate', f'repos/trinodb/trino/issues/{pr}/comments',
+         '--jq', f'.[] | select(.user.login == "{gh_login()}" '
+                 f'and (.body | startswith("{prefix}"))) | "\\(.id) \\(.html_url)"'],
+        check=True, capture_output=True, text=True).stdout.split('\n')
+    return [tuple(line.split(' ')) for line in out if line]
+
+
+def write_comment(pr, comment_id, content):
+    """Update the comment, or create it when comment_id is None. Return its URL."""
+    if comment_id:
+        endpoint = ['-X', 'PATCH', f'repos/trinodb/trino/issues/comments/{comment_id}']
+    else:
+        endpoint = ['-X', 'POST', f'repos/trinodb/trino/issues/{pr}/comments']
+    return subprocess.run(['gh', 'api', *endpoint, '-f', f'body={content}', '--jq', '.html_url'],
+                          check=True, capture_output=True, text=True).stdout.strip()
+
+
+def tracking_chunks():
+    """Split tracking.md into whole days of at least TRACKING_CHUNK entries."""
+    with open(TRACKING_FILE) as f:
+        days = re.findall(r'^## (.+)\n\n((?:\* .*\n?)*)', f.read(), re.M)
+    chunks, current = [], []
+    for day in days:
+        current.append(day)
+        if sum(len(TRACKING.findall(e)) for _, e in current) >= TRACKING_CHUNK:
+            chunks.append(current)
+            current = []
+    if current:
+        chunks.append(current)
+    return chunks
+
+
+def publish_tracking(pr):
+    existing = own_comments(pr, '### Tracking')
+    chunks = tracking_chunks()
+    if len(existing) > len(chunks):
+        sys.exit(f'more tracking comments than chunks: {existing}')
+    links = []
+    for i, chunk in enumerate(chunks):
+        label = f'{chunk[0][0]} to {chunk[-1][0]}'
+        content = (f'### Tracking {label}\n\n'
+                   + '\n'.join(f'## {day}\n\n{entries.rstrip()}\n' for day, entries in chunk))
+        url = write_comment(pr, existing[i][0] if i < len(existing) else None, content)
+        marks = TRACKING.findall(''.join(e for _, e in chunk))
+        still_open = sum(1 for m in marks if '❌' in m[2] + m[3])
+        links.append(f'* [{label}]({url}) - {len(marks)} pull requests, {still_open} open')
     with open(BODY) as f:
         body = f.read()
-    m = re.search(r'## Additional context and related issues\n\n'
-                  r'(### Pending\n\n((?:\* .*\n)*)\n)?', body)
-    if not m:
-        sys.exit('no "Additional context and related issues" section')
-    items = (m.group(2) or '') + f'* {text}\n'
-    body = (body[:m.start()] + '## Additional context and related issues\n\n'
-            '### Pending\n\n' + items + '\n' + body[m.end():])
+    if BODY_END not in body:
+        sys.exit(f'body.md must contain: {BODY_END}')
+    body = body[:body.index(BODY_END) + len(BODY_END)] + '\n' + '\n'.join(links) + '\n'
     with open(BODY, 'w') as f:
         f.write(body)
+
+
+def publish_pending(pr):
+    if not os.path.exists(PENDING):
+        return
+    with open(PENDING) as f:
+        content = f.read()
+    if not re.search(r'^\* ', content, re.M):
+        content = PENDING_HEADER + 'No open questions.\n'
+    existing = own_comments(pr, '### Pending')
+    if len(existing) > 1:
+        sys.exit(f'several Pending comments found: {existing}')
+    write_comment(pr, existing[0][0] if existing else None, content)
 
 
 DUMP_JQ = r'''
@@ -238,9 +325,11 @@ def publish():
     subprocess.run(['git', 'add', OUTPUT], check=True)
     subprocess.run(['git', 'commit', '-q', '--amend', '--no-edit'], check=True)
     subprocess.run(['git', 'push', '-q', '--force-with-lease', 'origin', branch], check=True)
+    publish_tracking(pr)
+    publish_pending(pr)
     subprocess.run(['gh', 'pr', 'edit', pr, '--repo', 'trinodb/trino', '--body-file', BODY],
                    check=True, capture_output=True)
-    with open(BODY) as f:
+    with open(TRACKING_FILE) as f:
         open_items = sum(1 for m in TRACKING.finditer(f.read()) if '❌' in m.group(0))
     print(f'published, {open_items} tracking entries still open')
 

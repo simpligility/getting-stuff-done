@@ -97,7 +97,7 @@ Write one JSON file per batch, `<work>/proposal-bNN.json`:
   "prs": [
     {"pr": 12346, "rn": true, "docs": true, "why": "short reason, for example 'fix', 'test only', 'dependency update'"}
   ],
-  "pending": ["#12347 - question for the reviewer"]
+  "pending": ["#12347 - Question for the reviewer?"]
 }
 ```
 
@@ -106,6 +106,9 @@ Write one JSON file per batch, `<work>/proposal-bNN.json`:
 needed, and `false` only when it truly needs the reviewer's input, together
 with a pending question. `text` must not contain line breaks, since the
 renderer wraps it.
+Write each pending question as `#<PR> - <Question>.`, a full sentence with an
+initial capital and a final period or question mark. `rn.py` rejects any other
+form.
 
 Finish with a short summary per batch: the number of pull requests, entries,
 and pending questions, and the judgment calls worth checking.

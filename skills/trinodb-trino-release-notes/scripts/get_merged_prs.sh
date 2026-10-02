@@ -1,17 +1,20 @@
 #!/bin/bash
 
 # Usage: ./get_merged_prs.sh [-a] [-l] <since_date> [repo]
-# Example: ./get_merged_prs.sh -a 2026-07-17
+# Example: ./get_merged_prs.sh 2026-07-17
 #
 # Prints a tracking list of PRs merged into master on or after <since_date>,
 # grouped by the UTC day of their mergedAt timestamp, oldest first.
 #
-# -a  append the PR title and any issues the PR closes to each entry. This is
-#     the format for the release notes PR body. The titles stay in the body
-#     until just before the PR is merged.
-# -l  also append the component labels. Use this only as a local working view
-#     for triage, since the labels push a long cycle past the GitHub body size
-#     limit of 65536 characters.
+# Without options, each entry is only the PR number and the marks. This is the
+# format for tracking.md and the tracking comments, since GitHub renders the
+# title of each linked PR.
+#
+# -a  append the PR title and any issues the PR closes to each entry, as a
+#     local working view for triage. Never publish this format, since the
+#     resolved issues count against the GitHub limit of 500 linked references
+#     per comment.
+# -l  also append the component labels, for the same local view.
 
 ANNOTATE=false
 LABELS=false

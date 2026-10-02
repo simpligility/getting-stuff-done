@@ -1,6 +1,6 @@
 ---
 name: trinodb-trino-release-notes
-description: Create and maintain the release notes pull request for Trino. Use this skill in a local clone of a fork of trinodb/trino to open the living release notes PR after a release, track every merged pull request in its body, and write the entries in docs/src/main/sphinx/release/release-<version>.md following the Trino section order, wording, and Sphinx syntax. Not for cutting or tagging the release itself, building or publishing artifacts, updating the Trino Helm chart, or writing release notes for other Trino projects such as Trino Gateway.
+description: Create and maintain the release notes pull request for Trino. Use this skill in a local clone of a fork of trinodb/trino to open the living release notes PR after a release, track every merged pull request in its comments, and write the entries in docs/src/main/sphinx/release/release-<version>.md following the Trino section order, wording, and Sphinx syntax. Not for cutting or tagging the release itself, building or publishing artifacts, updating the Trino Helm chart, or writing release notes for other Trino projects such as Trino Gateway.
 ---
 
 # Trino release notes
@@ -45,12 +45,12 @@ change:
 
 The skill bundles two scripts in `scripts/`:
 
-- `get_merged_prs.sh` creates the tracking list for the PR body.
+- `get_merged_prs.sh` creates the tracking list entries.
 - `rn.py` runs the cycle. It keeps the entries as structured data in
   `entries.json`, renders `release-<version>.md` from the authoritative
-  template, flips tracking marks and adds pending questions in the PR body,
-  dumps PR details for triage, validates and applies triage proposals, and
-  publishes each update. Run `rn.py` without arguments for its usage.
+  template, flips tracking marks, collects pending questions, dumps PR
+  details for triage, validates and applies triage proposals, and publishes
+  each update to the PR body and comments. Run `rn.py` without arguments for its usage.
 
 Run `rn.py` from the root of the trino clone with these environment variables:
 
@@ -60,26 +60,48 @@ export RN_VERSION=484
 export RN_PR=31411          # once the PR exists
 ```
 
-The work directory holds `entries.json`, the PR body as `body.md`, the batch
-dumps `bNN.txt`, and the proposals `proposal-bNN.json`. Keep it for the whole
-cycle. Treat `entries.json` as the source of the release notes file while
+The work directory holds `entries.json`, the PR body as `body.md`, the
+tracking list as `tracking.md`, the pending questions as `pending.md`, the
+batch dumps `bNN.txt`, and the proposals `proposal-bNN.json`. Keep it for the
+whole cycle. Treat `entries.json` as the source of the release notes file while
 triage is running, since `rn.py render` overwrites the file. Once the user
 starts editing `release-<version>.md` by hand during review, stop rendering
 and edit the file directly.
 
-The PR body is the shared record of the cycle. Open questions do not go into
-PR comments. They go into a `### Pending` list under "Additional context and
-related issues", one line per question in the form `#<PR> - <question>`, added
-with `rn.py pending`. PRs with missing documentation additionally keep
-`❌ docs` in the tracking list.
+GitHub links only the first 500 `#<number>` references in a PR body or comment
+and leaves the rest as plain text, and a cycle tracks more PRs than that. So
+the tracking list and the questions live in PR comments, all posted by the
+user, and the work directory holds their source:
+
+- `tracking.md` is the full tracking list, a `## <d Mmm yyyy>` heading per
+  UTC day with one `* #<PR> ❌ rn ❌ docs` line per PR. The entries carry no
+  title, since GitHub renders the title of each linked PR.
+- `rn.py publish` splits `tracking.md` into tracking comments. Each comment
+  takes whole days until it holds at least 200 PRs, then the next day starts a
+  new comment. Each starts with `### Tracking <first day> to <last day>`. The
+  split is deterministic, so earlier comments only change when their marks
+  flip. Publish updates the comments in place, adds new ones as the list
+  grows, and rewrites the end of `body.md`, after the line
+  `All dates in this tracking list use UTC and are based on PR merge timestamps.`,
+  with a list of links to the comments and their counts of PRs and open
+  entries.
+- A single Pending comment holds the open questions. Each question is one line in the form `#<PR> - <Question>.`, written as a full
+sentence with an initial capital and a final period or question mark. Add it
+with `rn.py pending`, which writes `pending.md`. `rn.py publish` creates the
+comment, starting with `### Pending`, or updates it in place, and never posts a
+second one. Do not put questions in any other PR comment. PRs with missing
+documentation additionally keep `❌ docs` in the tracking list.
+
+Never edit the tracking or Pending comments by hand or through the GitHub UI,
+since the next publish overwrites them from the work directory.
 
 ## Workflow
 
 The release notes PR goes to a public repository, so treat its creation as an
 outward-facing action. Before running `gh pr create` in phase 1, and before the
-first `gh pr edit` of each maintenance session in phase 2, show the user the
-drafted title and body and get approval. The git sync, branch work, and
-read-only `gh` commands throughout need no confirmation.
+first publish of each maintenance session in phase 2, show the user the
+drafted title, body, and comment changes and get approval. The git sync, branch
+work, and read-only `gh` commands throughout need no confirmation.
 
 ### 1. Initialize release cycle
 
@@ -124,7 +146,7 @@ for the next version.
     date:
 
     ```bash
-    <skill-dir>/scripts/get_merged_prs.sh -a <yyyy-mm-dd>
+    <skill-dir>/scripts/get_merged_prs.sh <yyyy-mm-dd> > "$RN_WORK/tracking.md"
     ```
 
     The script lists PRs merged into `master` on or after the date, grouped by
@@ -140,15 +162,15 @@ for the next version.
       tag rather than relying on dates, for example
       `git merge-base --is-ancestor <merge-commit-sha> <previous-version>`,
       with the SHA from `gh pr view <n> --json mergeCommit`.
-    - Save the PR body as `$RN_WORK/body.md`, since `rn.py` maintains it from
-      there.
+    - Write the PR body from the [Tracking list template](#tracking-list-template)
+      as `$RN_WORK/body.md`. `rn.py` maintains both files from there.
 10. **Open the PR**:
     - Push with `git push -u origin release-notes-<version>`.
     - Title: `Add Trino <version> release notes`.
-    - Body: start with `.github/PULL_REQUEST_TEMPLATE.md` from the repository,
-      then fill it with the [Tracking list template](#tracking-list-template).
     - Create with
-      `gh pr create --repo trinodb/trino --base master --title "Add Trino <version> release notes" --body-file <path>`.
+      `gh pr create --repo trinodb/trino --base master --title "Add Trino <version> release notes" --body-file "$RN_WORK/body.md"`.
+    - Set `RN_PR` and run `rn.py publish` to post the tracking comments and
+      add their links to the body.
 
 ### 2. Maintain release notes
 
@@ -165,13 +187,14 @@ the release is ready.
       without it. The force-push in step 8 brings the branch back in sync. If
       the remote branch may have changes made elsewhere, inspect them with
       `git fetch origin` and `git log origin/release-notes-<version>` first.
-3.  **Read the current PR body**:
-    `gh pr view <number> --repo trinodb/trino --json body --jq .body > "$RN_WORK/body.md"`.
-    Skip this when the work directory is current and nobody else edited the
-    body.
+3.  **Check the work directory**: `body.md`, `tracking.md`, and `pending.md`
+    are the source of the PR body and comments. If the work directory is lost,
+    rebuild `tracking.md` from the tracking comments in order and `pending.md`
+    from the Pending comment, and `body.md` from the PR body up to the line
+    that ends the legend.
 4.  **Determine the last check date**: Use the most recent dated heading in the
     tracking list.
-5.  **Fetch new merges**: Run `get_merged_prs.sh -a` with the last check date. Including
+5.  **Fetch new merges**: Run `get_merged_prs.sh` with the last check date. Including
     that date avoids missing PRs merged later on the same day. Drop the PRs
     already in the list.
 6.  **Update the tracking list**:
@@ -180,8 +203,8 @@ the release is ready.
     - Append new entries under their UTC date, add new date headings as
       needed, and keep the headings in chronological order with the most recent
       at the bottom.
-    - Mark new entries `❌ rn ❌ docs`, and keep the PR title and resolved
-      issues that the `-a` option appends.
+    - Mark new entries `❌ rn ❌ docs`, without titles. Use `-a` only for a
+      local working view with titles and resolved issues.
 7.  **Triage in batches**: Work through the `❌` entries in batches of three
     calendar days, oldest first, and publish after each batch with step 8.
     For each batch:
@@ -210,11 +233,10 @@ the release is ready.
     at a time in date order, and publish after each. Subagents only write
     proposal files and never touch the repository, the PR, or GitHub.
 8.  **Publish**: Run `rn.py publish`. It amends the single commit with its
-    message unchanged, force-pushes with lease, and updates the PR body from
-    `$RN_WORK/body.md`. Without the script, do the same with
-    `git commit --amend --no-edit`,
-    `git push --force-with-lease origin release-notes-<version>`, and
-    `gh pr edit <number> --repo trinodb/trino --body-file "$RN_WORK/body.md"`.
+    message unchanged, force-pushes with lease, creates or updates the tracking
+    comments from `$RN_WORK/tracking.md` and the Pending comment from
+    `$RN_WORK/pending.md`, and updates the PR body from `$RN_WORK/body.md`
+    with the links to the tracking comments.
 
 ### 3. Finalize for the release
 
@@ -231,17 +253,8 @@ days before the release.
 5.  Build the documentation to check the syntax, at least with the fast
     Docker-based `docs/build`, and fix any warnings from the new file.
 6.  Confirm every tracking entry is `✅ rn ✅ docs` or has an agreed exception
-    noted in the PR body.
-7.  Strip the titles from the tracking list just before the merge, so the
-    final body keeps only the numbers and marks:
-
-    ```bash
-    sed -E 's/^(\* #[0-9]+ [✅❌] rn [✅❌] docs) - .*/\1/' \
-      "$RN_WORK/body.md" > "$RN_WORK/final.md"
-    ```
-
-    Update the PR body with the result, then request review from the release
-    manager. The release manager merges the PR as part of the release.
+    noted in the PR body, and the Pending comment has no open questions.
+7.  Request review from the release manager. The release manager merges the PR as part of the release.
 
 ## Writing entries
 
@@ -428,8 +441,10 @@ differs:
 
 ### Tracking list template
 
-Use the following structure for the PR body, keeping the HTML comments from the
-repository PR template:
+Use the following structure for `body.md`, starting from
+`.github/PULL_REQUEST_TEMPLATE.md` and keeping its HTML comments. The body ends
+with the legend, and `rn.py publish` appends the links to the tracking
+comments:
 
 ```markdown
 ## Description
@@ -437,6 +452,8 @@ repository PR template:
 Assemble the release notes for the upcoming Trino <version> release.
 
 ## Additional context and related issues
+
+Open questions are tracked in the Pending comment on this PR.
 
 * [Merged pull requests in the <version> milestone](https://github.com/trinodb/trino/pulls?q=is%3Apr+is%3Aclosed+milestone%3A<version>)
 
@@ -453,28 +470,41 @@ Format: PR/issue number, ✅ / ❌ rn ✅ / ❌ docs
 Any dates missing in the list just had no merged PRs.
 
 All dates in this tracking list use UTC and are based on PR merge timestamps.
-
-## <d Mmm yyyy>
-
-* #<PR_NUMBER> ❌ rn ❌ docs - <PR title> (resolves #<ISSUE_NUMBER>)
 ```
 
-Include the milestone link only when the milestone exists on GitHub. Each
-entry keeps the PR title and any resolved issues from the script's `-a`
-option until just before the merge, as described in phase 3. Track pull
-request numbers only, not issue numbers, since the list mirrors what
-merged. Open questions go into a `### Pending` list under "Additional context
-and related issues", never into PR comments, so the body stays the single
-record of the cycle. `rn.py pending` maintains the list, for example:
+After publishing, the body ends with the links, for example:
+
+```markdown
+* [18 Jul 2026 to 18 Aug 2026](<comment URL>) - 210 pull requests, 1 open
+* [19 Aug 2026 to 16 Sep 2026](<comment URL>) - 203 pull requests, 5 open
+```
+
+Include the milestone link only when the milestone exists on GitHub.
+`tracking.md` uses this structure, and each tracking comment repeats it below
+its `### Tracking` heading:
+
+```markdown
+## <d Mmm yyyy>
+
+* #<PR_NUMBER> ❌ rn ❌ docs
+```
+
+Track pull request numbers only, not issue numbers, since the list mirrors
+what merged. Open questions go into the Pending comment, which `rn.py pending`
+and `rn.py publish` maintain, for example:
 
 ```markdown
 ### Pending
 
-* #30312 - missing docs for `iceberg.new-property`, requested from the author
-* #30340 - unclear whether the UI link fix is user-visible
+Open questions for the release notes, one line per pull request.
+
+* #30312 - Missing docs for `iceberg.new-property`, requested from the author.
+* #30340 - Is the UI link fix user-visible?
 ```
 
-Resolve each item with the user during review, then remove it from the list.
+Resolve each item with the user during review, then remove it from
+`pending.md` and publish again. Once the list is empty, publish replaces it
+with `No open questions.` rather than deleting the comment.
 
 ## Out of scope
 
