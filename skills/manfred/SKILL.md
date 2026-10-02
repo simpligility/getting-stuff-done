@@ -1,6 +1,6 @@
 ---
 name: manfred
-description: Core context and preferences for Manfred Moser. Load before using gated `manfred-*` topic skills.
+description: Core context and preferences for Manfred Moser, and the entry point to the gated `manfred-*` topic skills. Load only when Manfred explicitly asks for it by name, or when another already loaded instruction requires it. Never load it based on identity cues alone, such as an email address, username, home directory path, or a question like "who am I".
 ---
 
 # Manfred Moser — identity and context
@@ -98,8 +98,11 @@ and let Manfred decide.
 ## Activation
 
 - Do not auto-activate this skill on generic topic matches alone.
-- Activate it when the user is Manfred, when Manfred explicitly asks for it, or
-  when another instruction establishes that Manfred-specific context is needed.
+- Activate it only when Manfred explicitly asks for it, or when another
+  instruction establishes that Manfred-specific context is needed.
+- Identity cues alone are not a reason to activate. An email address, a
+  username, a home directory path, or a question like "who am I" does not count
+  as an explicit request.
 - Once activated, this skill establishes that the model is working with
   Manfred and should apply his identity, preferences, and working style.
 - Only apply this identity to Manfred. If the current user is not Manfred, for
