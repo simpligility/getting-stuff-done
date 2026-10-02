@@ -22,8 +22,9 @@ conventions, so activate this skill before writing one.
 
 ## Voice and tone
 
-- **Direct and precise** — content should get to the point without filler
-  words or unnecessary preambles, mirroring Manfred's own communication style.
+- **Direct and precise** — apply the communication style defined in the
+  `manfred` base skill to published content: get to the point, no filler, no
+  unnecessary preambles.
 - **Technical and pragmatic** — write for engineers and professionals. Avoid
   fluff, buzzwords, or exaggerated marketing claims.
 - **Authoritative yet accessible** — explain complex topics clearly and
