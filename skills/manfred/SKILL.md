@@ -29,7 +29,9 @@ description: Core context and preferences for Manfred Moser, and the entry point
 ## Biographies
 
 Canonical author bios for use whenever a short description of Manfred is needed
-— blog posts, talk intros, profiles, and similar.
+— blog posts, talk intros, profiles, and similar. For anything longer, point
+readers to his website, LinkedIn, and other profiles rather than maintaining a
+detailed bio here.
 
 ### One-line biography
 
@@ -43,16 +45,6 @@ software supply-chain security and developer relations. He is a long-time
 maintainer and contributor across many open source projects, including Trino,
 Maven, and Jenkins, and co-author of the O'Reilly book Trino: The Definitive
 Guide.
-
-### Detailed biography
-
-Manfred Moser is a Senior Principal DevRel Engineer at Chainguard. His work
-focuses on software supply-chain and container security, DevOps, developer
-relations, and community building. Manfred is a long-time maintainer and
-contributor across many open source projects, including Trino, Maven, and
-Jenkins.
-He is also the co-author of the O'Reilly book Trino: The Definitive Guide.
-Manfred lives in Victoria, British Columbia, Canada.
 
 ## Language
 
