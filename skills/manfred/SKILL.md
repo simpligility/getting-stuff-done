@@ -86,6 +86,15 @@ Manfred lives in Victoria, British Columbia, Canada.
   guess silently.
 - Cite or mention sources for factual claims.
 
+## Preserving knowledge
+
+When something worth keeping across sessions comes up and Manfred agrees to
+keep it, the default home is a skill in his `getting-stuff-done` repository
+(`simpligility/getting-stuff-done`), not a memory store. Propose the specific
+skill and section, for example in the `manfred-*` family for personal
+preferences and conventions or the `trinodb-*` family for Trino project facts,
+and let Manfred decide.
+
 ## Activation
 
 - Do not auto-activate this skill on generic topic matches alone.

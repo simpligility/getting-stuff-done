@@ -172,7 +172,9 @@ drift out of sync.
 
 The first section turns off automatic cross-session memory in favor of an
 explicit, ask-first workflow: nothing is remembered silently, and anything worth
-keeping gets encoded into a skill by choice rather than an opaque memory store.
+keeping gets stored by choice rather than in an opaque memory store. The file
+stays generic and personal-free; the `manfred` skill adds the personal default
+of encoding preserved knowledge into the skills in this repository.
 
 On any machine, after cloning this repo, run:
 
