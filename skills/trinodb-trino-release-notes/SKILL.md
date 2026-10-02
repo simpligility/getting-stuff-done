@@ -1,6 +1,6 @@
 ---
 name: trinodb-trino-release-notes
-description: Create and maintain the release notes pull request for Trino. Use this skill in a local clone of a fork of trinodb/trino to open the living release notes PR after a release, track every merged pull request in its comments, and write the entries in docs/src/main/sphinx/release/release-<version>.md following the Trino section order, wording, and Sphinx syntax. Not for cutting or tagging the release itself, building or publishing artifacts, updating the Trino Helm chart, or writing release notes for other Trino projects such as Trino Gateway.
+description: Create and maintain the release notes pull request for Trino. Use this skill in a local clone of a fork of trinodb/trino to open the living release notes PR after a release, track every merged pull request in its body or comments, and write the entries in docs/src/main/sphinx/release/release-<version>.md following the Trino section order, wording, and Sphinx syntax. Not for cutting or tagging the release itself, building or publishing artifacts, updating the Trino Helm chart, or writing release notes for other Trino projects such as Trino Gateway.
 ---
 
 # Trino release notes
@@ -69,28 +69,36 @@ starts editing `release-<version>.md` by hand during review, stop rendering
 and edit the file directly.
 
 GitHub links only the first 500 `#<number>` references in a PR body or comment
-and leaves the rest as plain text, and a cycle tracks more PRs than that. So
-the tracking list and the questions live in PR comments, all posted by the
-user, and the work directory holds their source:
+and leaves the rest as plain text. A long cycle tracks more PRs than that, so
+the tracking list moves from the PR body to PR comments once it reaches the
+limit. The work directory holds the source of the body and the comments, all
+posted by the user:
 
 - `tracking.md` is the full tracking list, a `## <d Mmm yyyy>` heading per
   UTC day with one `* #<PR> ❌ rn ❌ docs` line per PR. The entries carry no
   title, since GitHub renders the title of each linked PR.
-- `rn.py publish` splits `tracking.md` into tracking comments. Each comment
-  takes whole days until it holds at least 200 PRs, then the next day starts a
-  new comment. Each starts with `### Tracking <first day> to <last day>`. The
-  split is deterministic, so earlier comments only change when their marks
-  flip. Publish updates the comments in place, adds new ones as the list
-  grows, and rewrites the end of `body.md`, after the line
-  `All dates in this tracking list use UTC and are based on PR merge timestamps.`,
-  with a list of links to the comments and their counts of PRs and open
-  entries.
-- A single Pending comment holds the open questions. Each question is one line in the form `#<PR> - <Question>.`, written as a full
-sentence with an initial capital and a final period or question mark. Add it
-with `rn.py pending`, which writes `pending.md`. `rn.py publish` creates the
-comment, starting with `### Pending`, or updates it in place, and never posts a
-second one. Do not put questions in any other PR comment. PRs with missing
-documentation additionally keep `❌ docs` in the tracking list.
+- While the references in the body and the tracking list together stay within
+  the 500 limit, `rn.py publish` appends `tracking.md` to the PR body after
+  the line
+  `All dates in this tracking list use UTC and are based on PR merge timestamps.`
+- Once they exceed the limit, `rn.py publish` splits `tracking.md` into
+  tracking comments instead. Each comment takes whole days until it holds at
+  least 200 PRs, then the next day starts a new comment. Each starts with
+  `### Tracking <first day> to <last day>`. The split is deterministic, so
+  earlier comments only change when their marks flip. Publish updates the
+  comments in place, adds new ones as the list grows, and replaces the list
+  in the body with links to the comments and their counts of PRs and open
+  entries. Once tracking comments exist, publish keeps using them.
+- A single Pending comment always holds the open questions, so they never use
+  the body's link budget. Each question is one line in the form
+  `#<PR> - <Question>.`, written as a full sentence with an initial capital
+  and a final period or question mark. Add it with `rn.py pending`, which
+  writes `pending.md`. `rn.py publish` creates the comment, starting with
+  `### Pending`, or updates it in place, and never posts a second one. Do not
+  put questions in any other PR comment.
+
+PRs with missing documentation additionally keep `❌ docs` in the tracking
+list.
 
 Never edit the tracking or Pending comments by hand or through the GitHub UI,
 since the next publish overwrites them from the work directory.
@@ -169,8 +177,8 @@ for the next version.
     - Title: `Add Trino <version> release notes`.
     - Create with
       `gh pr create --repo trinodb/trino --base master --title "Add Trino <version> release notes" --body-file "$RN_WORK/body.md"`.
-    - Set `RN_PR` and run `rn.py publish` to post the tracking comments and
-      add their links to the body.
+    - Set `RN_PR` and run `rn.py publish` to add the tracking list to the body
+      and post the Pending comment.
 
 ### 2. Maintain release notes
 
@@ -189,9 +197,9 @@ the release is ready.
       `git fetch origin` and `git log origin/release-notes-<version>` first.
 3.  **Check the work directory**: `body.md`, `tracking.md`, and `pending.md`
     are the source of the PR body and comments. If the work directory is lost,
-    rebuild `tracking.md` from the tracking comments in order and `pending.md`
-    from the Pending comment, and `body.md` from the PR body up to the line
-    that ends the legend.
+    rebuild `tracking.md` from the tracking list in the body or from the
+    tracking comments in order, `pending.md` from the Pending comment, and
+    `body.md` from the PR body up to the line that ends the legend.
 4.  **Determine the last check date**: Use the most recent dated heading in the
     tracking list.
 5.  **Fetch new merges**: Run `get_merged_prs.sh` with the last check date. Including
@@ -233,10 +241,10 @@ the release is ready.
     at a time in date order, and publish after each. Subagents only write
     proposal files and never touch the repository, the PR, or GitHub.
 8.  **Publish**: Run `rn.py publish`. It amends the single commit with its
-    message unchanged, force-pushes with lease, creates or updates the tracking
-    comments from `$RN_WORK/tracking.md` and the Pending comment from
-    `$RN_WORK/pending.md`, and updates the PR body from `$RN_WORK/body.md`
-    with the links to the tracking comments.
+    message unchanged, force-pushes with lease, publishes the tracking list
+    from `$RN_WORK/tracking.md` in the PR body or, past the link limit, in
+    tracking comments, creates or updates the Pending comment from
+    `$RN_WORK/pending.md`, and updates the PR body from `$RN_WORK/body.md`.
 
 ### 3. Finalize for the release
 
@@ -443,8 +451,8 @@ differs:
 
 Use the following structure for `body.md`, starting from
 `.github/PULL_REQUEST_TEMPLATE.md` and keeping its HTML comments. The body ends
-with the legend, and `rn.py publish` appends the links to the tracking
-comments:
+with the legend, and `rn.py publish` appends the tracking list or the links to
+the tracking comments:
 
 ```markdown
 ## Description
@@ -472,7 +480,8 @@ Any dates missing in the list just had no merged PRs.
 All dates in this tracking list use UTC and are based on PR merge timestamps.
 ```
 
-After publishing, the body ends with the links, for example:
+Past the link limit, the body ends with the links instead of the list, for
+example:
 
 ```markdown
 * [18 Jul 2026 to 18 Aug 2026](<comment URL>) - 210 pull requests, 1 open
@@ -480,8 +489,8 @@ After publishing, the body ends with the links, for example:
 ```
 
 Include the milestone link only when the milestone exists on GitHub.
-`tracking.md` uses this structure, and each tracking comment repeats it below
-its `### Tracking` heading:
+`tracking.md` uses this structure, and the body or each tracking comment
+repeats it, the comments below their `### Tracking` heading:
 
 ```markdown
 ## <d Mmm yyyy>

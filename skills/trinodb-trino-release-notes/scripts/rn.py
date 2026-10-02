@@ -5,10 +5,11 @@ Keeps the release notes entries as structured data, renders the release notes
 file from the authoritative template, and maintains the tracking list and the
 pending questions on the PR.
 
-GitHub links only the first 500 references in a body or comment, so the
-tracking list lives in tracking comments of whole days with at least
-TRACKING_CHUNK entries each, the pending questions in a single Pending comment,
-and the PR body links to the tracking comments.
+GitHub links only the first LINK_LIMIT references in a body or comment. The
+tracking list stays in the PR body while it fits within that limit. Once it
+does not, it moves to tracking comments of whole days with at least
+TRACKING_CHUNK entries each, and the PR body links to them. The pending
+questions always live in a single Pending comment.
 
 Run it from the root of the trino clone, on the release notes branch.
 
@@ -28,9 +29,10 @@ Commands:
   check <batch>               validate proposal-<batch>.json and print it
   edit <batch>                apply edit rules from stdin to a proposal
   apply <batch>               add a validated proposal and render
-  publish                     amend the commit, force-push, create or update the
-                              tracking and Pending comments, and update the PR
-                              body with the links to the tracking comments
+  publish                     amend the commit, force-push, update the PR body
+                              with the tracking list or, past the link limit,
+                              with links to the tracking comments, and create
+                              or update the tracking and Pending comments
 
 entries.json is a list of {"section", "group", "text"}. The group orders
 entries within a section: 1 Add or Allow, 2 other behavior changes and most
@@ -52,6 +54,7 @@ ENTRIES = os.path.join(WORK, 'entries.json')
 BODY = os.path.join(WORK, 'body.md')
 TRACKING_FILE = os.path.join(WORK, 'tracking.md')
 TRACKING_CHUNK = 200
+LINK_LIMIT = 500
 BODY_END = 'All dates in this tracking list use UTC and are based on PR merge timestamps.\n'
 PENDING = os.path.join(WORK, 'pending.md')
 PENDING_HEADER = ('### Pending\n\n'
@@ -171,7 +174,19 @@ def tracking_chunks():
 
 
 def publish_tracking(pr):
+    with open(BODY) as f:
+        body = f.read()
+    if BODY_END not in body:
+        sys.exit(f'body.md must contain: {BODY_END}')
+    head = body[:body.index(BODY_END) + len(BODY_END)]
+    with open(TRACKING_FILE) as f:
+        tracking = f.read()
     existing = own_comments(pr, '### Tracking')
+    if not existing and (len(re.findall(r'#\d+', head))
+                         + len(re.findall(r'#\d+', tracking))) <= LINK_LIMIT:
+        with open(BODY, 'w') as f:
+            f.write(head + '\n' + tracking.strip('\n') + '\n')
+        return
     chunks = tracking_chunks()
     if len(existing) > len(chunks):
         sys.exit(f'more tracking comments than chunks: {existing}')
@@ -184,13 +199,8 @@ def publish_tracking(pr):
         marks = TRACKING.findall(''.join(e for _, e in chunk))
         still_open = sum(1 for m in marks if '❌' in m[2] + m[3])
         links.append(f'* [{label}]({url}) - {len(marks)} pull requests, {still_open} open')
-    with open(BODY) as f:
-        body = f.read()
-    if BODY_END not in body:
-        sys.exit(f'body.md must contain: {BODY_END}')
-    body = body[:body.index(BODY_END) + len(BODY_END)] + '\n' + '\n'.join(links) + '\n'
     with open(BODY, 'w') as f:
-        f.write(body)
+        f.write(head + '\n' + '\n'.join(links) + '\n')
 
 
 def publish_pending(pr):
