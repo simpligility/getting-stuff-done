@@ -312,6 +312,11 @@ Never assume one or the other. Detect the actual default branch and use it in
 all commands. When the repo is a fork, the upstream default branch is the
 source of truth; match whatever it uses.
 
+For new repositories, the preference is `main`. The global
+`init.defaultBranch` is set to `main`, so `git init` creates `main` by
+default. When an older repo was created with `master` and should move to
+`main`, rename the branch with `git branch -m master main`.
+
 ## Branching strategy
 
 - **Trunk-based development** — short-lived feature branches off the default
