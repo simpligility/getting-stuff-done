@@ -183,8 +183,8 @@ after the episode number, such as `69.md`. The `episode` layout reads `title`,
 `sections`. The `sections` list is a sequence of `time` and `title` pairs that
 renders the chapter list.
 
-To turn a recording into the topic list and summary that these fields need, use
-the `trinodb-contributor-call-processing` skill.
+For the full episode workflow, from the announcement on the broadcast page to
+the episode page pull request, use the `trinodb-community-broadcast` skill.
 
 ## Custom Liquid tags
 
