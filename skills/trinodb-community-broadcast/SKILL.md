@@ -1,6 +1,6 @@
 ---
 name: trinodb-community-broadcast
-description: Run the mechanics of a Trino Community Broadcast episode — the local episode folder, the announcement pull request on trino.io that lists the upcoming episode with its live stream links, and the episode page pull request that is opened before the show as the working show notes and merged after the recording with the chapter list and the reset of the upcoming episode placeholder. Child skill of the trinodb family. Use when preparing, announcing, or publishing a Trino Community Broadcast episode.
+description: Run the mechanics of a Trino Community Broadcast episode — the local episode folder, the announcement pull request on trino.io that lists the upcoming episode with its live stream links, the guest invite with the StreamYard link, the Trino events calendar entry, and the episode page pull request that is opened before the show as the working show notes and merged after the recording with the chapter list and the reset of the upcoming episode placeholder. Child skill of the trinodb family. Use when preparing, announcing, or publishing a Trino Community Broadcast episode.
 ---
 
 # Trino Community Broadcast
@@ -25,20 +25,53 @@ guests, and running the live show are up to the hosts.
 Each episode moves through the same steps. The two pull requests on trino.io
 are the main deliverables:
 
-1. Agree on the guest, the topic, and the air date.
-2. Create the local episode folder.
-3. Open the announcement pull request and ask the guest to review the text.
-4. Schedule the live stream, add the stream links, and merge the announcement.
-5. Branch off the updated `master` with the merged announcement and open the
+1. File or find the tracking issue for the episode idea.
+2. Agree on the guest, the topic, and the air date.
+3. Create the local episode folder.
+4. Open the announcement pull request and ask the guest to review the text.
+5. Schedule the live stream, add the stream links, and merge the announcement.
+6. Send the guests an invite with the StreamYard guest link.
+7. Add the episode to the Trino events calendar.
+8. Branch off the updated `master` with the merged announcement and open the
    episode page pull request. It stays open as the working show notes until
    after the show.
-6. Air the episode live.
-7. Add the chapter list and the final details to the episode page, and merge
-   the pull request.
+9. Air the episode live.
+10. Add the chapter list and the final details to the episode page, and merge
+    the pull request.
+11. Close the tracking issue.
 
 Ask the user for the episode number and remember it as {{number}}. Episodes are
 numbered consecutively, and the current number is the one in the placeholder
 under **Upcoming episodes** in `broadcast/index.md`.
+
+## Tracking issue
+
+Each episode has a tracking issue in Manfred's [contributions
+tracker](https://github.com/simpligility/contributions). Follow the
+`manfred-contributions` skill for the title form, the labels, the body, the
+assignment, and the manual step that adds the issue to the project board. Skip
+this section when working for anyone else.
+
+Episode ideas are often filed long before a date exists, so look for an open
+issue with the `trinodb-community-broadcast` label first:
+
+```
+gh issue list --repo simpligility/contributions \
+  --label trinodb-community-broadcast --state open
+```
+
+When none matches, draft one titled `Record a TCB episode about <topic>`, with
+the labels `trinodb-community` and `trinodb-community-broadcast`, and confirm
+it with the user before creating it. Keep the issue current as the episode
+moves along:
+
+- Set the status to `In progress` once the guest and date are agreed.
+- Add the announcement and episode page pull requests to the body as full URLs,
+  along with the guest and the YouTube stream link.
+- End the body with the next step, such as sending the guest invite or adding
+  the chapter list after the show.
+- Close the issue once the episode page pull request is merged. Closing moves
+  the board item to `Done`.
 
 ## Local episode folder
 
@@ -121,6 +154,39 @@ the description to ask them to review the text, for example `Text okay though
 @nineinchnick ?`. Then schedule the live stream in StreamYard, which creates
 the YouTube and LinkedIn events, add their URLs to the entry, and merge once the
 guest confirms.
+
+## Guest invite
+
+Once the stream is set up in StreamYard, send each guest a calendar invite for
+the episode. The invite needs these details:
+
+- The title `Trino Community Broadcast {{number}} - <episode title>`.
+- The start time, plus time before the stream to check audio, video, and
+  screen sharing.
+- The StreamYard guest link to join the studio. Guests join the studio, not the
+  public YouTube or LinkedIn stream.
+- The YouTube and LinkedIn stream links, so guests can share them.
+- A link to the episode page pull request, once it is open, so guests can
+  review and add to the show notes.
+
+Ask the user for the StreamYard guest link, the guest email addresses, and how
+much earlier to start than the stream. The guest link is not public, so never
+add it to trino.io, the pull requests, or the calendar entry.
+
+## Calendar entry
+
+After the announcement is merged, add the episode to the Trino events Google
+Calendar, which the [community page](https://trino.io/community.html#events)
+embeds. The entry needs these details:
+
+- The title `Trino Community Broadcast {{number}} - <episode title>`.
+- The start time and the duration of the stream.
+- A description with the announcement paragraph, the YouTube and LinkedIn
+  stream links, and a link to the [broadcast
+  page](https://trino.io/broadcast/).
+
+Use only public links in the calendar entry. The calendar is public, so it
+must never carry the StreamYard guest link.
 
 ## Episode page pull request
 
