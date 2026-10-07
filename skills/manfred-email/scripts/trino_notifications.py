@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 """trino_notifications — trash GitHub notification mail about closed Trino work.
 
-Finds GitHub notification mail for repositories in the trinodb organization,
-looks up the state of each referenced pull request or issue with `gh`, and
-moves the mail about closed issues and closed or merged pull requests to the
-Trash folder. Mail about open items, and mail it cannot map to a pull request
+Finds GitHub notification mail in INBOX for repositories in the trinodb
+organization, looks up the state of each referenced pull request or issue with
+`gh`, and moves the mail about closed issues and closed or merged pull requests
+to the Trash folder. Mail about open items, and mail it cannot map to a pull request
 or issue, stays where it is.
 
 Dry run unless --apply is passed.
 
 Usage:
-  trino_notifications.py [--folder F]... [--org trinodb] [--samples N]
-                         [--json] [--apply]
+  trino_notifications.py [--org trinodb] [--samples N] [--json] [--apply]
+
+Only INBOX is scanned. Other folders are Manfred's archives and stay untouched.
 """
 
 import argparse
@@ -83,16 +84,14 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--config")
-    p.add_argument("--folder", action="append",
-                   help="folder to scan, repeatable, default INBOX")
     p.add_argument("--org", default="trinodb")
     p.add_argument("--samples", type=int, default=10,
-                   help="removable messages to list per folder")
+                   help="removable messages to list")
     p.add_argument("--json", action="store_true")
     p.add_argument("--apply", action="store_true",
                    help="move the removable messages to Trash")
     args = p.parse_args(argv)
-    folders = args.folder or ["INBOX"]
+    folders = ["INBOX"]
 
     try:
         cfg = imapctl.load_config(args.config)

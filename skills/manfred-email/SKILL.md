@@ -25,6 +25,26 @@ This skill works on the `manfred@simpligility.ca` mailbox only. Other accounts
 in Manfred's mail clients, such as `yen@simpligility.ca` and
 `info@cowichanlaketrailblazers.com`, are out of scope.
 
+## Inbox and archive folders
+
+Manfred treats the inbox as a getting-things-done list. Every cleanup workflow
+works on `INBOX` only. Never scan, trash, or rearrange messages in any other
+folder, unless Manfred explicitly asks for that specific folder.
+
+The folders under `INBOX.`, such as `INBOX.trino`, `INBOX.chainguard`, and
+`INBOX.cltbs`, are Manfred's topic archives. When he says to archive a message,
+move it from `INBOX` to the topic folder that fits:
+
+1. Read the current folder list with `imapctl.py folders`. Do not rely on a
+   hardcoded list, because folders come and go.
+2. Propose the folder that matches the message topic and get confirmation
+   before the move.
+3. When no topic folder fits, ask. There is no default archive folder. Ignore
+   `INBOX.Archive`, which is not part of Manfred's scheme.
+
+The special-use folders `INBOX.Trash`, `INBOX.spam`, `INBOX.Junk`,
+`INBOX.Drafts`, and `INBOX.Sent` are never archive targets.
+
 ## How it works
 
 The scripts talk to the mail server over IMAP. Thunderbird on two machines and
@@ -166,12 +186,13 @@ pull requests are removable. Mail about open items stays. So does mail it cannot
 map, reported as `other` for items such as releases and discussions, or as
 `unknown` for deleted and transferred items.
 
-1. Run the dry run. Scan INBOX by default, or pass `--folder` once per folder
-   that filters sort GitHub mail into:
+The script only scans `INBOX`. Notifications already archived in
+`INBOX.trino` stay untouched.
+
+1. Run the dry run:
 
    ```sh
    python3 scripts/trino_notifications.py
-   python3 scripts/trino_notifications.py --folder INBOX --folder GitHub
    ```
 
 2. Show Manfred the counts per state and the sample of removable messages.
@@ -179,7 +200,7 @@ map, reported as `other` for items such as releases and discussions, or as
    removable messages to Trash.
 
 The script is idempotent, so it can run again at any time. `--json` gives a
-machine-readable report with the removable UIDs per folder.
+machine-readable report with the removable UIDs.
 
 Possible refinements as the workflow matures:
 
@@ -189,8 +210,8 @@ Possible refinements as the workflow matures:
 
 ## Workflow: Cowichan Lake Trail Blazers board mail
 
-Goal: go through board mail one message at a time and file each one into a
-folder.
+Goal: go through board mail in `INBOX` one message at a time and archive each
+one to `INBOX.cltbs`, the Trail Blazers archive folder.
 
 Board mail mostly arrives through the `board@cowichanlaketrailblazers.com`
 mailing list, but people sometimes write to board members directly instead of
@@ -202,19 +223,18 @@ python3 scripts/imapctl.py search --list-id cowichanlaketrailblazers
 python3 scripts/imapctl.py search --from cowichanlaketrailblazers.com
 ```
 
-The list ID and the destination folder are not confirmed yet. On the first run,
-check the `List-ID` header with `search --json`, list folders with `folders`,
-ask Manfred for the destination, and propose recording both in this section.
+The list ID is not confirmed yet. On the first run, check the `List-ID` header
+with `search --json` and propose recording it in this section.
 
 1. Combine the search results and remove duplicate UIDs. Present the list
    oldest first.
 2. For each message, run `show` and give Manfred a one or two line summary with
    sender, date, and subject.
-3. Ask for the action: move to the board folder, move elsewhere, trash, or
-   skip.
-4. Collect the decisions and confirm the batch before running `move` or `trash`
-   with `--apply`. For a short list, applying after each decision is also fine
-   when Manfred prefers it.
+3. Ask for the action: archive to `INBOX.cltbs`, archive to another topic
+   folder, trash, or leave it in the inbox.
+4. Collect the decisions and confirm the batch before running `move` with
+   `--to-folder INBOX.cltbs` or `trash`, with `--apply`. For a short list,
+   applying after each decision is also fine when Manfred prefers it.
 
 ## Adding workflows
 
