@@ -1,6 +1,6 @@
 ---
 name: trinodb-community-broadcast
-description: Run the mechanics of a Trino Community Broadcast episode — the local episode folder, the announcement pull request on trino.io that lists the upcoming episode with its live stream links, the guest invite with the StreamYard link, the Trino events calendar entry, and the episode page pull request that is opened before the show as the working show notes and merged after the recording with the chapter list and the reset of the upcoming episode placeholder. Child skill of the trinodb family. Use when preparing, announcing, or publishing a Trino Community Broadcast episode.
+description: Run the mechanics of a Trino Community Broadcast episode — the local episode folder, the announcement pull request on trino.io that lists the upcoming episode with its live stream links, the guest invite with the StreamYard link, the Trino events calendar entry, and the episode page pull request that is opened before the show as the working show notes and merged after the recording with the chapter list, the reset of the upcoming episode placeholder, and the processing of the YouTube recording with whisper-cpp and the automatic captions into the chapter list and a ready to paste video description. Child skill of the trinodb family. Use when preparing, announcing, or publishing a Trino Community Broadcast episode.
 ---
 
 # Trino Community Broadcast
@@ -14,8 +14,6 @@ project, usually shortened to TCB. It builds on these skills:
 - `trinodb-website` for the local build of the
   [trinodb/trino.io](https://github.com/trinodb/trino.io) repository, the
   writing style for site content, and the linking traps.
-- `trinodb-contributor-call-processing` for the transcription of a recording
-  with `yt-dlp` and whisper-cpp, which the chapter list of an episode reuses.
 
 The skill covers the mechanics only. Choosing topics and guests, briefing
 guests, and running the live show are up to the hosts.
@@ -36,9 +34,11 @@ are the main deliverables:
    episode page pull request. It stays open as the working show notes until
    after the show.
 9. Air the episode live.
-10. Add the chapter list and the final details to the episode page, and merge
+10. Process the recording into the chapter list and the YouTube description.
+11. Add the chapter list and the final details to the episode page, and merge
     the pull request.
-11. Close the tracking issue.
+12. Follow up on YouTube and LinkedIn.
+13. Close the tracking issue.
 
 Ask the user for the episode number and remember it as {{number}}. Episodes are
 numbered consecutively, and the current number is the one in the placeholder
@@ -247,10 +247,9 @@ introduction: |
 - `introduction` reuses the announcement paragraph without the HTML and the
   stream links.
 
-Create the chapter list from the YouTube recording with the transcription steps
-in `trinodb-contributor-call-processing`, and keep the transcripts in the
-episode folder. Use the same list for the chapters in the YouTube video
-description.
+Create the chapter list as described in [Processing the
+recording](#processing-the-recording), and use the same list for the chapters
+in the YouTube video description.
 
 ### Body
 
@@ -298,3 +297,179 @@ known:
 
 Build the site locally as described in `trinodb-website` and check the episode
 page and the broadcast index before opening the pull request.
+
+## Processing the recording
+
+StreamYard streams the episode to YouTube and LinkedIn and leaves no local
+recording, so process the YouTube video. The YouTube URL is the stream link
+from the announcement, and the `youtube_id` in the episode front matter.
+Remember it as {{url}}.
+
+### Files
+
+Keep the processing files in the episode folder `tcb{{number}}`:
+
+| File | Content |
+| --- | --- |
+| `tcb{{number}}-transcript-whisper.vtt` | Raw whisper-cpp transcript |
+| `tcb{{number}}-transcript-youtube.vtt` | Raw YouTube captions |
+| `tcb{{number}}-whisper-youtube-description.txt` | Description from the whisper-cpp transcript |
+| `tcb{{number}}-youtube-youtube-description.txt` | Description from the YouTube captions |
+| `tcb{{number}}-final-youtube-description.txt` | Merged final description |
+
+Keep downloaded audio and condensed transcripts in a scratch directory, and
+delete the audio when done.
+
+### Transcription
+
+Use two timestamped transcripts, a local whisper-cpp transcription and the
+YouTube automatic captions. Each catches details and corrects errors that the
+other misses.
+
+The whisper-cpp transcription needs `ffmpeg` and `whisper-cpp` from Homebrew
+and the large-v3-turbo model in `~/.cache/whisper-cpp`. Confirm with the user
+before installing anything that is missing:
+
+```
+brew install ffmpeg whisper-cpp
+mkdir -p ~/.cache/whisper-cpp
+curl -L -o ~/.cache/whisper-cpp/ggml-large-v3-turbo.bin \
+  https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin
+```
+
+Download the audio, convert it to 16 kHz mono, and transcribe it. Pass the
+episode title, the host and guest names, and project terms with `--prompt` to
+improve the spelling:
+
+```
+yt-dlp -f bestaudio -x --audio-format wav -o "audio.%(ext)s" "{{url}}"
+ffmpeg -i audio.wav -ar 16000 -ac 1 audio16.wav
+whisper-cli -m ~/.cache/whisper-cpp/ggml-large-v3-turbo.bin -f audio16.wav \
+  -l en -ovtt -of transcript-whisper \
+  --prompt "Trino Community Broadcast 79, Going for 1.0.0. Manfred Moser, ..."
+awk '/-->/{t=substr($1,1,8); next} NF && !/WEBVTT/{print t" "$0}' \
+  transcript-whisper.vtt > whisper.txt
+```
+
+Right after the show, YouTube still serves the video as a live stream archive
+in thousands of small fragments, so the audio download of a 90 minute episode
+takes several minutes. Transcription takes about two minutes per hour on Apple
+silicon. The whisper-cpp transcript is the better source for names, project
+terms, numbers, and timestamps, but has no speaker labels.
+
+The automatic captions are usually missing for a few hours after the stream.
+Request the `en-orig` track, since the `en` track often fails with `HTTP Error
+429: Too Many Requests`:
+
+```
+yt-dlp --skip-download --write-auto-subs --sub-langs "en-orig" \
+  --sub-format vtt -o transcript "{{url}}"
+awk '/-->/{t=substr($1,1,8); next}
+  NF && !/^(WEBVTT|Kind:|Language:)/ {
+    gsub(/<[^>]*>/, ""); gsub(/&gt;/, ">")
+    if (!($0 in seen)) { seen[$0] = 1; print t " " $0 }
+  }' transcript.en-orig.vtt > youtube.txt
+```
+
+The captions mark each change of speaker with `>>`, which helps to attribute
+statements, but they garble names and numbers more than whisper-cpp does.
+
+Start with whichever transcript is available, write its description file, and
+copy it to the final description. Tell the user to run the second pass once the
+other transcript is available.
+
+### Chapters
+
+Read the whole transcript and create a chapter for each topic change. Typical
+chapters, in order, are the introduction, the release updates, the subproject
+and community news, the guest introduction, the discussion topics, each demo,
+what's next for the guests, and rounding out with upcoming events. Keep
+chapters at least a minute apart, and merge shorter ones.
+
+Verify the facts heard in the recording before using them in titles or the
+episode page. Check versions against the GitHub releases of the project, find
+the pull requests and issues for features that are mentioned, and match
+garbled names against the contributors on those pull requests with `gh`.
+
+### YouTube description
+
+Write the description file in the following format. YouTube turns the
+timestamp lines into chapters, which requires the first one to be `0:00`.
+YouTube also keeps every line break, so write the introduction paragraph on a
+single line instead of hard wrapping it:
+
+```
+<guests> join Manfred Moser to talk about <topic>. We learn about <what the episode covers>.
+
+0:00 Introduction with Manfred
+1:02 Release updates for Trino 480, 481, 482, and 483
+...
+
+More details at https://trino.io/episodes/{{number}}
+
+Episode hosted and organized by Manfred Moser. Sponsor his Trino-related and other open source work at
+https://github.com/sponsors/mosabua
+```
+
+Base the introduction on the one from the episode page, but name Manfred
+instead of "us", since the description stands on its own. The episode link
+only works once the episode page pull request is merged.
+
+### Compare and merge
+
+For the second pass, write the description file for the second transcript
+without looking at the final one, and do not edit the per-transcript files
+afterwards. Then merge it into the final description, which may contain the
+user's manual edits:
+
+- Timestamps: use the whisper-cpp timestamps, unless whisper-cpp squashed cues
+  together during crosstalk.
+- Speakers: use the `>>` markers in the YouTube captions.
+- Names, terms, and numbers: prefer whisper-cpp, and verify disagreements
+  against GitHub.
+- Content: add topics that only one transcript picked up.
+
+Summarize what the comparison changed, and ask the user about uncertain
+details.
+
+### Episode page and video
+
+Copy the chapters from the final description into the `sections` list of the
+episode page, using `00:00` for the first entry. Update the guest
+introduction, the topic sections, and the resources to what was actually
+discussed, with links to the pull requests and releases found while verifying.
+
+Once the user confirms the final description, they paste it into YouTube as
+described in [After the show](#after-the-show). Do not change the video from
+the command line.
+
+## After the show
+
+StreamYard already sets the thumbnail on the YouTube video, and the video is
+added to the Trino Community Broadcast playlist, so neither needs a follow-up.
+The remaining steps are manual in the browser. Remind the user of them once the
+episode page is merged, since the steps link to it.
+
+On YouTube:
+
+- Paste the final description into the video description in YouTube Studio.
+- Pin a comment with a link to the episode page.
+
+On LinkedIn, the following practices are not yet verified against the current
+LinkedIn behavior. Confirm with the user which ones worked, and update this
+section to match:
+
+- Edit the text of the live video post to link to the YouTube recording and
+  the episode page. LinkedIn has no clickable chapters, so add two or three
+  highlights instead of the full chapter list.
+- Post once in the event with the links to the recording and the episode page,
+  which reaches the registered attendees who missed the stream.
+- Publish a separate follow-up post a day or two later that tags the guests.
+  Put the links in the first comment rather than the post, since LinkedIn tends
+  to show posts with external links to fewer people. A short native clip of a
+  highlight from the episode works better than a link.
+- Reply to the comments left during the stream.
+
+StreamYard might keep the recording in its library with a download option,
+depending on the plan. That is not yet verified either. If it does, it is a
+cleaner audio source for the transcription and a source for highlight clips.
