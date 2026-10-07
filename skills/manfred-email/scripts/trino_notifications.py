@@ -17,7 +17,7 @@ Usage:
   trino_notifications.py [--repo NAME]... [--item REPO#N]...
                          [--exclude REPO#N]...
                          [--state merged|closed]... [--show-open]
-                         [--include-open]
+                         [--include-open] [--show-other]
                          [--org trinodb] [--markdown] [--json] [--apply]
 
 Only INBOX is scanned. Other folders are Manfred's archives and stay untouched.
@@ -181,6 +181,9 @@ def main(argv=None):
     p.add_argument("--include-open", action="store_true",
                    help="also trash open items, only allowed together with "
                    "--item so that open items are never trashed in bulk")
+    p.add_argument("--show-other", action="store_true",
+                   help="also list the mail that maps to no pull request or "
+                   "issue, such as releases, which is always kept")
     p.add_argument("--markdown", action="store_true",
                    help="print the report as markdown tables with links")
     p.add_argument("--json", action="store_true")
@@ -211,10 +214,13 @@ def main(argv=None):
             items = query_items(args.org, refs) if refs else {}
 
             counts = {}
+            others = []
             for r in rows:
                 ref = parse_ref(r, args.org)
                 state = items[ref]["state"] if ref else "OTHER"
                 counts[state] = counts.get(state, 0) + 1
+                if not ref:
+                    others.append(r)
                 if ref:
                     items[ref]["uids"].append(r["uid"])
 
@@ -238,7 +244,8 @@ def main(argv=None):
                 json.dump({"folder": FOLDER, "trash": trash,
                            "applied": args.apply, "states": counts,
                            "items": groups,
-                           "open": open_items if args.show_open else []},
+                           "open": open_items if args.show_open else [],
+                           "other": others if args.show_other else []},
                           sys.stdout, indent=2)
                 print()
                 return 0
@@ -250,6 +257,19 @@ def main(argv=None):
                 print(f"\nOpen, kept in {FOLDER}: {len(open_items)} items, "
                       f"{msgs} messages.")
                 print_report(open_items, args.markdown, "Open: ")
+            if args.show_other:
+                print(f"\nOther, kept in {FOLDER}: {len(others)} messages.\n")
+                if args.markdown:
+                    print("| UID | Date | From | Subject |")
+                    print("|---|---|---|---|")
+                for r in others:
+                    cells = [str(r["uid"]), r["date"], r["from"],
+                             r["subject"]]
+                    if args.markdown:
+                        print("| " + " | ".join(c.replace("|", "\\|")
+                                                for c in cells) + " |")
+                    else:
+                        print("  " + "  ".join(cells))
             print()
             if args.apply:
                 print(f"Moved {len(removable)} messages to {trash}.")
