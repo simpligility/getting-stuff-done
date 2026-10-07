@@ -189,18 +189,39 @@ map, reported as `other` for items such as releases and discussions, or as
 The script only scans `INBOX`. Notifications already archived in
 `INBOX.trino` stay untouched.
 
-1. Run the dry run:
+The report groups the removable mail by pull request or issue: one row per
+item with a link to GitHub, the state, the message count, and the title. All
+messages about one item share its subject, so the row stands for all of them.
+
+Options:
+
+- `--repo NAME` — only this repository, repeatable, for example
+  `--repo trino-go-client --repo grafana-trino`.
+- `--exclude REPO#N` — keep the mail about this item, repeatable, for example
+  `--exclude trino-gateway#1188`.
+- `--markdown` — print the report as markdown tables per repository, with each
+  item linked.
+- `--json` — machine-readable report with the UIDs per item.
+
+1. Run the dry run with `--markdown`, adding any `--repo` or `--exclude` filters
+   Manfred asks for:
 
    ```sh
-   python3 scripts/trino_notifications.py
+   python3 scripts/trino_notifications.py --markdown
    ```
 
-2. Show Manfred the counts per state and the sample of removable messages.
+2. Show Manfred the report in the reply, with the tables and links intact, so
+   he can check each item on GitHub. Point out pull requests closed without
+   merging, which may deserve a look.
 3. After confirmation, run the same command with `--apply`. It moves the
-   removable messages to Trash.
+   removable messages to Trash and prints the same grouped report of what it
+   moved. Show that report too.
 
-The script is idempotent, so it can run again at any time. `--json` gives a
-machine-readable report with the removable UIDs.
+Use the script options rather than ad-hoc code for every operation, so each one
+shows the grouped, linked view. When a filter is missing, add it to the script.
+
+The script rechecks the states on every run, so it is idempotent and can run
+again at any time.
 
 Possible refinements as the workflow matures:
 
