@@ -205,6 +205,8 @@ Options:
   `closed` covers pull requests closed without merging and closed issues.
 - `--show-open` — also list the open items, which are always kept in the inbox
   and never moved.
+- `--include-open` — also trash mail about open items. Only allowed together
+  with `--item`, so open items are only ever trashed when Manfred names them.
 - `--markdown` — print the report as markdown tables per repository, with each
   item linked.
 - `--json` — machine-readable report with the UIDs per item.

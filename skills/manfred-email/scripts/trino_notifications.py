@@ -17,6 +17,7 @@ Usage:
   trino_notifications.py [--repo NAME]... [--item REPO#N]...
                          [--exclude REPO#N]...
                          [--state merged|closed]... [--show-open]
+                         [--include-open]
                          [--org trinodb] [--markdown] [--json] [--apply]
 
 Only INBOX is scanned. Other folders are Manfred's archives and stay untouched.
@@ -177,16 +178,23 @@ def main(argv=None):
                    "pull requests closed without merging and closed issues")
     p.add_argument("--show-open", action="store_true",
                    help="also list the open items, which are always kept")
+    p.add_argument("--include-open", action="store_true",
+                   help="also trash open items, only allowed together with "
+                   "--item so that open items are never trashed in bulk")
     p.add_argument("--markdown", action="store_true",
                    help="print the report as markdown tables with links")
     p.add_argument("--json", action="store_true")
     p.add_argument("--apply", action="store_true",
                    help="move the removable messages to Trash")
     args = p.parse_args(argv)
+    if args.include_open and not args.item:
+        p.error("--include-open requires --item")
     repos = {r.lower() for r in args.repo or []}
     excluded = set(args.exclude)
     only = set(args.item)
     states = {s.upper() for s in args.state or []} or set(REMOVABLE)
+    if args.include_open:
+        states.add("OPEN")
 
     try:
         cfg = imapctl.load_config(args.config)
@@ -216,7 +224,8 @@ def main(argv=None):
                         and (not repos or i["repo"].lower() in repos))
 
             groups = [i for key, i in sorted(items.items())
-                      if i["state"] in states and i["state"] in REMOVABLE
+                      if i["state"] in states
+                      and (i["state"] in REMOVABLE or args.include_open)
                       and selected(key, i)]
             open_items = [i for key, i in sorted(items.items())
                           if i["state"] == "OPEN" and selected(key, i)]
