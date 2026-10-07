@@ -119,6 +119,7 @@ not just read its `SKILL.md` file:
 | Writing, blogs, marketing, docs, markdown, skill files (`SKILL.md`) | `manfred-writing` |
 | Slide decks, presentations, talks | `manfred-slides` |
 | Open source contribution tracking, `simpligility/contributions`, sponsors | `manfred-contributions` |
+| Email cleanup and management for `manfred@simpligility.ca` | `manfred-email` |
 
 Add new entries to this table as new `manfred-*` skills are created.
 
