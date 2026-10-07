@@ -219,6 +219,12 @@ Options:
 2. Show Manfred the report in the reply, with the tables and links intact, so
    he can check each item on GitHub. Point out pull requests closed without
    merging, which may deserve a look.
+   For the `trino` and `trino-gateway` repositories, warn Manfred explicitly
+   before trashing mail about pull requests closed without merging. The stale
+   bot, `github-actions` with the `stale` label, closes pull requests that are
+   still relevant, and Manfred may want to reopen them and apply the
+   `stale-ignore` label. Call out each stale bot closure by number. The script
+   does not skip these, so the warning is the safeguard.
 3. After confirmation, run the same command with `--apply`. It moves the
    removable messages to Trash and prints the same grouped report of what it
    moved. Show that report too.
