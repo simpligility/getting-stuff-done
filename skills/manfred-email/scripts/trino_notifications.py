@@ -14,7 +14,8 @@ when applying.
 Dry run unless --apply is passed.
 
 Usage:
-  trino_notifications.py [--repo NAME]... [--exclude REPO#N]...
+  trino_notifications.py [--repo NAME]... [--item REPO#N]...
+                         [--exclude REPO#N]...
                          [--state merged|closed]... [--show-open]
                          [--org trinodb] [--markdown] [--json] [--apply]
 
@@ -35,6 +36,9 @@ REF_RE = re.compile(r"<([\w.-]+)/([\w.-]+)/(pull|issues)/(\d+)[/@]")
 BATCH = 100
 FOLDER = "INBOX"
 REMOVABLE = ("CLOSED", "MERGED")
+DETAILS = ("state title url closedAt labels(first: 20) { nodes { name } } "
+           "timelineItems(itemTypes: [CLOSED_EVENT], last: 1) "
+           "{ nodes { ... on ClosedEvent { actor { login } } } }")
 
 
 def parse_ref(rec, org):
@@ -71,8 +75,8 @@ def query_items(org, refs):
         for ri, (repo, numbers) in enumerate(repos.items()):
             fields = " ".join(
                 f"n{n}: issueOrPullRequest(number: {n}) {{ __typename "
-                "... on Issue { state title url } "
-                "... on PullRequest { state title url } }"
+                f"... on Issue {{ {DETAILS} }} "
+                f"... on PullRequest {{ {DETAILS} }} }}"
                 for n in numbers)
             parts.append(f'r{ri}: repository(owner: "{org}", '
                          f'name: "{repo}") {{ {fields} }}')
@@ -101,8 +105,18 @@ def query_items(org, refs):
                     "title": item.get("title", ""),
                     "url": item.get("url")
                     or f"https://github.com/{org}/{repo}/issues/{n}",
+                    "closed_at": (item.get("closedAt") or "")[:10],
+                    "closed_by": closed_by(item),
+                    "labels": [lb["name"] for lb in
+                               (item.get("labels") or {}).get("nodes", [])],
                     "uids": []}
     return items
+
+
+def closed_by(item):
+    events = (item.get("timelineItems") or {}).get("nodes") or []
+    actor = (events[-1] if events else {}).get("actor") or {}
+    return actor.get("login", "")
 
 
 def state_label(item):
@@ -131,7 +145,13 @@ def print_report(groups, markdown, heading=""):
         else:
             print(f"{heading}{repo}")
         for i in items:
-            title = i["title"].replace("|", "\\|") if markdown else i["title"]
+            title = i["title"]
+            if i["state"] == "CLOSED":
+                title += f" — closed {i['closed_at']} by {i['closed_by'] or '?'}"
+                if i["labels"]:
+                    title += f", labels: {', '.join(i['labels'])}"
+            if markdown:
+                title = title.replace("|", "\\|")
             if markdown:
                 print(f"| [#{i['number']}]({i['url']}) | {state_label(i)} | "
                       f"{len(i['uids'])} | {title} |")
@@ -148,6 +168,8 @@ def main(argv=None):
     p.add_argument("--org", default="trinodb")
     p.add_argument("--repo", action="append",
                    help="only this repository, repeatable")
+    p.add_argument("--item", action="append", type=parse_item, default=[],
+                   metavar="REPO#N", help="only this item, repeatable")
     p.add_argument("--exclude", action="append", type=parse_item, default=[],
                    metavar="REPO#N", help="keep this item, repeatable")
     p.add_argument("--state", action="append", choices=["merged", "closed"],
@@ -163,6 +185,7 @@ def main(argv=None):
     args = p.parse_args(argv)
     repos = {r.lower() for r in args.repo or []}
     excluded = set(args.exclude)
+    only = set(args.item)
     states = {s.upper() for s in args.state or []} or set(REMOVABLE)
 
     try:
@@ -189,6 +212,7 @@ def main(argv=None):
 
             def selected(key, i):
                 return (key not in excluded
+                        and (not only or key in only)
                         and (not repos or i["repo"].lower() in repos))
 
             groups = [i for key, i in sorted(items.items())

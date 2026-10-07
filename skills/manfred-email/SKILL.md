@@ -197,6 +197,8 @@ Options:
 
 - `--repo NAME` — only this repository, repeatable, for example
   `--repo trino-go-client --repo grafana-trino`.
+- `--item REPO#N` — only this item, repeatable, for example
+  `--item trino#17682`.
 - `--exclude REPO#N` — keep the mail about this item, repeatable, for example
   `--exclude trino-gateway#1188`.
 - `--state merged` or `--state closed` — only items in this state, repeatable.
