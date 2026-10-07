@@ -111,6 +111,7 @@ Personal skills:
 | [`manfred-git`](./skills/manfred-git) | Commit message style, branching, PR workflow, and code review. |
 | [`manfred-writing`](./skills/manfred-writing) | Writing voice, audience, and markdown formatting conventions. |
 | [`manfred-slides`](./skills/manfred-slides) | Presentation slide deck structure and content conventions. |
+| [`manfred-contributions`](./skills/manfred-contributions) | Track open source work as issues in `simpligility/contributions` as evidence for GitHub sponsors. |
 | [`manfred-email`](./skills/manfred-email) | Mailbox cleanup over IMAP, including trashing notifications about closed Trino pull requests and issues. |
 
 ### Installing only the Trino skills
