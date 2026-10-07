@@ -199,6 +199,10 @@ Options:
   `--repo trino-go-client --repo grafana-trino`.
 - `--exclude REPO#N` — keep the mail about this item, repeatable, for example
   `--exclude trino-gateway#1188`.
+- `--state merged` or `--state closed` — only items in this state, repeatable.
+  `closed` covers pull requests closed without merging and closed issues.
+- `--show-open` — also list the open items, which are always kept in the inbox
+  and never moved.
 - `--markdown` — print the report as markdown tables per repository, with each
   item linked.
 - `--json` — machine-readable report with the UIDs per item.

@@ -14,8 +14,9 @@ when applying.
 Dry run unless --apply is passed.
 
 Usage:
-  trino_notifications.py [--repo NAME]... [--exclude REPO#N]... [--org trinodb]
-                         [--markdown] [--json] [--apply]
+  trino_notifications.py [--repo NAME]... [--exclude REPO#N]...
+                         [--state merged|closed]... [--show-open]
+                         [--org trinodb] [--markdown] [--json] [--apply]
 
 Only INBOX is scanned. Other folders are Manfred's archives and stay untouched.
 """
@@ -106,26 +107,29 @@ def query_items(org, refs):
 
 def state_label(item):
     if item["kind"] == "issue":
-        return "closed issue" if item["state"] == "CLOSED" else "issue"
+        return f"{item['state'].lower()} issue"
     return item["state"].lower()
 
 
-def print_report(groups, counts, markdown):
-    by_repo = {}
-    for item in groups:
-        by_repo.setdefault(item["repo"], []).append(item)
+def print_summary(groups, counts):
     msgs = sum(len(i["uids"]) for i in groups)
     print(f"{FOLDER}: " + ", ".join(f"{k.lower()} {v}"
                                      for k, v in sorted(counts.items()))
           + f" messages. Removable: {len(groups)} items, {msgs} messages.")
+
+
+def print_report(groups, markdown, heading=""):
+    by_repo = {}
+    for item in groups:
+        by_repo.setdefault(item["repo"], []).append(item)
     for repo, items in sorted(by_repo.items()):
         print()
         if markdown:
-            print(f"**{repo}**\n")
+            print(f"**{heading}{repo}**\n")
             print("| Item | State | Msgs | Title |")
             print("|---|---|---|---|")
         else:
-            print(repo)
+            print(f"{heading}{repo}")
         for i in items:
             title = i["title"].replace("|", "\\|") if markdown else i["title"]
             if markdown:
@@ -146,6 +150,11 @@ def main(argv=None):
                    help="only this repository, repeatable")
     p.add_argument("--exclude", action="append", type=parse_item, default=[],
                    metavar="REPO#N", help="keep this item, repeatable")
+    p.add_argument("--state", action="append", choices=["merged", "closed"],
+                   help="only items in this state, repeatable; closed covers "
+                   "pull requests closed without merging and closed issues")
+    p.add_argument("--show-open", action="store_true",
+                   help="also list the open items, which are always kept")
     p.add_argument("--markdown", action="store_true",
                    help="print the report as markdown tables with links")
     p.add_argument("--json", action="store_true")
@@ -154,6 +163,7 @@ def main(argv=None):
     args = p.parse_args(argv)
     repos = {r.lower() for r in args.repo or []}
     excluded = set(args.exclude)
+    states = {s.upper() for s in args.state or []} or set(REMOVABLE)
 
     try:
         cfg = imapctl.load_config(args.config)
@@ -177,10 +187,15 @@ def main(argv=None):
                 if ref:
                     items[ref]["uids"].append(r["uid"])
 
+            def selected(key, i):
+                return (key not in excluded
+                        and (not repos or i["repo"].lower() in repos))
+
             groups = [i for key, i in sorted(items.items())
-                      if i["state"] in REMOVABLE
-                      and key not in excluded
-                      and (not repos or i["repo"].lower() in repos)]
+                      if i["state"] in states and i["state"] in REMOVABLE
+                      and selected(key, i)]
+            open_items = [i for key, i in sorted(items.items())
+                          if i["state"] == "OPEN" and selected(key, i)]
             removable = [u for i in groups for u in i["uids"]]
 
             if args.apply and removable:
@@ -189,11 +204,19 @@ def main(argv=None):
             if args.json:
                 json.dump({"folder": FOLDER, "trash": trash,
                            "applied": args.apply, "states": counts,
-                           "items": groups}, sys.stdout, indent=2)
+                           "items": groups,
+                           "open": open_items if args.show_open else []},
+                          sys.stdout, indent=2)
                 print()
                 return 0
 
-            print_report(groups, counts, args.markdown)
+            print_summary(groups, counts)
+            print_report(groups, args.markdown)
+            if args.show_open:
+                msgs = sum(len(i["uids"]) for i in open_items)
+                print(f"\nOpen, kept in {FOLDER}: {len(open_items)} items, "
+                      f"{msgs} messages.")
+                print_report(open_items, args.markdown, "Open: ")
             print()
             if args.apply:
                 print(f"Moved {len(removable)} messages to {trash}.")
