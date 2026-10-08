@@ -37,7 +37,7 @@ are the main deliverables:
 10. Process the recording into the chapter list and the YouTube description.
 11. Add the chapter list and the final details to the episode page, and merge
     the pull request.
-12. Follow up on YouTube and LinkedIn.
+12. Follow up on YouTube, LinkedIn, and Trino Slack.
 13. Close the tracking issue.
 
 Ask the user for the episode number and remember it as {{number}}. Episodes are
@@ -455,9 +455,7 @@ On YouTube:
 - Paste the final description into the video description in YouTube Studio.
 - Pin a comment with a link to the episode page.
 
-On LinkedIn, the following practices are not yet verified against the current
-LinkedIn behavior. Confirm with the user which ones worked, and update this
-section to match:
+On LinkedIn:
 
 - Edit the text of the live video post to link to the YouTube recording and
   the episode page. LinkedIn has no clickable chapters, so add two or three
@@ -470,6 +468,15 @@ section to match:
   highlight from the episode works better than a link.
 - Reply to the comments left during the stream.
 
-StreamYard might keep the recording in its library with a download option,
-depending on the plan. That is not yet verified either. If it does, it is a
-cleaner audio source for the transcription and a source for highlight clips.
+On Trino Slack:
+
+- Announce the recording and the show notes in the `#announcements` channel on
+  [Trino Slack](https://trino.io/slack), with links to the episode page and the
+  YouTube recording. Manfred has official access to post there.
+
+Ask the user for the URL of the LinkedIn post and add it to the tracking issue
+with the episode page link before closing the issue.
+
+StreamYard keeps the recording in its library with a download option. Download
+it only when a local copy is needed, for example as a cleaner audio source for
+the transcription or for cutting highlight clips.
