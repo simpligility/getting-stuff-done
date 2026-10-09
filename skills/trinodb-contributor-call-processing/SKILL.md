@@ -92,6 +92,11 @@ base name. Start the whisper-cpp prompt with `Trino contributor call.` and add
 the expected attendee names from the draft notes, the wiki, and the tables in
 [Attendees list](#attendees-list), and the project terms from the draft notes.
 
+The transcription steps come from the `media-transcription` skill. If it is not
+installed, ask the user to install it from the [getting-stuff-done
+repository](https://github.com/simpligility/getting-stuff-done) before
+continuing.
+
 Automatic captions are usually missing for a few hours after the upload. If
 only one transcript is available, create the output files for that transcript,
 copy them to the final output files, and tell the user to run the second pass

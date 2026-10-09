@@ -329,6 +329,11 @@ as the source, the episode folder `tcb{{number}}` as the output folder, and
 names, and project terms in the whisper-cpp prompt, for example `Trino
 Community Broadcast 79, Going for 1.0.0. Manfred Moser, ...`.
 
+The transcription steps come from the `media-transcription` skill. If it is not
+installed, ask the user to install it from the [getting-stuff-done
+repository](https://github.com/simpligility/getting-stuff-done) before
+continuing.
+
 Right after the show, the audio download for whisper-cpp takes several minutes,
 and the automatic captions are usually missing for a few hours.
 

@@ -159,8 +159,18 @@ Install every skill in the repository at once by pointing at the repository:
 npx skills add simpligility/getting-stuff-done
 ```
 
-This adds a Node based dependency at install time and is entirely optional. The
-symlink script and a plain clone remain the primary, dependency-free path.
+Skills have no dependency management, so installing a single skill does not
+pull in the skills it uses. The `trinodb-contributor-call-processing` and
+`trinodb-community-broadcast` skills need `media-transcription`, so install it
+along with them:
+
+```bash
+npx skills add simpligility/getting-stuff-done@media-transcription
+```
+
+The skills CLI adds a Node based dependency at install time and is entirely
+optional. The symlink script and a plain clone remain the primary,
+dependency-free path.
 
 The `npx skills find` command searches the separate
 [skills.sh](https://skills.sh) registry rather than GitHub directly, so these
