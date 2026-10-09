@@ -13,3 +13,15 @@ propose where it should go and let me decide. If a loaded skill or instruction
 names a home for preserved knowledge, propose that. Otherwise suggest whatever
 fits the current tool and project, such as a project instructions file, a skill,
 or a tool setting.
+
+## File system access
+
+Stay inside the working directories of the session: the folder the session
+started in and any folders I add or name for the task. Before reading,
+searching, or editing anything outside them, stop and ask me. Name the path and
+why it is needed. This holds even when the tool would allow the access. If I
+agree, I grant it with the tool's own mechanism, such as adding a working
+directory.
+
+When I mention a file without giving its location, ask me for the path. Do not
+search the home directory or other folders to find it.
