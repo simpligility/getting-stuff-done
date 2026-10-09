@@ -5,7 +5,8 @@ description: >-
   with a bundled, standard-library Python tool — search by header, read
   messages, move them between folders, and move them to Trash. Includes
   workflows for trashing GitHub notifications about closed Trino pull requests
-  and issues, and for filing Cowichan Lake Trail Blazers board mail. A component
+  and issues, for trashing GitHub community/maintainers discussion mail and
+  Apache mailing list mail, and for filing Cowichan Lake Trail Blazers board mail. A component
   of the `manfred` skill family. Activate only when the `manfred` skill is
   already active and its index directs you here, or when Manfred explicitly
   invokes it; do not auto-activate on generic email work by description match
@@ -79,6 +80,18 @@ to the script inside this skill directory. Both print usage with `--help`.
 - UIDs are only valid within one folder. Always pass the same `--folder` that
   the search reported.
 - Never ask for, print, or store the password. It stays in the Keychain.
+- Pass the exact UIDs from the confirmed search to `trash` or `move`, so mail
+  that arrives later is not included. Compare the dry run count with the
+  confirmed count before applying. Manfred also works the inbox in his clients,
+  so messages can disappear in between. Report a difference instead of applying
+  blindly.
+
+## Summaries
+
+When presenting mail for a decision, group it by list or sender and then by
+thread, and list the subject of every thread with its message count. Drop
+`Re:` prefixes and list tags such as `[CLTBS board]` from the subjects. A bare
+count per list is not enough.
 
 ## Setup
 
@@ -260,8 +273,16 @@ python3 scripts/imapctl.py search --list-id cowichanlaketrailblazers
 python3 scripts/imapctl.py search --from cowichanlaketrailblazers.com
 ```
 
-The list ID is not confirmed yet. On the first run, check the `List-ID` header
-with `search --json` and propose recording it in this section.
+The Trail Blazers run two Mailman lists, and the `--list-id` search above
+matches both:
+
+- `board.cowichanlaketrailblazers.com` — the board list, subject prefix
+  `[CLTBS board]`.
+- `all.cowichanlaketrailblazers.com` — the all members list, subject prefix
+  `[CLTBS - All]`, for announcements such as meeting invitations.
+
+Replies that reach Manfred directly, before the list copy, carry no `List-ID`,
+so the `--to` search catches them.
 
 1. Combine the search results and remove duplicate UIDs. Present the list
    oldest first.
@@ -272,6 +293,49 @@ with `search --json` and propose recording it in this section.
 4. Collect the decisions and confirm the batch before running `move` with
    `--to-folder INBOX.cltbs` or `trash`, with `--apply`. For a short list,
    applying after each decision is also fine when Manfred prefers it.
+
+## Workflow: GitHub maintainers community discussions
+
+Goal: trash all notification mail from the `community/maintainers` discussions
+on GitHub. Manfred does not keep any of it.
+
+GitHub sends these as `notifications@github.com` to
+`maintainers@noreply.github.com`, with subjects starting
+`[community/maintainers]`. The `--to` search finds them:
+
+```sh
+python3 scripts/imapctl.py search --to maintainers@noreply.github.com
+```
+
+1. Run the search and show Manfred the count and the discussion titles,
+   grouped by thread.
+2. After confirmation, pass all reported UIDs to `trash`, first without and
+   then with `--apply`.
+
+## Workflow: Apache mailing lists
+
+Goal: trash all mail from Apache Software Foundation mailing lists. Manfred
+reads what he needs from these lists elsewhere and does not keep the mail.
+
+Every Apache list sets a `List-ID` ending in `apache.org`, so one search covers
+them all:
+
+```sh
+python3 scripts/imapctl.py search --list-id apache.org --json
+```
+
+Known subscriptions:
+
+- `announce.apache.org` — release announcements and CVE advisories.
+- `dev.maven.apache.org` — the Maven developer list.
+- `legal-discuss.apache.org` — the legal list, assumed list ID, not yet seen
+  in the inbox.
+
+1. Run the search and present the result per list, with the subject of every
+   thread as described in Summaries. Call out any list not named above, since
+   it may be a new subscription.
+2. After confirmation, pass the UIDs to `trash`, first without and then with
+   `--apply`.
 
 ## Adding workflows
 
