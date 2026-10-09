@@ -86,6 +86,7 @@ General skills:
 
 | Skill | Purpose |
 |---|---|
+| [`media-transcription`](./skills/media-transcription) | Transcribe a local video or audio file, or a YouTube video, with whisper-cpp and the YouTube captions, and shrink large videos. |
 | [`slides-prep`](./skills/slides-prep) | Prepare a talk from proposal through a slide-ready markdown outline, then generate a first deck; composes with `manfred-slides`. |
 | [`trinodb`](./skills/trinodb) | Shared reference facts about the Trino project for the `trinodb-*` family. |
 | [`trinodb-java-code-style`](./skills/trinodb-java-code-style) | Java code style for Trino, Airlift, and projects using airbase, split by what the build enforces. |
@@ -118,7 +119,9 @@ Personal skills:
 
 The `trinodb-*` family stands on its own and is useful to anyone working on
 Trino, independent of the personal skills in this repository. To install the
-base `trinodb` skill and every child skill in the family, and nothing else, run:
+base `trinodb` skill, every child skill in the family, and the
+`media-transcription` skill that the recording processing skills depend on,
+run:
 
 ```bash
 cd getting-stuff-done

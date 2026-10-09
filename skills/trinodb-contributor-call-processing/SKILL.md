@@ -28,7 +28,7 @@ the output files.
 
 Keep all files for the call in a folder named `tcc-{{compactdate}}` in the
 current working directory, and create it if it does not exist. The folder holds
-the draft notes, both raw transcripts, the output files from each transcript,
+the draft notes, both transcripts, the output files from each transcript,
 and the merged final output files:
 
 | File | Content |
@@ -36,7 +36,9 @@ and the merged final output files:
 | `tcc-{{compactdate}}.md` | Draft notes |
 | `tcc-{{compactdate}}.png` | Screenshot for the run of show, the video edit, and the YouTube thumbnail |
 | `tcc-{{compactdate}}-transcript-whisper.vtt` | Raw whisper-cpp transcript |
+| `tcc-{{compactdate}}-transcript-whisper.txt` | Condensed whisper-cpp transcript |
 | `tcc-{{compactdate}}-transcript-youtube.vtt` | Raw YouTube captions |
+| `tcc-{{compactdate}}-transcript-youtube.txt` | Condensed YouTube captions |
 | `tcc-{{compactdate}}-whisper-minutes.md` | Minutes from the whisper-cpp transcript |
 | `tcc-{{compactdate}}-whisper-youtube-description.txt` | Description from the whisper-cpp transcript |
 | `tcc-{{compactdate}}-youtube-minutes.md` | Minutes from the YouTube captions |
@@ -83,9 +85,12 @@ push either file from the command line.
 ### Transcription
 
 Analyzing the video requires timestamped transcripts from two sources, the
-YouTube automatic captions and a local whisper-cpp transcription. Keep all
-downloaded and generated files in a scratch directory, not next to the output
-files.
+YouTube automatic captions and a local whisper-cpp transcription. Create both
+with the `media-transcription` skill, using {{url}} as the source,
+`tcc-{{compactdate}}` as the output folder, and `tcc-{{compactdate}}` as the
+base name. Start the whisper-cpp prompt with `Trino contributor call.` and add
+the expected attendee names from the draft notes, the wiki, and the tables in
+[Attendees list](#attendees-list), and the project terms from the draft notes.
 
 Automatic captions are usually missing for a few hours after the upload. If
 only one transcript is available, create the output files for that transcript,
@@ -94,75 +99,6 @@ once the other transcript is available. The second pass writes the output files
 for the other transcript and merges them into the existing final output files
 as described in [Compare and merge](#compare-and-merge), so it keeps any manual
 edits.
-
-#### YouTube captions
-
-Download the automatic captions with `yt-dlp`. This also prints the video title
-and duration:
-
-```
-yt-dlp --skip-download --write-auto-subs --sub-langs "en-orig" \
-  --sub-format vtt --print "%(title)s | %(duration_string)s" --no-simulate \
-  -o transcript "{{url}}"
-```
-
-Request the `en-orig` track. The `en` track is the same speech recognition
-output, but downloading it often fails with `HTTP Error 429: Too Many
-Requests`. If `yt-dlp` reports that there are no subtitles, the captions are not
-ready yet.
-
-The automatic captions repeat each line across consecutive cues and contain
-inline timing tags. Condense them to one timestamped line per unique text:
-
-```
-awk '/-->/{t=substr($1,1,8); next}
-  NF && !/^(WEBVTT|Kind:|Language:)/ {
-    gsub(/<[^>]*>/, ""); gsub(/&gt;/, ">")
-    if (!($0 in seen)) { seen[$0] = 1; print t " " $0 }
-  }' transcript.en-orig.vtt > youtube.txt
-```
-
-The captions mark each change of speaker with `>>`, which makes them the
-better source for attributing statements to people. They garble names, project
-terms, and numbers more than whisper-cpp does, and their timestamps at the
-start of the call can run several seconds late.
-
-#### Local whisper-cpp transcript
-
-Transcribe the audio locally with whisper-cpp. It requires `ffmpeg` and
-`whisper-cpp` from Homebrew and the large-v3-turbo model of about 1.6 GB.
-Confirm with the user before installing anything that is missing:
-
-```
-brew install ffmpeg whisper-cpp
-mkdir -p ~/.cache/whisper-cpp
-curl -L -o ~/.cache/whisper-cpp/ggml-large-v3-turbo.bin \
-  https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin
-```
-
-Download the audio, convert it to 16 kHz mono, and transcribe it. Pass the
-expected attendee names and project terms with `--prompt` to improve the
-spelling of names:
-
-```
-yt-dlp -f bestaudio -x --audio-format wav -o "audio.%(ext)s" "{{url}}"
-ffmpeg -i audio.wav -ar 16000 -ac 1 audio16.wav
-whisper-cli -m ~/.cache/whisper-cpp/ggml-large-v3-turbo.bin -f audio16.wav \
-  -l en -ovtt -of transcript \
-  --prompt "Trino contributor call. Manfred Moser, Dain Sundstrom, ..."
-```
-
-On Apple silicon, whisper-cpp transcribes a one-hour call in about two minutes.
-Condense the VTT file to one timestamped line per cue before reading it:
-
-```
-awk '/-->/{t=substr($1,1,8); next} NF && !/WEBVTT/{print t" "$0}' \
-  transcript.vtt > whisper.txt
-```
-
-The whisper-cpp transcript is the better source for names, project terms,
-numbers, and timestamps. It has no speaker labels, and during crosstalk it
-sometimes squashes several cues into a few seconds.
 
 #### Compare and merge
 
@@ -188,11 +124,6 @@ rather than replacing them, since they may contain the user's manual edits.
 Summarize what the comparison found and changed, and ask the user to decide on
 uncertain speakers, ambiguous attendees, and whether to include minor details
 before finalizing.
-
-Keep both raw transcripts in the call folder as
-`tcc-{{compactdate}}-transcript-youtube.vtt` and
-`tcc-{{compactdate}}-transcript-whisper.vtt`, so they stay available for later
-refinement. Delete the remaining scratch files such as the audio.
 
 ### YouTube description
 

@@ -6,7 +6,8 @@
 # This is the entry point for anyone who wants the trinodb-* family without the
 # personal manfred-* skills or the weekly recap skills. It installs the base
 # trinodb skill and every child skill in the family, which belong together: the
-# child skills reference the shared facts in the base skill.
+# child skills reference the shared facts in the base skill. It also installs
+# media-transcription, which the recording processing skills depend on.
 #
 # Everything else — the tool list, the symlink safety rules, idempotency — comes
 # from install-skills.sh, which this wraps with a glob. Run that directly with
@@ -15,4 +16,4 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-exec "$SCRIPT_DIR/install-skills.sh" 'trinodb' 'trinodb-*'
+exec "$SCRIPT_DIR/install-skills.sh" 'trinodb' 'trinodb-*' 'media-transcription'

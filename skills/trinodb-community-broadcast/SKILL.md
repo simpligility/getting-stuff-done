@@ -312,67 +312,25 @@ Keep the processing files in the episode folder `tcb{{number}}`:
 | File | Content |
 | --- | --- |
 | `tcb{{number}}-transcript-whisper.vtt` | Raw whisper-cpp transcript |
+| `tcb{{number}}-transcript-whisper.txt` | Condensed whisper-cpp transcript |
 | `tcb{{number}}-transcript-youtube.vtt` | Raw YouTube captions |
+| `tcb{{number}}-transcript-youtube.txt` | Condensed YouTube captions |
 | `tcb{{number}}-whisper-youtube-description.txt` | Description from the whisper-cpp transcript |
 | `tcb{{number}}-youtube-youtube-description.txt` | Description from the YouTube captions |
 | `tcb{{number}}-final-youtube-description.txt` | Merged final description |
-
-Keep downloaded audio and condensed transcripts in a scratch directory, and
-delete the audio when done.
 
 ### Transcription
 
 Use two timestamped transcripts, a local whisper-cpp transcription and the
 YouTube automatic captions. Each catches details and corrects errors that the
-other misses.
+other misses. Create both with the `media-transcription` skill, using {{url}}
+as the source, the episode folder `tcb{{number}}` as the output folder, and
+`tcb{{number}}` as the base name. Pass the episode title, the host and guest
+names, and project terms in the whisper-cpp prompt, for example `Trino
+Community Broadcast 79, Going for 1.0.0. Manfred Moser, ...`.
 
-The whisper-cpp transcription needs `ffmpeg` and `whisper-cpp` from Homebrew
-and the large-v3-turbo model in `~/.cache/whisper-cpp`. Confirm with the user
-before installing anything that is missing:
-
-```
-brew install ffmpeg whisper-cpp
-mkdir -p ~/.cache/whisper-cpp
-curl -L -o ~/.cache/whisper-cpp/ggml-large-v3-turbo.bin \
-  https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin
-```
-
-Download the audio, convert it to 16 kHz mono, and transcribe it. Pass the
-episode title, the host and guest names, and project terms with `--prompt` to
-improve the spelling:
-
-```
-yt-dlp -f bestaudio -x --audio-format wav -o "audio.%(ext)s" "{{url}}"
-ffmpeg -i audio.wav -ar 16000 -ac 1 audio16.wav
-whisper-cli -m ~/.cache/whisper-cpp/ggml-large-v3-turbo.bin -f audio16.wav \
-  -l en -ovtt -of transcript-whisper \
-  --prompt "Trino Community Broadcast 79, Going for 1.0.0. Manfred Moser, ..."
-awk '/-->/{t=substr($1,1,8); next} NF && !/WEBVTT/{print t" "$0}' \
-  transcript-whisper.vtt > whisper.txt
-```
-
-Right after the show, YouTube still serves the video as a live stream archive
-in thousands of small fragments, so the audio download of a 90 minute episode
-takes several minutes. Transcription takes about two minutes per hour on Apple
-silicon. The whisper-cpp transcript is the better source for names, project
-terms, numbers, and timestamps, but has no speaker labels.
-
-The automatic captions are usually missing for a few hours after the stream.
-Request the `en-orig` track, since the `en` track often fails with `HTTP Error
-429: Too Many Requests`:
-
-```
-yt-dlp --skip-download --write-auto-subs --sub-langs "en-orig" \
-  --sub-format vtt -o transcript "{{url}}"
-awk '/-->/{t=substr($1,1,8); next}
-  NF && !/^(WEBVTT|Kind:|Language:)/ {
-    gsub(/<[^>]*>/, ""); gsub(/&gt;/, ">")
-    if (!($0 in seen)) { seen[$0] = 1; print t " " $0 }
-  }' transcript.en-orig.vtt > youtube.txt
-```
-
-The captions mark each change of speaker with `>>`, which helps to attribute
-statements, but they garble names and numbers more than whisper-cpp does.
+Right after the show, the audio download for whisper-cpp takes several minutes,
+and the automatic captions are usually missing for a few hours.
 
 Start with whichever transcript is available, write its description file, and
 copy it to the final description. Tell the user to run the second pass once the
