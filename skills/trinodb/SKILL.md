@@ -59,6 +59,10 @@ code comments, blog posts, and talks.
 "the gateway", "the load balancer", "the loadbalancer", or "the proxy". Repeat
 the full name rather than shortening it after first use.
 
+The rule also covers the name used as a modifier. Write "Trino Gateway
+metadata", not "gateway metadata". When a change touches a line that already
+uses a shortened name, fix that line in the same change.
+
 The same rule applies to the other products in the project. Write **Trino**
 rather than "the query engine" or "the server" when the product is meant.
 
