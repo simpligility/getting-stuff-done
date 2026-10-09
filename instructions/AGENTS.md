@@ -23,6 +23,12 @@ why it is needed. This holds even when the tool would allow the access. If I
 agree, I grant it with the tool's own mechanism, such as adding a working
 directory.
 
+Exception: reading the current AI tool's own configuration, global
+instructions, installed skills, and their supporting files is allowed without
+asking, even outside the working directories. This includes files under the
+tool's configuration directory, such as `~/.codex`, and the targets of
+symlinks installed there. This exception grants read access only.
+
 When I mention a file without giving its location, ask me for the path. Do not
 search the home directory or other folders to find it.
 
