@@ -356,6 +356,30 @@ git remote add upstream git@github.com:<parent-owner>/<repo>.git
 This keeps sync, rebase, and PR workflows consistent, and it exposes the
 upstream owner needed to detect a Chainguard repo.
 
+## Worktrees for pull requests
+
+To work on a pull request without disturbing the main clone, give it its own
+git worktree. Place the worktree in a sibling folder of the clone named
+`<repo>-pr-<number>`, never inside the clone itself. For example, pull request
+1323 in a `trino-gateway` clone goes to `../trino-gateway-pr-1323`.
+
+Fetch the pull request head, create a detached worktree from it, then let `gh`
+switch it to the real branch:
+
+```
+git fetch upstream pull/<number>/head
+git worktree add --detach ../<repo>-pr-<number> FETCH_HEAD
+cd ../<repo>-pr-<number>
+gh pr checkout <number> --repo <owner>/<repo>
+```
+
+`gh pr checkout` names the local branch after the pull request branch and sets
+its push remote to the right fork, whether that is `origin` or a contributor's
+fork. A later push therefore lands on the pull request.
+
+Remove the worktree with `git worktree remove ../<repo>-pr-<number>` when the
+work is done.
+
 ## PR preferences
 
 - **Small and focused** — one logical change per PR
