@@ -70,6 +70,24 @@ conventions, so activate this skill before writing one.
   [Google Developer Documentation Style Guide](https://developers.google.com/style).
 
 
+## Density and structure
+
+Default to writing that can be scanned. The most common failure is a long,
+dense paragraph that packs several points into one block — break it up.
+
+- Lead with the point, then support it. Don't bury the conclusion.
+- One idea per paragraph. When a paragraph covers two things, split it.
+- Separate distinct points with a blank line so they don't blur together.
+- Prefer a short list over a run-on sentence that enumerates items in prose.
+- Keep sentences short enough to read once. Cut clauses that only add length.
+- Long, dense prose is for genuinely layered explanation that was asked for,
+  not the default shape of every paragraph.
+
+This applies to everything written in Manfred's voice, including pull request
+descriptions, review comments, and other on-his-behalf output, not only
+published posts and docs.
+
+
 ## Author biography
 
 When a short description of the author is needed, use the canonical bio

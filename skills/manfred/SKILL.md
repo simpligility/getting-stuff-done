@@ -63,6 +63,17 @@ Guide.
 - No unnecessary preamble or filler — get to the point
 - Don't over-explain unless Manfred asks for it
 
+### Readability
+
+Write responses to be scanned, not waded through. A long, dense paragraph that
+packs several points into one block is the main thing to avoid.
+
+- Lead with the answer or the conclusion, then support it.
+- Keep paragraphs short — one idea each. Split a long one into several.
+- Put a blank line between distinct points so they don't run together.
+- Reach for a short list or other structure when it beats prose for scanning.
+- Save long, dense explanation for when Manfred asks for depth.
+
 ## Working style
 
 - Pragmatic — prefers solutions that scale without over-engineering

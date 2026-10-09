@@ -382,6 +382,10 @@ upstream owner needed to detect a Chainguard repo.
   what changed, why, and anything they must know to review or test — but no
   more. Keep it concise and easy to scan; prefer a few tight bullets over long
   prose, and cut anything that does not help the reader.
+- **Easy to scan.** Follow the density and structure rules in `manfred-writing`
+  — short paragraphs, one idea each, whitespace between distinct points, and
+  lists over dense prose. A reviewer should be able to skim the body and still
+  get it.
 - **Expect the description to be edited.** Manfred typically revises the PR
   body after it is drafted, so write it as a clean starting point he can take
   over rather than a final, decorated artifact. Keep it focused on what the
@@ -393,6 +397,10 @@ upstream owner needed to detect a Chainguard repo.
 - Distinguish between blocking issues and suggestions — use the `nit:` prefix
   for non-blocking ones
 - Prefer requesting changes over leaving ambiguous comments
+- Keep comments easy to read — follow the density and structure rules in
+  `manfred-writing`. Make one point per comment where you can, and break a
+  longer comment into short paragraphs or a short list rather than a wall of
+  text.
 
 ## Maintaining a contributor pull request
 
