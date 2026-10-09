@@ -25,3 +25,8 @@ directory.
 
 When I mention a file without giving its location, ask me for the path. Do not
 search the home directory or other folders to find it.
+
+Keep scratch files, such as downloads and intermediate results, in a folder
+inside the working directory, for example `.scratch` next to the output files,
+not in a system or tool temporary directory. Refer to it with absolute paths
+rather than changing into it, and delete it when the task is done.
