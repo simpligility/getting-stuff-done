@@ -288,12 +288,31 @@ dropping the `https` and `tls` usage makes the client isomorphic and dependency
 free, which is the clean way to line its dependencies up with the query editor
 and the web UI. The client pins axios to an exact version while the web UI
 requires a newer minor, so the current pin would duplicate axios in a shared
-dependency tree rather than resolve to one copy. The open pull request
+dependency tree rather than resolve to one copy.
+
+The open pull request
 [trino-js-client#956](https://github.com/trinodb/trino-js-client/pull/956)
-removes axios in favor of the global `fetch` plus an `undici.Agent` used only
-when `ssl` is set. It keeps the public API unchanged, but `undici` is a Node
-package, so that pull request alone does not make the client browser-ready; it is
-the first half of the transport rework.
+removes axios and splits the transport on whether `ssl` is set:
+
+- Without `ssl`, requests use the global `fetch` and `undici` is never loaded.
+- With `ssl`, `undici` loads on first use through a dynamic import, and its own
+  `fetch` and `Agent` are used together.
+
+Keep the two from one source. Passing an npm `undici` `Agent` as the
+`dispatcher` of the global `fetch` mixes two undici copies, and it breaks across
+majors: Node 24 bundles undici 7, while the pull request pins undici 8. Node's
+global `fetch` cannot take custom TLS settings without a dispatcher, so `ssl`
+cannot be served without undici, and client certificates have no environment
+variable workaround.
+
+The pull request also replaces `AxiosError` with an exported `TrinoError`
+carrying `status` and `body`, which is a breaking change for callers that read
+`error.response`. Everything else in the public API is unchanged.
+
+It is the first half of the transport rework, not browser support. The build
+targets CommonJS, so the dynamic import compiles to a `require('undici')` inside
+a function. That defers loading at runtime, but a browser bundler may still pull
+undici in, and excluding it belongs to the browser work.
 
 Browser support and the query editor integration are tracked in
 [trino-js-client issue 985](https://github.com/trinodb/trino-js-client/issues/985),
@@ -310,9 +329,10 @@ adds the `/ui/api/statement` submission and pagination but not cancellation.
 Independent SQL sessions, the per-tab `createSession` and `execute` API, are an
 explicit separate follow-up and not a prerequisite for web UI session reuse.
 
-As of late 2026 this work is deliberately parked until the outstanding pull
-requests merge and a 1.0.0 release is out, so the browser transport rework lands
-on a released baseline rather than tangled into dependency hygiene.
+This work was parked until the outstanding pull requests merged and a 1.0.0
+release was out, so the browser transport rework lands on a released baseline
+rather than tangled into dependency hygiene. 1.0.0 was published in September
+2026, so the remaining gate is merging #956, which ships as 2.0.0.
 
 ### Large integer precision and the parse hook
 
