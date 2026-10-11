@@ -58,9 +58,9 @@ SMTP is not involved. It only sends mail, and this skill never sends anything.
 
 The tooling lives in `scripts/` next to this file:
 
-- `imapctl.py` — generic mailbox commands: `check`, `folders`, `search`,
+* `imapctl.py` — generic mailbox commands: `check`, `folders`, `search`,
   `show`, `move`, and `trash`.
-- `trino_notifications.py` — the Trino notification cleanup, built on
+* `trino_notifications.py` — the Trino notification cleanup, built on
   `imapctl.py`.
 
 Both use only the Python standard library. Run them with `python3` and the path
@@ -68,19 +68,19 @@ to the script inside this skill directory. Both print usage with `--help`.
 
 ## Safety rules
 
-- Read-only commands — `check`, `folders`, `search`, `show`, and any command
+* Read-only commands — `check`, `folders`, `search`, `show`, and any command
   without `--apply` — run without asking for confirmation.
-- Any command with `--apply` changes the mailbox. Run the same command without
+* Any command with `--apply` changes the mailbox. Run the same command without
   `--apply` first, show Manfred the result, and get explicit confirmation for
   that specific change before applying it.
-- Deleting always means moving to the Trash folder. Never expunge, and never
+* Deleting always means moving to the Trash folder. Never expunge, and never
   empty Trash. Manfred can restore anything from Trash in any client.
-- Searching and listing fetch headers with `BODY.PEEK`, and `show` does too, so
+* Searching and listing fetch headers with `BODY.PEEK`, and `show` does too, so
   nothing gets marked as read.
-- UIDs are only valid within one folder. Always pass the same `--folder` that
+* UIDs are only valid within one folder. Always pass the same `--folder` that
   the search reported.
-- Never ask for, print, or store the password. It stays in the Keychain.
-- Pass the exact UIDs from the confirmed search to `trash` or `move`, so mail
+* Never ask for, print, or store the password. It stays in the Keychain.
+* Pass the exact UIDs from the confirmed search to `trash` or `move`, so mail
   that arrives later is not included. Compare the dry run count with the
   confirmed count before applying. Manfred also works the inbox in his clients,
   so messages can disappear in between. Report a difference instead of applying
@@ -112,9 +112,9 @@ keychain_service = manfred-email
 
 Optional keys:
 
-- `trash_folder` — the Trash folder name, when the server does not mark it
+* `trash_folder` — the Trash folder name, when the server does not mark it
   with the `\Trash` special-use flag and it is not named `Trash`.
-- `password_cmd` — a command that prints the password, replacing the Keychain
+* `password_cmd` — a command that prints the password, replacing the Keychain
   lookup, for example on a machine with a different secret store.
 
 The `MANFRED_EMAIL_CONFIG` environment variable or the `--config` option point
@@ -208,23 +208,23 @@ messages about one item share its subject, so the row stands for all of them.
 
 Options:
 
-- `--repo NAME` — only this repository, repeatable, for example
+* `--repo NAME` — only this repository, repeatable, for example
   `--repo trino-go-client --repo grafana-trino`.
-- `--item REPO#N` — only this item, repeatable, for example
+* `--item REPO#N` — only this item, repeatable, for example
   `--item trino#17682`.
-- `--exclude REPO#N` — keep the mail about this item, repeatable, for example
+* `--exclude REPO#N` — keep the mail about this item, repeatable, for example
   `--exclude trino-gateway#1188`.
-- `--state merged` or `--state closed` — only items in this state, repeatable.
+* `--state merged` or `--state closed` — only items in this state, repeatable.
   `closed` covers pull requests closed without merging and closed issues.
-- `--show-open` — also list the open items, which are always kept in the inbox
+* `--show-open` — also list the open items, which are always kept in the inbox
   and never moved.
-- `--show-other` — also list the mail that maps to no pull request or issue,
+* `--show-other` — also list the mail that maps to no pull request or issue,
   such as release announcements, which is always kept.
-- `--include-open` — also trash mail about open items. Only allowed together
+* `--include-open` — also trash mail about open items. Only allowed together
   with `--item`, so open items are only ever trashed when Manfred names them.
-- `--markdown` — print the report as markdown tables per repository, with each
+* `--markdown` — print the report as markdown tables per repository, with each
   item linked.
-- `--json` — machine-readable report with the UIDs per item.
+* `--json` — machine-readable report with the UIDs per item.
 
 1. Run the dry run with `--markdown`, adding any `--repo` or `--exclude` filters
    Manfred asks for:
@@ -254,9 +254,9 @@ again at any time.
 
 Possible refinements as the workflow matures:
 
-- Treat `other` mail such as release announcements or CI notifications by age.
-- Include closed discussions.
-- Cover other organizations, with `--org`.
+* Treat `other` mail such as release announcements or CI notifications by age.
+* Include closed discussions.
+* Cover other organizations, with `--org`.
 
 ## Workflow: Cowichan Lake Trail Blazers board mail
 
@@ -276,9 +276,9 @@ python3 scripts/imapctl.py search --from cowichanlaketrailblazers.com
 The Trail Blazers run two Mailman lists, and the `--list-id` search above
 matches both:
 
-- `board.cowichanlaketrailblazers.com` — the board list, subject prefix
+* `board.cowichanlaketrailblazers.com` — the board list, subject prefix
   `[CLTBS board]`.
-- `all.cowichanlaketrailblazers.com` — the all members list, subject prefix
+* `all.cowichanlaketrailblazers.com` — the all members list, subject prefix
   `[CLTBS - All]`, for announcements such as meeting invitations.
 
 Replies that reach Manfred directly, before the list copy, carry no `List-ID`,
@@ -326,9 +326,9 @@ python3 scripts/imapctl.py search --list-id apache.org --json
 
 Known subscriptions:
 
-- `announce.apache.org` — release announcements and CVE advisories.
-- `dev.maven.apache.org` — the Maven developer list.
-- `legal-discuss.apache.org` — the legal list, assumed list ID, not yet seen
+* `announce.apache.org` — release announcements and CVE advisories.
+* `dev.maven.apache.org` — the Maven developer list.
+* `legal-discuss.apache.org` — the legal list, assumed list ID, not yet seen
   in the inbox.
 
 1. Run the search and present the result per list, with the subject of every

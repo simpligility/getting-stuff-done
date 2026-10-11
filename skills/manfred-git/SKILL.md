@@ -23,14 +23,14 @@ default style, used when a repo has no stronger convention, is Chris Beams.
 Follow [Chris Beams' commit message guidelines](https://cbea.ms/git-commit/)
 as practiced in the Trino project:
 
-- Separate subject from body with a blank line
-- Limit subject line to 50 characters
-- Capitalize the subject line
-- Do not end the subject line with a period
-- Use the imperative mood in the subject line: "Add feature", not "Added
+* Separate subject from body with a blank line
+* Limit subject line to 50 characters
+* Capitalize the subject line
+* Do not end the subject line with a period
+* Use the imperative mood in the subject line: "Add feature", not "Added
   feature"
-- Wrap body at 72 characters
-- Use the body to explain **what and why**, not how
+* Wrap body at 72 characters
+* Use the body to explain **what and why**, not how
 
 ### Conventional commits
 
@@ -38,15 +38,15 @@ Some repositories require
 [Conventional Commits](https://www.conventionalcommits.org/), where Chris
 Beams' rules cannot be followed as-is. In those repos:
 
-- Subject is `type(scope): summary`, for example `feat(api): add token refresh`
-- Common types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `build`,
+* Subject is `type(scope): summary`, for example `feat(api): add token refresh`
+* Common types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `build`,
   `ci`
-- Scope is optional but preferred when it adds clarity
-- Summary is lowercase, imperative mood, no trailing period
-- Breaking changes use a `!` after the type/scope or a `BREAKING CHANGE:` footer
-- Limit the subject to 72 characters, looser than Chris Beams' 50 because the
+* Scope is optional but preferred when it adds clarity
+* Summary is lowercase, imperative mood, no trailing period
+* Breaking changes use a `!` after the type/scope or a `BREAKING CHANGE:` footer
+* Limit the subject to 72 characters, looser than Chris Beams' 50 because the
   `type(scope):` prefix eats into the line
-- Wrap the body at 80 characters, looser than the Chris Beams default of 72
+* Wrap the body at 80 characters, looser than the Chris Beams default of 72
 
 These looser 72-character subject and 80-character body limits apply to any
 commit style that does not follow Chris Beams, not only conventional commits.
@@ -59,11 +59,11 @@ when either of the following holds.
 First, the repo is owned by, or is a fork whose upstream is owned by, one of
 Chainguard's GitHub organizations:
 
-- `chainguard-dev`
-- `chainguard-forks`
-- `chainguard-demo`
-- `wolfi-dev`
-- `driftlessaf`
+* `chainguard-dev`
+* `chainguard-forks`
+* `chainguard-demo`
+* `wolfi-dev`
+* `driftlessaf`
 
 This list is authoritative but not necessarily complete — add organizations as
 they come up. The owning organization decides, so the rule applies even when
@@ -76,10 +76,10 @@ upstream owner.
 Second, as a fallback heuristic, treat a repo as a Chainguard repo when
 `chainguard` or `wolfi`, case-insensitive, appears in any of the following:
 
-- the repository name or its local directory
-- the name of any configured git remote, for example a remote literally named
+* the repository name or its local directory
+* the name of any configured git remote, for example a remote literally named
   `chainguard`
-- the URL of any remote, including `origin`, `upstream`, and the source repo a
+* the URL of any remote, including `origin`, `upstream`, and the source repo a
   fork was created from
 
 This fallback catches personal repos whose name matches, such as
@@ -110,10 +110,10 @@ long. Cut it rather than polishing it.
 
 Leave out anything the reader can get elsewhere:
 
-- What the diff already shows, restated in words
-- Background on how the bug was found, or what was tried first
-- Detail that belongs in the pull request description or a linked issue
-- Reproduction steps, sample output, and version tables
+* What the diff already shows, restated in words
+* Background on how the bug was found, or what was tried first
+* Detail that belongs in the pull request description or a linked issue
+* Reproduction steps, sample output, and version tables
 
 The test is whether a reviewer reading `git log` a year later needs the line to
 understand why the change was made. If not, drop it.
@@ -243,7 +243,7 @@ several AI tools, including Copilot, do not interpret `\n` in that position, so
 the literal characters `\n` land in the stored commit message instead of real
 line breaks. Use one of these instead:
 
-- **Pass the message on stdin** — the most reliable across tools and shells:
+* **Pass the message on stdin** — the most reliable across tools and shells:
 
   ```
   git commit -F - <<'EOF'
@@ -255,10 +255,10 @@ line breaks. Use one of these instead:
   EOF
   ```
 
-- **Repeat `-m`** — each `-m` becomes its own paragraph separated by a blank
+* **Repeat `-m`** — each `-m` becomes its own paragraph separated by a blank
   line, with no escapes needed:
   `git commit -m "Subject" -m "Body" -m "Assisted-by: ..."`.
-- **Write a temp file and use `-F <file>`** when the message is long or built
+* **Write a temp file and use `-F <file>`** when the message is long or built
   up programmatically.
 
 If a shell genuinely does interpret ANSI-C escapes, `$'line1\nline2'` quoting
@@ -266,11 +266,11 @@ works, but do not rely on it — stdin or repeated `-m` are portable and safe.
 
 ### Execution environment
 
-- When running under Antigravity, never run `git commit` directly. Instead,
+* When running under Antigravity, never run `git commit` directly. Instead,
   stage the changes, draft the commit message following these conventions, and
   display the exact `git commit` command and message so the user can run it
   externally.
-- Other AI coding agents such as Claude Code can execute the commit directly if
+* Other AI coding agents such as Claude Code can execute the commit directly if
   their interactive environments support signing workflows.
 
 ## Rewriting history
@@ -278,7 +278,7 @@ works, but do not rely on it — stdin or repeated `-m` are portable and safe.
 Keeping a clean, story-telling history usually means editing commits after the
 fact. Pick the tool by the operation.
 
-- **Folding a change into an existing commit** — stage the change, run
+* **Folding a change into an existing commit** — stage the change, run
   `git commit --fixup=<sha>`, then squash it in with
   `git rebase -i --autosquash <base>`. Autosquash pre-arranges the todo
   list, so you save and quit without editing it, and every other commit
@@ -286,7 +286,7 @@ fact. Pick the tool by the operation.
   correcting an earlier commit. Two useful variants are
   `git commit --fixup=reword:<sha>` to change only a commit message and
   `git commit --fixup=amend:<sha>` to change both content and message.
-- **Reordering or inserting commits** — run `git rebase -i <base>` and edit
+* **Reordering or inserting commits** — run `git rebase -i <base>` and edit
   the todo list, moving lines to reorder or adding a new commit at the right
   spot. Autosquash does not help here; it only squashes `fixup!` and
   `squash!` commits into their targets.
@@ -319,18 +319,18 @@ default. When an older repo was created with `master` and should move to
 
 ## Branching strategy
 
-- **Trunk-based development** — short-lived feature branches off the default
+* **Trunk-based development** — short-lived feature branches off the default
   branch
-- Branch naming: a plain descriptive kebab-case name that says what the change
+* Branch naming: a plain descriptive kebab-case name that says what the change
   does, for example `oauth-token-refresh` or `trailer-casing-docs`. Do not use
   type prefixes like `feat/` or `fix/` — the feature-versus-bug distinction adds
   no value and a change is just a change. No prefixes of any kind.
-- Use only lowercase ASCII letters, digits, and hyphens. No spaces, no
+* Use only lowercase ASCII letters, digits, and hyphens. No spaces, no
   uppercase, and no other punctuation or special characters, so the name stays
   valid across git and every tool that consumes it.
-- Branches should be small and focused — if a branch is getting large, consider
+* Branches should be small and focused — if a branch is getting large, consider
   splitting
-- Merge back to the default branch quickly; avoid long-lived branches
+* Merge back to the default branch quickly; avoid long-lived branches
 
 ## Forks and upstream
 
@@ -382,46 +382,46 @@ work is done.
 
 ## PR preferences
 
-- **Small and focused** — one logical change per PR
-- **Draft early, push and iterate** — open a draft PR as soon as there's
+* **Small and focused** — one logical change per PR
+* **Draft early, push and iterate** — open a draft PR as soon as there's
   something to discuss; don't wait for perfection
-- **Clean commit history** — commits should tell a story; no "WIP", "fix typo",
+* **Clean commit history** — commits should tell a story; no "WIP", "fix typo",
   "oops" commits in the final history
-- **Rebase and merge by default** — preserves clean linear history, no merge
+* **Rebase and merge by default** — preserves clean linear history, no merge
   commits
-- **If squash and merge is required:** squash manually after successful review
+* **If squash and merge is required:** squash manually after successful review
   and just before merge, crafting a clean final commit message rather than
   relying on the auto-generated squash message from the merge UI
 
 ### PR description
 
-- **Never add an AI tooling footer** to a pull request description. Do not
+* **Never add an AI tooling footer** to a pull request description. Do not
   append "Generated with Claude Code", "Created by Copilot", a 🤖 attribution
   line, or any similar generated-by marker, regardless of which tool drafted
   it. The PR body should read as Manfred's own, with no tool signature. This
   holds for every repo, including ones where an `Assisted-by:` commit trailer
   is expected — commit-level AI attribution lives in the commit trailer, never
   in the PR description.
-- **Short and digestible.** Include every relevant detail a reviewer needs —
+* **Short and digestible.** Include every relevant detail a reviewer needs —
   what changed, why, and anything they must know to review or test — but no
   more. Keep it concise and easy to scan; prefer a few tight bullets over long
   prose, and cut anything that does not help the reader.
-- **Easy to scan.** Follow the density and structure rules in `manfred-writing`
+* **Easy to scan.** Follow the density and structure rules in `manfred-writing`
   — short paragraphs, one idea each, whitespace between distinct points, and
   lists over dense prose. A reviewer should be able to skim the body and still
   get it.
-- **Expect the description to be edited.** Manfred typically revises the PR
+* **Expect the description to be edited.** Manfred typically revises the PR
   body after it is drafted, so write it as a clean starting point he can take
   over rather than a final, decorated artifact. Keep it focused on what the
   change does and why; leave out filler he would only strip out.
 
 ## Code review
 
-- Reviews should be specific and actionable
-- Distinguish between blocking issues and suggestions — use the `nit:` prefix
+* Reviews should be specific and actionable
+* Distinguish between blocking issues and suggestions — use the `nit:` prefix
   for non-blocking ones
-- Prefer requesting changes over leaving ambiguous comments
-- Keep comments easy to read — follow the density and structure rules in
+* Prefer requesting changes over leaving ambiguous comments
+* Keep comments easy to read — follow the density and structure rules in
   `manfred-writing`. Make one point per comment where you can, and break a
   longer comment into short paragraphs or a short list rather than a wall of
   text.

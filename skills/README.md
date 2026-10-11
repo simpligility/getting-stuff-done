@@ -8,7 +8,7 @@ references, and assets it needs.
 
 The repository README lists and explains them:
 
-- [Skill catalog](../README.md#skill-catalog) for the complete list of skills
+* [Skill catalog](../README.md#skill-catalog) for the complete list of skills
   and what each one does
-- [Installing individual skills](../README.md#installing-individual-skills) for
+* [Installing individual skills](../README.md#installing-individual-skills) for
   installation instructions

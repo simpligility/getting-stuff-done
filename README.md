@@ -217,8 +217,8 @@ verify against the tool's current docs before relying on a new entry.
 Tools whose global instructions live in app settings rather than a file have no
 symlink target — paste the same text there by hand:
 
-- **Cursor** — Settings → Rules → User Rules
-- **GitHub Copilot** — personal custom instructions in your editor or profile
+* **Cursor** — Settings → Rules → User Rules
+* **GitHub Copilot** — personal custom instructions in your editor or profile
 
 Disabling Claude Code's built-in memory is a companion one-line settings change,
 separate from the instructions file: set `"autoMemoryEnabled": false` (and

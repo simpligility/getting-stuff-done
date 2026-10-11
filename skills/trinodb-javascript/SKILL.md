@@ -294,8 +294,8 @@ The open pull request
 [trino-js-client#956](https://github.com/trinodb/trino-js-client/pull/956)
 removes axios and splits the transport on whether `ssl` is set:
 
-- Without `ssl`, requests use the global `fetch` and `undici` is never loaded.
-- With `ssl`, `undici` loads on first use through a dynamic import, and its own
+* Without `ssl`, requests use the global `fetch` and `undici` is never loaded.
+* With `ssl`, `undici` loads on first use through a dynamic import, and its own
   `fetch` and `Agent` are used together.
 
 Keep the two from one source. Passing an npm `undici` `Agent` as the

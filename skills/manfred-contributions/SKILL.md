@@ -60,11 +60,11 @@ a contribution is clearly job work, do not file it, and do not suggest filing it
 File an issue for a unit of volunteer work that stands on its own and that
 Manfred would want a sponsor to see:
 
-- A merged or open pull request that carries real work, such as a dependency
+* A merged or open pull request that carries real work, such as a dependency
   upgrade, a fix, or a new ecosystem entry
-- A release he manages end to end
-- A recurring community meeting he hosts or runs
-- Coordination and maintainer work that produces no commit at all, such as
+* A release he manages end to end
+* A recurring community meeting he hosts or runs
+* Coordination and maintainer work that produces no commit at all, such as
   working with another organization or promoting a contributor to maintainer
 
 Do not file an issue for each commit inside a single piece of work, and do not

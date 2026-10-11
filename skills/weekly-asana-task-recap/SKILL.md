@@ -34,7 +34,7 @@ not display the values of secret variables.
 
 Required variables:
 
-- `RECAP_ASANA_PROJECT` — the Asana project to query and use, given as either
+* `RECAP_ASANA_PROJECT` — the Asana project to query and use, given as either
   its gid or its name. Prefer the gid, since it stays stable when the project
   is renamed, for example across quarters.
 
@@ -103,11 +103,11 @@ differing permalink gid as expected and do not flag it as cross-project.
 
 Determine where to write the output file:
 
-- If the current working directory is named `weekly-updates`, write the file
+* If the current working directory is named `weekly-updates`, write the file
   there.
-- Otherwise, if a `weekly-updates` subdirectory exists in the current
+* Otherwise, if a `weekly-updates` subdirectory exists in the current
   directory, write the file inside it.
-- Otherwise, write the file in the current directory.
+* Otherwise, write the file in the current directory.
 
 Create the markdown file using the ISO date format pattern
 `update-yyyy-mm-dd.md` in the location determined earlier.
@@ -167,10 +167,10 @@ week and the plans for next week.
 Confirm that everything is done, then create a new task in the project
 {{project}}:
 
-- Use the title from the markdown file as the task name.
-- Use the markdown file as the task description, converted to Asana rich text so
+* Use the title from the markdown file as the task name.
+* Use the markdown file as the task description, converted to Asana rich text so
   its links, lists, and emphasis render instead of showing as literal markdown.
-- Assign the task to {{asana-user-id}} with `--assignee me`.
+* Assign the task to {{asana-user-id}} with `--assignee me`.
 
 Convert the markdown file to Asana rich-text HTML with the bundled
 `md-to-asana-html.py` script in this skill's directory. It emits a single

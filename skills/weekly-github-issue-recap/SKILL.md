@@ -15,7 +15,7 @@ source `~/.env` or the appropriate secrets file for your environment. Do not
 display the values of secret variables.
 
 Required variables:
-- `RECAP_GITHUB_REPO` — the target repository in `owner/repo` format
+* `RECAP_GITHUB_REPO` — the target repository in `owner/repo` format
 
 Confirm the `gh` command line tool is installed and available in the `PATH`. If
 not, prompt the user to install and configure it. Provide the link to the
@@ -53,11 +53,11 @@ or to wait until Friday to do so.
 ## Processing
 
 Determine where to write the output file:
-- If the current working directory is named `weekly-updates`, write the file
+* If the current working directory is named `weekly-updates`, write the file
   there.
-- Otherwise, if a `weekly-updates` subdirectory exists in the current
+* Otherwise, if a `weekly-updates` subdirectory exists in the current
   directory, write the file inside it.
-- Otherwise, write the file in the current directory.
+* Otherwise, write the file in the current directory.
 
 Create the markdown file using the ISO date format pattern
 `update-yyyy-mm-dd.md` in the location determined earlier.

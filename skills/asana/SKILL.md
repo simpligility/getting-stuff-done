@@ -75,12 +75,12 @@ can also be set as a default in the wrapper if preferred.
 
 ## Security
 
-- `aslan` is a single file with no third-party dependencies. It talks only to
+* `aslan` is a single file with no third-party dependencies. It talks only to
   the Asana API at `https://app.asana.com/api/1.0` and never prints the token.
-- Keep the Personal Access Token in a secret store or `~/.env`, never on the
+* Keep the Personal Access Token in a secret store or `~/.env`, never on the
   command line and never in committed files. The aslan README lists the
   supported secret managers.
-- If the token is ever exposed, for example through an error that echoes it,
+* If the token is ever exposed, for example through an error that echoes it,
   rotate it in the Asana developer console and revoke the old one.
 
 ## Common commands
@@ -115,9 +115,9 @@ every name resolves before any write, so one bad name fails the whole call.
 
 ## Conventions
 
-- Asana comments are plain text and do not render markdown richly, so bullets
+* Asana comments are plain text and do not render markdown richly, so bullets
   and links appear as literal text. This is acceptable for most work.
-- Task descriptions can be rich text. `--notes` takes either plain text, which
+* Task descriptions can be rich text. `--notes` takes either plain text, which
   aslan escapes and wraps for you, or Asana rich text as a single
   `<body>...</body>` element so links, lists, and emphasis render. Inside the
   body Asana supports `h1`-`h3`, `strong`/`b`, `em`/`i`, `u`, `s`, `code`,
@@ -127,7 +127,7 @@ every name resolves before any write, so one bad name fails the whole call.
   locally and fails before sending, so a malformed fragment surfaces a clear
   error rather than an opaque Asana rejection. The older `--html-notes` flag
   still works as a deprecated alias for `--notes`.
-- Use a task's `permalink_url`, available with `aslan task <gid> --json`, when
+* Use a task's `permalink_url`, available with `aslan task <gid> --json`, when
   you need a shareable link to a task.
-- When creating a task from another system, put a backlink to the source in the
+* When creating a task from another system, put a backlink to the source in the
   notes so the origin stays one click away.

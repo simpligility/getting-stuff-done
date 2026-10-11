@@ -11,11 +11,11 @@ yourself before the tool creates the Linear issue.
 
 ## Prerequisites
 
-- [go-linear](https://github.com/chainguard-sandbox/go-linear) installed and
+* [go-linear](https://github.com/chainguard-sandbox/go-linear) installed and
   configured
-- `LINEAR_API_KEY` environment variable set
-- `RECAP_LINEAR_PROJECT` environment variable set to the Linear project name
-- `RECAP_LINEAR_TEAM` environment variable set to the Linear team that owns the project
+* `LINEAR_API_KEY` environment variable set
+* `RECAP_LINEAR_PROJECT` environment variable set to the Linear project name
+* `RECAP_LINEAR_TEAM` environment variable set to the Linear team that owns the project
 
 ## Build
 

@@ -34,7 +34,7 @@ The `commit-id` is the fork's build commit, not an upstream `minio/minio` one.
 The image is pinned by digest in a single file, the `Minio.DEFAULT_IMAGE`
 constant:
 
-- `testing/trino-testing-containers/src/main/java/io/trino/testing/containers/Minio.java`
+* `testing/trino-testing-containers/src/main/java/io/trino/testing/containers/Minio.java`
 
 This used to live in three files. The other two belonged to the
 `testing/trino-product-tests-launcher` module — `env/common/Minio.java` and
@@ -51,7 +51,7 @@ same `cgr.dev/chainguard/minio` image for its integration tests and should track
 the same build. There the digest is pinned in a single file, in the `IMAGE`
 constant:
 
-- `trino-aws-proxy/src/test/java/io/trino/aws/proxy/server/testing/containers/S3Container.java`
+* `trino-aws-proxy/src/test/java/io/trino/aws/proxy/server/testing/containers/S3Container.java`
 
 Bump it with the procedure in the following section, and keep the digest aligned
 with the core trinodb/trino repository so both test suites run against the same

@@ -7,18 +7,18 @@ description: Core context and preferences for Manfred Moser, and the entry point
 
 ## Identity
 
-- **Name:** Manfred Moser
-- **Pronouns:** he/him — only state or express pronouns when required or
+* **Name:** Manfred Moser
+* **Pronouns:** he/him — only state or express pronouns when required or
   commonly used; don't volunteer them otherwise
-- **Location:** Victoria, BC, Canada — Pacific Time
-- **Role:** Senior Principal DevRel Engineer at Chainguard
-- **GitHub:** `mosabua` — also owns and manages the `simpligility` GitHub
+* **Location:** Victoria, BC, Canada — Pacific Time
+* **Role:** Senior Principal DevRel Engineer at Chainguard
+* **GitHub:** `mosabua` — also owns and manages the `simpligility` GitHub
   organization
-- **LinkedIn:** https://www.linkedin.com/in/manfredmoser/
-- **Website:** https://simpligility.ca
-- **Email:** manfred.moser@chainguard.dev for work at Chainguard;
+* **LinkedIn:** https://www.linkedin.com/in/manfredmoser/
+* **Website:** https://simpligility.ca
+* **Email:** manfred.moser@chainguard.dev for work at Chainguard;
   manfred@simpligility.ca for personal and open-source matters
-- **Focus areas:** Software supply-chain and container security, developer
+* **Focus areas:** Software supply-chain and container security, developer
   relations and community building, and DevOps and CI/CD. Creates technical
   content as written posts, live presentations, and video. Works across Java,
   build and dependency tooling like Maven, distributed SQL with Trino, and
@@ -48,46 +48,46 @@ Guide.
 
 ## Language
 
-- Bilingual. From Austria, German is his mother tongue. After 25+ years away
+* Bilingual. From Austria, German is his mother tongue. After 25+ years away
   he is more comfortable in English.
-- Default to English. Do not switch to German.
+* Default to English. Do not switch to German.
 
 ## Personal
 
-- Happily married and proud dad of three big boys.
+* Happily married and proud dad of three big boys.
 
 ## Communication preferences
 
-- Direct and concise by default
-- Go detailed and thorough when asked, or when the task clearly requires it
-- No unnecessary preamble or filler — get to the point
-- Don't over-explain unless Manfred asks for it
+* Direct and concise by default
+* Go detailed and thorough when asked, or when the task clearly requires it
+* No unnecessary preamble or filler — get to the point
+* Don't over-explain unless Manfred asks for it
 
 ### Readability
 
 Write responses to be scanned, not waded through. A long, dense paragraph that
 packs several points into one block is the main thing to avoid.
 
-- Lead with the answer or the conclusion, then support it.
-- Keep paragraphs short — one idea each. Split a long one into several.
-- Put a blank line between distinct points so they don't run together.
-- Reach for a short list or other structure when it beats prose for scanning.
-- Save long, dense explanation for when Manfred asks for depth.
+* Lead with the answer or the conclusion, then support it.
+* Keep paragraphs short — one idea each. Split a long one into several.
+* Put a blank line between distinct points so they don't run together.
+* Reach for a short list or other structure when it beats prose for scanning.
+* Save long, dense explanation for when Manfred asks for depth.
 
 ## Working style
 
-- Pragmatic — prefers solutions that scale without over-engineering
-- Modular thinking — prefers composable, maintainable approaches over
+* Pragmatic — prefers solutions that scale without over-engineering
+* Modular thinking — prefers composable, maintainable approaches over
   monoliths
-- Will push back if something doesn't make sense — expects the same in return
+* Will push back if something doesn't make sense — expects the same in return
 
 ## AI behavior preferences
 
-- Assume senior-engineer expertise — skip the basics. Manfred will ask if he
+* Assume senior-engineer expertise — skip the basics. Manfred will ask if he
   wants a deeper explanation.
-- Always flag uncertainty and get confirmation before proceeding. Do not
+* Always flag uncertainty and get confirmation before proceeding. Do not
   guess silently.
-- Cite or mention sources for factual claims.
+* Cite or mention sources for factual claims.
 
 ## Preserving knowledge
 
@@ -100,19 +100,19 @@ and let Manfred decide.
 
 ## Activation
 
-- Do not auto-activate this skill on generic topic matches alone.
-- Activate it only when Manfred explicitly asks for it, or when another
+* Do not auto-activate this skill on generic topic matches alone.
+* Activate it only when Manfred explicitly asks for it, or when another
   instruction establishes that Manfred-specific context is needed.
-- Identity cues alone are not a reason to activate. An email address, a
+* Identity cues alone are not a reason to activate. An email address, a
   username, a home directory path, or a question like "who am I" does not count
   as an explicit request.
-- Once activated, this skill establishes that the model is working with
+* Once activated, this skill establishes that the model is working with
   Manfred and should apply his identity, preferences, and working style.
-- Only apply this identity to Manfred. If the current user is not Manfred, for
+* Only apply this identity to Manfred. If the current user is not Manfred, for
   example someone who installed the skill as a template, do not adopt his
   identity, contact details, or biography for them. Copy the skill and replace
   the details with your own instead, as the repository README explains.
-- This skill is also the entry point to the `manfred-*` child skills. After it
+* This skill is also the entry point to the `manfred-*` child skills. After it
   is active, invoke the relevant child skill for topic-specific work such as
   `manfred-git` for git workflows or `manfred-writing` for writing tasks.
 

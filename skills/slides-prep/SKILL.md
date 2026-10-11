@@ -25,15 +25,15 @@ this skill.
 
 Any of these, in any order and as standalone entry points:
 
-- Talk proposals and CFP submissions: title, abstract, speaker bio, takeaways.
-- An idea dump that captures everything before it is structured.
-- A per-slide outline in the markdown format from the outline format section.
-- A speaker-notes trim pass.
-- Generating a deck from the outline — the whole deck, or a single new slide to
+* Talk proposals and CFP submissions: title, abstract, speaker bio, takeaways.
+* An idea dump that captures everything before it is structured.
+* A per-slide outline in the markdown format from the outline format section.
+* A speaker-notes trim pass.
+* Generating a deck from the outline — the whole deck, or a single new slide to
   paste into a deck that already exists.
-- Reconstructing the markdown outline from an existing deck, in Google Slides or
+* Reconstructing the markdown outline from an existing deck, in Google Slides or
   as a `.pptx`.
-- Reviewing an existing deck and finalizing it against the conventions here.
+* Reviewing an existing deck and finalizing it against the conventions here.
 
 Moving between the markdown and the deck is **deliberate, not automatic**. There
 is no reliable one-click sync in either direction: generating a deck from the
@@ -59,10 +59,10 @@ This skill is designed to compose with, but never depend on, a personal skill
 set. When those skills are available, use them; when they are not, this skill
 stands on its own.
 
-- **manfred-writing**, when present: the voice, audience, and markdown house
+* **manfred-writing**, when present: the voice, audience, and markdown house
   style — including the 80-character hard wrap — apply to all prose written
   here, in proposals and in slide content alike. Invoke it for any writing.
-- **manfred-slides**, when present: an optional, Manfred-specific helper — his
+* **manfred-slides**, when present: an optional, Manfred-specific helper — his
   personal deck structure, one-idea-per-slide, and narrative preferences. It is
   a guideline that layers on top of this skill's process, not a skill to hand
   off to. This skill still drives the work through finalization; use
@@ -162,47 +162,47 @@ single slide and reconstructing the outline from an existing deck — live in
 `outline.md` uses a fixed, simple structure so it reads well as a document and
 generates cleanly into slides.
 
-- A short header at the top. Do not repeat the event, speaker, dates, or talk
+* A short header at the top. Do not repeat the event, speaker, dates, or talk
   length here — those live in `index.md`. Keep only what is specific to the
   deck: a pointer to `index.md`, a rough slide count, and any deck-wide
   conventions such as theme usage, color scheme, or reference decks.
-- One `# Slide N - Title` heading per slide. Write the title as the **takeaway**,
+* One `# Slide N - Title` heading per slide. Write the title as the **takeaway**,
   not a label: "Sigstore signs without managing keys", not "Sigstore". This
   heading is the outline's navigation label and may differ from the literal
   title shown on the slide.
-- An optional theme or layout hint as an HTML comment directly under the
+* An optional theme or layout hint as an HTML comment directly under the
   heading, for example `<!-- theme: dark -->`. Comments carry hints for the deck
   build without appearing as slide content.
-- `## On slide` — what the audience actually sees. Keep it short: a few bullets
+* `## On slide` — what the audience actually sees. Keep it short: a few bullets
   or a single strong line. No paragraphs. When the slide shows a title or
   header, repeat that literal text as the first line here, so the outline
   mirrors the rendered slide and a re-export diffs cleanly against it; slides
   with no title simply omit it.
-- `## Visual` — optional. Describe any diagram, chart, screenshot, or image on
+* `## Visual` — optional. Describe any diagram, chart, screenshot, or image on
   the slide in plain language: what it depicts and the point it makes, like
   alt-text. Use it whenever a slide's meaning is carried by a visual, since
   visuals do not survive a text export. For an image-only slide, `## On slide`
   may hold just the title (or nothing) and `## Visual` carries the slide.
-- `## Speaker notes` — glanceable reminders only, never a full script. Split
+* `## Speaker notes` — glanceable reminders only, never a full script. Split
   them into two labeled subsections so delivery cues stay separate from the
   supporting record:
-  - `**Presenting**` — cues for the talk itself: a pacing note, a number to
+  * `**Presenting**` — cues for the talk itself: a pacing note, a number to
     hit, a story to tell, or a callback to an earlier slide. Only ever point
     backward, never forward. A callback to a slide the audience has already seen
     reinforces the point; a forward-pointing reference to a later slide is
     useless as a live cue, since that content has not been shown yet. Drop such
     forward pointers rather than writing them.
-  - `**Reference**` — the supporting facts and source citations that back the
+  * `**Reference**` — the supporting facts and source citations that back the
     slide but are not spoken verbatim, so any claim can be traced later. Omit
     this subsection on a slide that has nothing to cite.
-- An important reference belongs in two audience-visible places, not only in the
+* An important reference belongs in two audience-visible places, not only in the
   `**Reference**` notes: small on the slide it supports, and again on a resources
   slide near the end of the deck. The `**Reference**` block is the working
   record; the on-slide credit and the resources slide are what the audience can
   see and follow up on.
-- Use a `---` divider between major sections to keep the arc readable in the
+* Use a `---` divider between major sections to keep the arc readable in the
   markdown.
-- Dates anywhere in the event files (`index.md`, `STATUS.md`) use ISO 8601
+* Dates anywhere in the event files (`index.md`, `STATUS.md`) use ISO 8601
   (`YYYY-MM-DD`); use `start/end` for a range, for example
   `2026-06-01/2026-06-05`.
 
@@ -262,35 +262,35 @@ the only one possible, but reach for it first once a deck exists.
 
 One-time setup:
 
-- Install the `gws` CLI and the Google Cloud CLI that `gws auth setup` needs.
-- Run `gws auth setup` as the account that owns the target files. Reuse an
+* Install the `gws` CLI and the Google Cloud CLI that `gws auth setup` needs.
+* Run `gws auth setup` as the account that owns the target files. Reuse an
   existing GCP project you can already access to avoid org-policy limits on
   creating projects, and enable the Docs, Slides, and Drive APIs on it.
-- Grant the Docs, Slides, and Drive scopes at the OAuth consent screen.
+* Grant the Docs, Slides, and Drive scopes at the OAuth consent screen.
 
 Core operations:
 
-- Read a source doc with `gws docs documents get`, and a deck with
+* Read a source doc with `gws docs documents get`, and a deck with
   `gws slides presentations get`.
-- Apply changes with `gws slides presentations batchUpdate`, validating the
+* Apply changes with `gws slides presentations batchUpdate`, validating the
   request first with `--dry-run`.
-- Content lives in placeholders addressed by object ID. Slide titles, body
+* Content lives in placeholders addressed by object ID. Slide titles, body
   text, and speaker notes through each slide's `speakerNotesObjectId` are all
   editable this way. Any new object ID you assign must be at least five
   characters.
 
 Surgical edits and sync:
 
-- Push outline edits into the deck as targeted `batchUpdate` calls against only
+* Push outline edits into the deck as targeted `batchUpdate` calls against only
   the slides, placeholders, or notes that changed. Never delete the whole deck
   and rebuild it from the outline — that destroys the visual work. A full
   rebuild is only for the first build from an outline, or on an explicit request
   to start over.
-- Going the other way, reconstruct or reconcile the outline from the deck as
+* Going the other way, reconstruct or reconcile the outline from the deck as
   the following sections describe. Prefer writing the reconciled markdown and
   showing the diff over silently rewriting, and commit the markdown at
   checkpoints rather than once per sync.
-- Elements you place by hand at a fixed position — page numbers, footnotes, and
+* Elements you place by hand at a fixed position — page numbers, footnotes, and
   similar — are usually static text boxes rather than dynamic fields, so they do
   not follow slides that move, get cut, or get reordered. This will not always be
   how a given deck is built, but when it is, treat these boxes as something to
@@ -300,7 +300,7 @@ Surgical edits and sync:
 
 Turning off autofit:
 
-- Auto shrink-to-fit resizes body text per slide and makes font sizes look
+* Auto shrink-to-fit resizes body text per slide and makes font sizes look
   inconsistent. Disable it on a text placeholder with `updateShapeProperties`,
   setting `autofit.autofitType` to `NONE` and `fields` to
   `autofit.autofitType`. With autofit off, rely on the template's placeholder
@@ -308,14 +308,14 @@ Turning off autofit:
 
 Images and backgrounds:
 
-- Setting a slide background or inserting an image needs a publicly fetchable
+* Setting a slide background or inserting an image needs a publicly fetchable
   URL. The Slides API fetches the URL anonymously at insert time, so a private
   Drive file fails even when `gws` is authenticated as its owner. The image is
   copied into the deck at insert, so it only needs to be reachable for that one
   moment.
-- Confirm the deck owner is fine with changing sharing before you touch it —
+* Confirm the deck owner is fine with changing sharing before you touch it —
   making a file public is a change they did not necessarily request.
-- Workflow for a Drive image: confirm dimensions with `gws drive files get` and
+* Workflow for a Drive image: confirm dimensions with `gws drive files get` and
   match the deck aspect ratio, since a 1920x1080 PNG fills a 16:9 slide
   full-bleed; temporarily share it link-readable with
   `gws drive permissions create` and a body of
@@ -326,7 +326,7 @@ Images and backgrounds:
   at `googleusercontent.com`, which confirms the copy; then revoke the public
   permission with `gws drive permissions delete` and confirm the file reads
   `shared: false`.
-- Apply a background only to the slides that need it. A logo or wordmark in a
+* Apply a background only to the slides that need it. A logo or wordmark in a
   corner usually lives on the layout or master, so it renders on every slide
   using that layout and must be removed there, not per slide.
 
@@ -365,21 +365,21 @@ exists in Google Slides or as a `.pptx`. Extract each slide's visible content
 into an `## On slide` block and its notes into `## Speaker notes`, following the
 outline format. Use this to
 
-- start from a deck you already have and bring it under the markdown workflow,
-- recover the outline after a stretch of manual editing in the deck, or
-- get a base outline you can then extend with new slides.
+* start from a deck you already have and bring it under the markdown workflow,
+* recover the outline after a stretch of manual editing in the deck, or
+* get a base outline you can then extend with new slides.
 
 Reconstruction is manual or tool-assisted and will not be perfectly lossless —
 treat it as a draft that needs a cleanup pass, then reconcile by eye. A Google
 Slides text export is not only lossy but **unstable between runs** — the same
 deck exported twice can chunk differently. What breaks:
 
-- Slide numbers are internal object ids, not deck order — never trust them.
-- Body order is mostly reliable, but the **tail (closing slides) and section
+* Slide numbers are internal object ids, not deck order — never trust them.
+* Body order is mostly reliable, but the **tail (closing slides) and section
   dividers can scramble, merge into a neighbor, split out on their own, or
   relocate** — a note-only or divider slide is especially prone to this.
-- Diagrams flatten into unordered label soup that must be re-summarized by hand.
-- On-slide text is not delimited from speaker notes; splitting them is a
+* Diagrams flatten into unordered label soup that must be re-summarized by hand.
+* On-slide text is not delimited from speaker notes; splitting them is a
   judgment call, and a note can surface as on-slide text (or vice versa) on one
   run and differently on the next.
 
@@ -424,10 +424,10 @@ repeat the talk title, dates, location, session type, or other event facts here
 — those live in `index.md`. State once that details live in `index.md` and link
 to it rather than duplicating, so the two files cannot drift apart.
 
-- **Stage:** one of proposed, accepted, outlined, generated, delivered.
-- **Links:** slide deck, recording/video, and the event page. Fill these in as
+* **Stage:** one of proposed, accepted, outlined, generated, delivered.
+* **Links:** slide deck, recording/video, and the event page. Fill these in as
   they become available; leave a clear placeholder until then.
-- **Open items:** anything still undecided or outstanding.
+* **Open items:** anything still undecided or outstanding.
 
 ## Finalizing
 

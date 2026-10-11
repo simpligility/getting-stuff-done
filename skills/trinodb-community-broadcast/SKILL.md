@@ -9,9 +9,9 @@ Use this skill for the mechanics of an episode of the [Trino Community
 Broadcast](https://trino.io/broadcast/), the live stream show of the Trino
 project, usually shortened to TCB. It builds on these skills:
 
-- `trinodb` for the organization and the fork-and-upstream contribution
+* `trinodb` for the organization and the fork-and-upstream contribution
   workflow that every pull request in this skill follows.
-- `trinodb-website` for the local build of the
+* `trinodb-website` for the local build of the
   [trinodb/trino.io](https://github.com/trinodb/trino.io) repository, the
   writing style for site content, and the linking traps.
 
@@ -65,12 +65,12 @@ the labels `trinodb-community` and `trinodb-community-broadcast`, and confirm
 it with the user before creating it. Keep the issue current as the episode
 moves along:
 
-- Set the status to `In progress` once the guest and date are agreed.
-- Add the announcement and episode page pull requests to the body as full URLs,
+* Set the status to `In progress` once the guest and date are agreed.
+* Add the announcement and episode page pull requests to the body as full URLs,
   along with the guest and the YouTube stream link.
-- End the body with the next step, such as sending the guest invite or adding
+* End the body with the next step, such as sending the guest invite or adding
   the chapter list after the show.
-- Close the issue once the episode page pull request is merged. Closing moves
+* Close the issue once the episode page pull request is merged. Closing moves
   the board item to `Done`.
 
 ## Local episode folder
@@ -139,13 +139,13 @@ Live stream events on
 
 Content of the entry:
 
-- The paragraph introduces the guest with a link to their GitHub or LinkedIn
+* The paragraph introduces the guest with a link to their GitHub or LinkedIn
   profile, names the hosts when they differ from the usual, and lists what the
   episode covers. It becomes the `introduction` of the episode page later, so
   write it to stand on its own.
-- The live stream links use the Font Awesome icons as shown. Add a Twitch link
+* The live stream links use the Font Awesome icons as shown. Add a Twitch link
   to `https://www.twitch.tv/simpligility` when the episode also streams there.
-- Double-check the year in the date. The TCB 78 announcement went out in
+* Double-check the year in the date. The TCB 78 announcement went out in
   December with the past year and needed a [follow-up
   fix](https://github.com/trinodb/trino.io/pull/826).
 
@@ -160,13 +160,13 @@ guest confirms.
 Once the stream is set up in StreamYard, send each guest a calendar invite for
 the episode. The invite needs these details:
 
-- The title `Trino Community Broadcast {{number}} - <episode title>`.
-- The start time, plus time before the stream to check audio, video, and
+* The title `Trino Community Broadcast {{number}} - <episode title>`.
+* The start time, plus time before the stream to check audio, video, and
   screen sharing.
-- The StreamYard guest link to join the studio. Guests join the studio, not the
+* The StreamYard guest link to join the studio. Guests join the studio, not the
   public YouTube or LinkedIn stream.
-- The YouTube and LinkedIn stream links, so guests can share them.
-- A link to the episode page pull request, once it is open, so guests can
+* The YouTube and LinkedIn stream links, so guests can share them.
+* A link to the episode page pull request, once it is open, so guests can
   review and add to the show notes.
 
 Ask the user for the StreamYard guest link, the guest email addresses, and how
@@ -179,9 +179,9 @@ After the announcement is merged, add the episode to the Trino events Google
 Calendar, which the [community page](https://trino.io/community.html#events)
 embeds. The entry needs these details:
 
-- The title `Trino Community Broadcast {{number}} - <episode title>`.
-- The start time and the duration of the stream.
-- A description with the announcement paragraph, the YouTube and LinkedIn
+* The title `Trino Community Broadcast {{number}} - <episode title>`.
+* The start time and the duration of the stream.
+* A description with the announcement paragraph, the YouTube and LinkedIn
   stream links, and a link to the [broadcast
   page](https://trino.io/broadcast/).
 
@@ -234,17 +234,17 @@ introduction: |
 ---
 ```
 
-- `title` is the episode number, a colon, and the title from the announcement.
+* `title` is the episode number, a colon, and the title from the announcement.
   Quote it.
-- `date` is the air date.
-- `tags` is a space-separated list of lowercase keywords.
-- `youtube_id` is the ID from the YouTube stream URL in the announcement.
+* `date` is the air date.
+* `tags` is a space-separated list of lowercase keywords.
+* `youtube_id` is the ID from the YouTube stream URL in the announcement.
   Quote it, since IDs can start with a dash or look like a number.
-- `wistia_id` stays empty. Wistia hosted older episodes only.
-- `sections` is the chapter list, filled in after the show. Use `mm:ss`
+* `wistia_id` stays empty. Wistia hosted older episodes only.
+* `sections` is the chapter list, filled in after the show. Use `mm:ss`
   before the one hour mark and `h:mm:ss` after it. Quote a title that contains
   a colon.
-- `introduction` reuses the announcement paragraph without the HTML and the
+* `introduction` reuses the announcement paragraph without the HTML and the
   stream links.
 
 Create the chapter list as described in [Processing the
@@ -385,12 +385,12 @@ without looking at the final one, and do not edit the per-transcript files
 afterwards. Then merge it into the final description, which may contain the
 user's manual edits:
 
-- Timestamps: use the whisper-cpp timestamps, unless whisper-cpp squashed cues
+* Timestamps: use the whisper-cpp timestamps, unless whisper-cpp squashed cues
   together during crosstalk.
-- Speakers: use the `>>` markers in the YouTube captions.
-- Names, terms, and numbers: prefer whisper-cpp, and verify disagreements
+* Speakers: use the `>>` markers in the YouTube captions.
+* Names, terms, and numbers: prefer whisper-cpp, and verify disagreements
   against GitHub.
-- Content: add topics that only one transcript picked up.
+* Content: add topics that only one transcript picked up.
 
 Summarize what the comparison changed, and ask the user about uncertain
 details.
@@ -415,25 +415,25 @@ episode page is merged, since the steps link to it.
 
 On YouTube:
 
-- Paste the final description into the video description in YouTube Studio.
-- Pin a comment with a link to the episode page.
+* Paste the final description into the video description in YouTube Studio.
+* Pin a comment with a link to the episode page.
 
 On LinkedIn:
 
-- Edit the text of the live video post to link to the YouTube recording and
+* Edit the text of the live video post to link to the YouTube recording and
   the episode page. LinkedIn has no clickable chapters, so add two or three
   highlights instead of the full chapter list.
-- Post once in the event with the links to the recording and the episode page,
+* Post once in the event with the links to the recording and the episode page,
   which reaches the registered attendees who missed the stream.
-- Publish a separate follow-up post a day or two later that tags the guests.
+* Publish a separate follow-up post a day or two later that tags the guests.
   Put the links in the first comment rather than the post, since LinkedIn tends
   to show posts with external links to fewer people. A short native clip of a
   highlight from the episode works better than a link.
-- Reply to the comments left during the stream.
+* Reply to the comments left during the stream.
 
 On Trino Slack:
 
-- Announce the recording and the show notes in the `#announcements` channel on
+* Announce the recording and the show notes in the `#announcements` channel on
   [Trino Slack](https://trino.io/slack), with links to the episode page and the
   YouTube recording. Manfred has official access to post there.
 

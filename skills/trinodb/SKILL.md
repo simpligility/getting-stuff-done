@@ -134,12 +134,12 @@ The standard is the
 The [Trino documentation readme](https://github.com/trinodb/trino/blob/master/docs/README.md)
 is the authoritative summary and calls out these parts in particular:
 
-- [Highlights](https://developers.google.com/style/highlights)
-- [Word list](https://developers.google.com/style/word-list)
-- [Style and tone](https://developers.google.com/style/tone)
-- [Writing for a global audience](https://developers.google.com/style/translation)
-- [Cross-references](https://developers.google.com/style/cross-references)
-- [Present tense](https://developers.google.com/style/tense)
+* [Highlights](https://developers.google.com/style/highlights)
+* [Word list](https://developers.google.com/style/word-list)
+* [Style and tone](https://developers.google.com/style/tone)
+* [Writing for a global audience](https://developers.google.com/style/translation)
+* [Cross-references](https://developers.google.com/style/cross-references)
+* [Present tense](https://developers.google.com/style/tense)
 
 The guide is used to make decisions easy rather than as a rule to enforce
 retroactively, and existing documentation is still being brought in line.

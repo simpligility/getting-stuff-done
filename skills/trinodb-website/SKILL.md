@@ -52,15 +52,15 @@ README in the clone at hand before the first build.
 
 Three things the README does not spell out:
 
-- **A bundler mismatch looks like a broken Ruby.** The README says to install
+* **A bundler mismatch looks like a broken Ruby.** The README says to install
   the bundler version recorded at the end of `Gemfile.lock`. Skipping that step
   fails with a `cannot load such file` error naming a missing bundler
   executable, which reads like a broken Ruby install but is only a missing gem
   version. Install the recorded version and run `bundle install` again.
-- **Plain Jekyll ignores redirects.** The helper script does not apply the
+* **Plain Jekyll ignores redirects.** The helper script does not apply the
   redirects in `netlify.toml`. Verify anything that depends on a redirect
   through `netlify dev` instead.
-- **A build is faster than a server.** Running
+* **A build is faster than a server.** Running
   `bundle exec jekyll build --future` is the quickest way to confirm that new
   content compiles and that Liquid tags such as `post_url` resolve. It writes
   to `_site`, which is ignored by git.
@@ -83,17 +83,17 @@ image: /assets/blog/some-image.png
 ---
 ```
 
-- `title` uses sentence case.
-- `author` is a plain string of names only, with several authors separated by
+* `title` uses sentence case.
+* `author` is a plain string of names only, with several authors separated by
   commas, such as `"Manfred Moser, Mateusz Gajewski"`. Never add a company or
   any other affiliation to an author name. The Trino blog credits people, not
   their employers. Around eighteen posts carry a company name against this
   convention, almost all of them from 2019 to 2021, and they are candidates for
   cleanup rather than a precedent to follow.
-- `excerpt_separator` with a `<!--more-->` marker in the body controls what the
+* `excerpt_separator` with a `<!--more-->` marker in the body controls what the
   blog index shows as the preview. Put the marker after the opening one or two
   paragraphs.
-- `image` is optional. When present, the post layout renders it at the top of
+* `image` is optional. When present, the post layout renders it at the top of
   the post, above the body, so there is no need to repeat it in the content.
 
 Images go in `assets/blog`, either as a single file named after the post or in a
@@ -125,7 +125,7 @@ Older posts use `{{site.baseurl}}` without spaces. Both forms work.
 
 Two traps:
 
-- **Ecosystem anchors.** `/ecosystem/client` and `/ecosystem/client.html` are
+* **Ecosystem anchors.** `/ecosystem/client` and `/ecosystem/client.html` are
   redirects to the ecosystem index, and a redirect drops the fragment. A link
   such as `/ecosystem/client#vscode` therefore lands on the index rather than on
   the entry. Link to the real page instead, such as
@@ -133,7 +133,7 @@ Two traps:
   `/ecosystem/client-driver.html#javascript`. The fragment is the `anchor` value
   from `_data/tools.yml`, which is not always the obvious name. Some old posts
   still carry the broken form.
-- **Documentation links.** `/docs/*` proxies to the hosted documentation, so a
+* **Documentation links.** `/docs/*` proxies to the hosted documentation, so a
   documentation page that was renamed or removed in a later Trino release breaks
   a `docs/current` link silently. Confirm the URL before using it.
 
@@ -190,10 +190,10 @@ the episode page pull request, use the `trinodb-community-broadcast` skill.
 
 Three tags are defined in `_plugins` and available in any page:
 
-- `{% youtube VIDEO_ID %}` embeds a responsive YouTube player.
-- `{% downloadGH trino-server .tar.gz %}` renders a download button for a GitHub
+* `{% youtube VIDEO_ID %}` embeds a responsive YouTube player.
+* `{% downloadGH trino-server .tar.gz %}` renders a download button for a GitHub
   release asset of the current Trino version.
-- `{% downloadMC trino-jdbc .jar %}` renders the same for a Maven Central
+* `{% downloadMC trino-jdbc .jar %}` renders the same for a Maven Central
   artifact. Note the constraint recorded in the `trinodb` skill, that
   server tarballs and plugin archives are no longer published to Maven Central
   as of Trino 477, so new download buttons for those belong on `downloadGH`.

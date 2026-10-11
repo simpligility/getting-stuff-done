@@ -15,11 +15,11 @@ calling skill.
 
 Ask for, or take from the calling skill:
 
-- {{source}}, the path to a local video or audio file, or a YouTube URL. Any
+* {{source}}, the path to a local video or audio file, or a YouTube URL. Any
   format that `ffmpeg` reads works, such as MP4, MOV, MKV, M4A, MP3, or WAV.
-- {{name}}, the base name for the output files. Default to the file name of a
+* {{name}}, the base name for the output files. Default to the file name of a
   local source without its extension.
-- {{outdir}}, the folder for the output files. Default to a folder named
+* {{outdir}}, the folder for the output files. Default to a folder named
   {{name}} in the current working directory, and create it if needed.
 
 If {{source}} is a local file, ask whether the recording is also on YouTube. If
@@ -147,10 +147,10 @@ awk '/-->/{t=substr($1,1,8); next} NF && !/WEBVTT/{print t" "$0}' \
 
 The two sources fail in different ways, so each catches errors the other makes:
 
-- whisper-cpp is the better source for names, terms, numbers, and timestamps.
+* whisper-cpp is the better source for names, terms, numbers, and timestamps.
   It has no speaker labels, and during crosstalk it sometimes squashes several
   cues into a few seconds.
-- The YouTube captions mark each change of speaker with `>>`, which makes them
+* The YouTube captions mark each change of speaker with `>>`, which makes them
   the better source for attributing statements to people. They garble names,
   terms, and numbers more than whisper-cpp does, and their timestamps at the
   start of a recording can run several seconds late.
@@ -158,14 +158,14 @@ The two sources fail in different ways, so each catches errors the other makes:
 When both are available, analyze each transcript on its own first, then compare
 and merge the results:
 
-- Timestamps: use the whisper-cpp timestamps. Where whisper-cpp squashed cues
+* Timestamps: use the whisper-cpp timestamps. Where whisper-cpp squashed cues
   together, check the YouTube timestamps instead.
-- Speakers: use the `>>` markers in the YouTube captions to decide who said
+* Speakers: use the `>>` markers in the YouTube captions to decide who said
   what. Flag any attribution that is still uncertain.
-- Names, terms, and numbers: prefer the whisper-cpp spelling. Where the two
+* Names, terms, and numbers: prefer the whisper-cpp spelling. Where the two
   disagree on a fact, verify it against an independent source, such as the
   notes or the project the recording is about.
-- Content: add details that only one transcript picked up.
+* Content: add details that only one transcript picked up.
 
 With only a local file, there is no second source and no speaker labels. Say
 so when a task depends on knowing who said what.
@@ -183,12 +183,12 @@ ffmpeg -i "{{source}}" -vf "scale=-2:720,fps=15" \
   "{{outdir}}/{{name}}-small.mp4"
 ```
 
-- `-c:a copy` keeps the audio bit for bit, so its quality does not change.
-- The `hvc1` tag lets QuickTime and other Apple players open the HEVC file.
-- A 79 minute 1080p meeting recording of 1.6 GB shrinks to about 150 MB in
+* `-c:a copy` keeps the audio bit for bit, so its quality does not change.
+* The `hvc1` tag lets QuickTime and other Apple players open the HEVC file.
+* A 79 minute 1080p meeting recording of 1.6 GB shrinks to about 150 MB in
   about three minutes. Lower the `-crf` value, for example to 26, if the video
   looks too soft.
-- The hardware encoder `hevc_videotoolbox` is faster, but fails with error
+* The hardware encoder `hevc_videotoolbox` is faster, but fails with error
   `-12908` inside a sandbox. The software encoder `libx265` works everywhere.
 
 Use the small copy as the source for the transcription, since it has the same

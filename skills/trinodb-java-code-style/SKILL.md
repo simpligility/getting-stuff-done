@@ -17,17 +17,17 @@ the same core team, which is why the conventions carry across all of them.
 This skill deliberately does not restate the upstream style rules. Those live
 in the canonical sources and drift over time:
 
-- The
+* The
   [Trino development guide](https://github.com/trinodb/trino/blob/master/.github/DEVELOPMENT.md)
   documents the code style, the commit conventions, and the review process.
-- The [development section of the website](https://trino.io/development/) covers
+* The [development section of the website](https://trino.io/development/) covers
   the contribution process, reviews, and the surrounding expectations.
-- The [developer guide](https://trino.io/docs/current/develop.html) in the
+* The [developer guide](https://trino.io/docs/current/develop.html) in the
   documentation covers the SPI, connectors, and the other extension points, and
   refers back to both of the preceding sources for style and process.
-- [airstyle](https://github.com/airlift/airstyle) holds the checkstyle
+* [airstyle](https://github.com/airlift/airstyle) holds the checkstyle
   configuration that encodes the mechanical rules.
-- [airbase](https://github.com/airlift/airbase) wires the verifiers into the
+* [airbase](https://github.com/airlift/airbase) wires the verifiers into the
   Maven lifecycle and sets their versions.
 
 What this skill adds is the split between rules the build enforces on its own
@@ -86,20 +86,20 @@ a reviewer does. This is an unverified working set collected from observed
 maintainer feedback rather than from a published list. Treat it as a starting
 point to confirm and expand, not as a specification.
 
-- **Avoid abbreviations in names.** Write `result` rather than `r`, and
+* **Avoid abbreviations in names.** Write `result` rather than `r`, and
   `resourceGroup` rather than `rg`. The Trino development guide states the rule
   and reviewers cite it by link.
-- **Avoid `var`.** Declare the explicit type.
-- **Prefer `getFirst()` over `get(0)`** on a `List`.
-- **Avoid `findFirst()` on a stream.** Prefer `collect(toOptional())`, which
+* **Avoid `var`.** Declare the explicit type.
+* **Prefer `getFirst()` over `get(0)`** on a `List`.
+* **Avoid `findFirst()` on a stream.** Prefer `collect(toOptional())`, which
   also asserts that at most one element matched instead of silently taking one
   of several.
-- **Constants are `static final` and uppercase.** A value that never changes
+* **Constants are `static final` and uppercase.** A value that never changes
   does not belong in an instance field or a local.
-- **Keep unrelated changes out of a pull request.** An improvement that is not
+* **Keep unrelated changes out of a pull request.** An improvement that is not
   part of the stated purpose of the change gets flagged and has to move to its
   own commit or its own pull request, however small and however correct.
-- **Justify behavioral test changes with evidence.** Asserting that a test is
+* **Justify behavioral test changes with evidence.** Asserting that a test is
   flaky or non-deterministic does not survive review on its own. Reproduce the
   failure and cite it, then make the narrowest change that fixes it.
 
@@ -109,10 +109,10 @@ This skill is meant to grow, and to be built up with input from other
 maintainers rather than from a single reviewer's comments on a single pull
 request. Two known gaps:
 
-- Manfred has further code style resources beyond the Trino development guide
+* Manfred has further code style resources beyond the Trino development guide
   that belong here. Ask for them before treating the other guidelines as
   complete.
-- The other guidelines should be validated against a sample of merged pull
+* The other guidelines should be validated against a sample of merged pull
   requests across more than one repository, so that they capture project
   convention rather than one reviewer's preference.
 

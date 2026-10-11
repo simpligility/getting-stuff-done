@@ -13,14 +13,14 @@ fork-and-upstream contribution workflow — see the `trinodb` base skill.
 
 ## Prerequisites
 
-- **Local clone**: You must run this skill from within a local clone of a fork
+* **Local clone**: You must run this skill from within a local clone of a fork
   of the `trino-gateway` repository.
-- **Upstream remote**: Ensure you have an `upstream` remote pointing to
+* **Upstream remote**: Ensure you have an `upstream` remote pointing to
   `https://github.com/trinodb/trino-gateway.git`.
-- **Charts clone**: The matching Helm chart release PR is created from a local
+* **Charts clone**: The matching Helm chart release PR is created from a local
   clone of a fork of the `trinodb/charts` repository, with the same `origin`
   and `upstream` remote setup.
-- **Authentication**: You must be authenticated with the `gh` CLI.
+* **Authentication**: You must be authenticated with the `gh` CLI.
 
 ## Workflow
 
@@ -38,16 +38,16 @@ all changes for the next version.
 
 1.  **Verify environment**: Confirm you are in a local clone of `trino-gateway`.
 2.  **Sync with upstream**:
-    - Switch to the main branch: `git checkout main`.
-    - Pull the latest changes from upstream: `git pull upstream main`.
-    - Update your fork's main: `git push origin main`.
+    * Switch to the main branch: `git checkout main`.
+    * Pull the latest changes from upstream: `git pull upstream main`.
+    * Update your fork's main: `git push origin main`.
 3.  **Determine the next version**: Check `docs/release-notes.md`. Find the
     latest release version and increment it. For example, if 19 is the latest,
     the new version is 20.
 4.  **Identify the last release date**: Note the date of the latest release in
     `docs/release-notes.md`, for example 11 May 2026.
 5.  **Prepare the branch**:
-    - Create a new branch: `git checkout -b release-notes-<version>`.
+    * Create a new branch: `git checkout -b release-notes-<version>`.
 6.  **Update quickstart guide**: Update the VERSION property in
     `docs/quickstart.md` to the new version. Commit the change to main with
     message "Update quickstart guide to version <version>".
@@ -55,44 +55,44 @@ all changes for the next version.
     release date. Use the PR `mergedAt` timestamp to find and date the PRs in
     UTC. Do not use author or committer dates, which retain each contributor's
     timezone and can predate a delayed merge.
-    - Command: `gh pr list --repo trinodb/trino-gateway --state merged --base main --limit 100 --json number,title,mergedAt`
-    - Exclude the previous cycle's own release notes PR. It merges after the
+    * Command: `gh pr list --repo trinodb/trino-gateway --state merged --base main --limit 100 --json number,title,mergedAt`
+    * Exclude the previous cycle's own release notes PR. It merges after the
       last release date, but it belongs to the preceding release and is never
       tracked again. The first entry of the new list is therefore the first PR
       merged after that release notes PR.
 8.  **Initialize docs/release-notes.md**:
-    - Add a new section for the new version at the top of the current year
+    * Add a new section for the new version at the top of the current year
       section.
-    - Use the [Release notes file template](#release-notes-file-template) with
+    * Use the [Release notes file template](#release-notes-file-template) with
       "Planned Date" as a placeholder.
-    - Use the commit message "Add Trino Gateway <version> release notes".
+    * Use the commit message "Add Trino Gateway <version> release notes".
 9.  **Open the PR**:
-    - **Push the branch**: `git push -u origin release-notes-<version>`.
-    - **Title**: `Add Trino Gateway <version> release notes`.
-    - **Body**: Start with the pull request template in the target
+    * **Push the branch**: `git push -u origin release-notes-<version>`.
+    * **Title**: `Add Trino Gateway <version> release notes`.
+    * **Body**: Start with the pull request template in the target
       `trino-gateway` repository, then use the
       [Tracking list template](#tracking-list-template) to populate the
       applicable sections, including "verification" with the PRs found in
       step 6.
-    - **Create PR**: `gh pr create --title "Add Trino Gateway <version> release notes" --body-file <path_to_body>`.
+    * **Create PR**: `gh pr create --title "Add Trino Gateway <version> release notes" --body-file <path_to_body>`.
 10. **Open the Helm chart release PR**: Every gateway release ships with a
     matching chart release, so create that PR from the local clone of the
     [trinodb/charts](https://github.com/trinodb/charts) fork.
-    - Sync `main` with upstream, then create a branch named `tgw<version>`.
-    - Bump the chart version to `1.<version>.0` and the app version to
+    * Sync `main` with upstream, then create a branch named `tgw<version>`.
+    * Bump the chart version to `1.<version>.0` and the app version to
       `<version>` in three files:
-        - `charts/gateway/Chart.yaml`, the `version` and `appVersion` fields.
-        - `charts/gateway/README.md`, the version and app version badges.
-        - `README.md`, the `trino/trino-gateway` row of the sample
+        * `charts/gateway/Chart.yaml`, the `version` and `appVersion` fields.
+        * `charts/gateway/README.md`, the version and app version badges.
+        * `README.md`, the `trino/trino-gateway` row of the sample
           `helm search repo` output.
-    - Commit with the subject "Release Trino Gateway chart <chart-version> for
+    * Commit with the subject "Release Trino Gateway chart <chart-version> for
       app <version>" and the body "Bump the chart version to <chart-version>
       and the app version to <version>."
-    - Create the PR with the title
+    * Create the PR with the title
       `Release Trino Gateway chart <chart-version>` and a body stating that it
       is pending the Trino Gateway <version> release and that CI fails until
       the container image for that version is published.
-    - Link the chart PR from the "Additional context and related issues"
+    * Link the chart PR from the "Additional context and related issues"
       section of the release notes PR body. The chart PR merges after the
       gateway release.
 
@@ -102,14 +102,14 @@ Use this phase regularly, for example weekly or whenever significant PRs are
 merged, to keep the release notes PR updated until the next release is ready.
 
 1.  **Sync with upstream**:
-    - Switch to the main branch: `git checkout main`.
-    - Pull the latest changes from upstream: `git pull upstream main`.
-    - Update your fork's main: `git push origin main`.
+    * Switch to the main branch: `git checkout main`.
+    * Pull the latest changes from upstream: `git pull upstream main`.
+    * Update your fork's main: `git push origin main`.
 2.  **Prepare the release branch**:
-    - Identify the release notes branch, for example `release-notes-<version>`.
-    - Switch to the branch: `git checkout release-notes-<version>`.
-    - Rebase onto the updated main: `git rebase main`.
-    - Never run `git pull` on the release notes branch. The rebase
+    * Identify the release notes branch, for example `release-notes-<version>`.
+    * Switch to the branch: `git checkout release-notes-<version>`.
+    * Rebase onto the updated main: `git rebase main`.
+    * Never run `git pull` on the release notes branch. The rebase
       deliberately diverges the branch from its remote counterpart, so a pull
       replays the commits picked up from main back onto the stale remote tip
       and duplicates them, with `--rebase`, or creates a merge commit without
@@ -125,19 +125,19 @@ merged, to keep the release notes PR updated until the next release is ready.
     PR `mergedAt` timestamp in UTC for both selection and the tracking-list
     date. Do not use author or committer dates, which retain each contributor's
     timezone and can predate a delayed merge.
-    - Command: `gh pr list --repo trinodb/trino-gateway --state merged --base main --limit 100 --json number,title,mergedAt --search "merged:>={last_check_date}"`
+    * Command: `gh pr list --repo trinodb/trino-gateway --state merged --base main --limit 100 --json number,title,mergedAt --search "merged:>={last_check_date}"`
 6.  **Update the PR tracking list**:
-    - Do not edit the existing entries to preserve the verification status.
+    * Do not edit the existing entries to preserve the verification status.
       Instead, add new entries for the newly merged PRs.
-    - Append the new PRs to the PR description, grouped by UTC date from their
+    * Append the new PRs to the PR description, grouped by UTC date from their
       `mergedAt` timestamps.
-    - Ensure the dated sections are in chronological order, with the most
+    * Ensure the dated sections are in chronological order, with the most
       recent at the bottom.
-    - Mark them with `❌ rn ❌ docs` to signify they need verification.
-    - Update via `gh pr edit <PR_NUMBER> --body-file <path_to_updated_body>`.
-    - State that tracking-list dates use UTC and are based on PR merge
+    * Mark them with `❌ rn ❌ docs` to signify they need verification.
+    * Update via `gh pr edit <PR_NUMBER> --body-file <path_to_updated_body>`.
+    * State that tracking-list dates use UTC and are based on PR merge
       timestamps.
-    - To inspect `main` commits grouped by their UTC committer date, run:
+    * To inspect `main` commits grouped by their UTC committer date, run:
 
       ```bash
       TZ=UTC git log upstream/main --date=iso-local --format='%cd%x09%s' |
@@ -148,30 +148,30 @@ merged, to keep the release notes PR updated until the next release is ready.
         '
       ```
 7.  **Refine release notes in docs/release-notes.md**:
-    - Analyze the newly merged PRs.
-    - Add descriptive entries to the **General** category and, when there are
+    * Analyze the newly merged PRs.
+    * Add descriptive entries to the **General** category and, when there are
       user-visible UI changes, the **UI** category in `docs/release-notes.md`.
       Omit the **UI** heading when it has no entries.
-    - The description of each PR should contain a suggestion for the release
+    * The description of each PR should contain a suggestion for the release
       notes entry, which you can refine for clarity and consistency. If you
       insert a release notes entry or determine that no entry is needed, mark
       the PR as `✅ rn`. If you determine that documentation updates are needed
       and included in the PR, mark it as `✅ docs`. If they are needed but not
       included in the PR, leave them as `❌ docs` until they are resolved.
       Otherwise, leave them as `❌ rn` and `❌ docs` until they are resolved.
-    - If a PR does not require a release notes entry, you can skip adding it to
+    * If a PR does not require a release notes entry, you can skip adding it to
       the release notes, but you should still mark it as `✅ rn` in the tracking
       list to indicate that it has been reviewed. Same for documentation
       updates.
-    - **Linking rule**: If a PR resolves a specific issue, the link in the
+    * **Linking rule**: If a PR resolves a specific issue, the link in the
       release note entry should point to the issue, for example
       `([#123](https://github.com/trinodb/trino-gateway/issues/123))`.
       Otherwise, link to the PR,
       `([#124](https://github.com/trinodb/trino-gateway/pull/124))`.
 8.  **Commit and push updates**:
-    - Amend the existing commit with the changes to `docs/release-notes.md`.
+    * Amend the existing commit with the changes to `docs/release-notes.md`.
       Leave the commit message unchanged.
-    - Push or force-push the updates to the branch: `git push --force-with-lease origin release-notes-<version>`.
+    * Push or force-push the updates to the branch: `git push --force-with-lease origin release-notes-<version>`.
 
 ---
 

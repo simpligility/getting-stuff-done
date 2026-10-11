@@ -20,33 +20,33 @@ descriptions, and comments carry no AI attribution of any kind.
 The authoritative guidance lives upstream. Read it when in doubt, since it can
 change:
 
-- The [release note guidelines](https://trino.io/development/process.html#release-note)
+* The [release note guidelines](https://trino.io/development/process.html#release-note)
   and the following "Trino and Trino Gateway release notes process" section on
   the website, sourced from `development/process.md` in `trinodb/trino.io`.
-- The release notes template in `docs/release-template.md` in
+* The release notes template in `docs/release-template.md` in
   `trinodb/trino`. It is the authoritative structure for every release notes
   file.
-- The breaking changes definition at the end of
+* The breaking changes definition at the end of
   `docs/src/main/sphinx/release.md`.
-- Recent release notes in `docs/src/main/sphinx/release/`. Strive for
+* Recent release notes in `docs/src/main/sphinx/release/`. Strive for
   consistency with them — the guidelines say so explicitly.
 
 ## Prerequisites
 
-- **Local clone**: Run this skill from within a local clone of a fork of the
+* **Local clone**: Run this skill from within a local clone of a fork of the
   `trino` repository.
-- **Remotes**: `origin` points at the fork and `upstream` at
+* **Remotes**: `origin` points at the fork and `upstream` at
   `https://github.com/trinodb/trino.git` or its SSH equivalent.
-- **Default branch**: The Trino default branch is `master`, not `main`.
-- **Authentication**: You must be authenticated with the `gh` CLI.
-- **Tools**: `jq` and Python 3 are required by the bundled scripts.
+* **Default branch**: The Trino default branch is `master`, not `main`.
+* **Authentication**: You must be authenticated with the `gh` CLI.
+* **Tools**: `jq` and Python 3 are required by the bundled scripts.
 
 ## Working tools
 
 The skill bundles two scripts in `scripts/`:
 
-- `get_merged_prs.sh` creates the tracking list entries.
-- `rn.py` runs the cycle. It keeps the entries as structured data in
+* `get_merged_prs.sh` creates the tracking list entries.
+* `rn.py` runs the cycle. It keeps the entries as structured data in
   `entries.json`, renders `release-<version>.md` from the authoritative
   template, flips tracking marks, collects pending questions, dumps PR
   details for triage, validates and applies triage proposals, and publishes
@@ -74,14 +74,14 @@ the tracking list moves from the PR body to PR comments once it reaches the
 limit. The work directory holds the source of the body and the comments, all
 posted by the user:
 
-- `tracking.md` is the full tracking list, a `## <d Mmm yyyy>` heading per
+* `tracking.md` is the full tracking list, a `## <d Mmm yyyy>` heading per
   UTC day with one `* #<PR> ❌ rn ❌ docs` line per PR. The entries carry no
   title, since GitHub renders the title of each linked PR.
-- While the references in the body and the tracking list together stay within
+* While the references in the body and the tracking list together stay within
   the 500 limit, `rn.py publish` appends `tracking.md` to the PR body after
   the line
   `All dates in this tracking list use UTC and are based on PR merge timestamps.`
-- Once they exceed the limit, `rn.py publish` splits `tracking.md` into
+* Once they exceed the limit, `rn.py publish` splits `tracking.md` into
   tracking comments instead. Each comment takes whole days until it holds at
   least 200 PRs, then the next day starts a new comment. Each starts with
   `### Tracking <first day> to <last day>`. The split is deterministic, so
@@ -89,7 +89,7 @@ posted by the user:
   comments in place, adds new ones as the list grows, and replaces the list
   in the body with links to the comments and their counts of PRs and open
   entries. Once tracking comments exist, publish keeps using them.
-- A single Pending comment always holds the open questions, so they never use
+* A single Pending comment always holds the open questions, so they never use
   the body's link budget. Each question is one line in the form
   `#<PR> - <Question>.`, written as a full sentence with an initial capital
   and a final period or question mark. Add it with `rn.py pending`, which
@@ -118,9 +118,9 @@ PR has been merged. The goal is to open a new living PR that tracks all changes
 for the next version.
 
 1.  **Sync with upstream**:
-    - `git checkout master`
-    - `git pull upstream master`
-    - `git push origin master`
+    * `git checkout master`
+    * `git pull upstream master`
+    * `git push origin master`
 2.  **Determine the next version**: Find the highest
     `docs/src/main/sphinx/release/release-<version>.md` file and increment the
     number. If 483 is the latest, the new version is 484. Cross-check with
@@ -134,12 +134,12 @@ for the next version.
     and stop to ask the user if a PR for the version already exists.
 5.  **Create the branch**: `git checkout -b release-notes-<version>`.
 6.  **Create the release notes file**:
-    - Copy the authoritative template from the freshly synced `master`:
+    * Copy the authoritative template from the freshly synced `master`:
       `cp docs/release-template.md docs/src/main/sphinx/release/release-<version>.md`.
-    - Replace `xyz` with the version and keep `dd MMM` as the date placeholder,
+    * Replace `xyz` with the version and keep `dd MMM` as the date placeholder,
       updating the year to the current one. The date placeholder stays until the
       release date is agreed.
-    - Keep all template sections for now and fill them as PRs are triaged.
+    * Keep all template sections for now and fill them as PRs are triaged.
       Empty sections are removed when the notes are finalized. See the
       [Release notes file template](#release-notes-file-template).
 7.  **Add the file to the index**: In `docs/src/main/sphinx/release.md`, add
@@ -161,23 +161,23 @@ for the next version.
     the UTC day of their `mergedAt` timestamp. Use merge timestamps only. Author
     and committer dates keep each contributor's time zone and can predate a
     delayed merge.
-    - A cycle often has more than 200 merged PRs. The script uses a limit of
+    * A cycle often has more than 200 merged PRs. The script uses a limit of
       1000, so check that the count looks plausible.
-    - Exclude the previous release notes PR. It merges on the release day but
+    * Exclude the previous release notes PR. It merges on the release day but
       belongs to the preceding release.
-    - Exclude PRs merged around the release day that are already part of the
+    * Exclude PRs merged around the release day that are already part of the
       previous release. Check each candidate's merge commit against the release
       tag rather than relying on dates, for example
       `git merge-base --is-ancestor <merge-commit-sha> <previous-version>`,
       with the SHA from `gh pr view <n> --json mergeCommit`.
-    - Write the PR body from the [Tracking list template](#tracking-list-template)
+    * Write the PR body from the [Tracking list template](#tracking-list-template)
       as `$RN_WORK/body.md`. `rn.py` maintains both files from there.
 10. **Open the PR**:
-    - Push with `git push -u origin release-notes-<version>`.
-    - Title: `Add Trino <version> release notes`.
-    - Create with
+    * Push with `git push -u origin release-notes-<version>`.
+    * Title: `Add Trino <version> release notes`.
+    * Create with
       `gh pr create --repo trinodb/trino --base master --title "Add Trino <version> release notes" --body-file "$RN_WORK/body.md"`.
-    - Set `RN_PR` and run `rn.py publish` to add the tracking list to the body
+    * Set `RN_PR` and run `rn.py publish` to add the tracking list to the body
       and post the Pending comment.
 
 ### 2. Maintain release notes
@@ -187,9 +187,9 @@ the release is ready.
 
 1.  **Sync with upstream**: Same as phase 1, step 1.
 2.  **Rebase the release notes branch**:
-    - `git checkout release-notes-<version>`
-    - `git rebase master`
-    - Never run `git pull` on the release notes branch. The rebase deliberately
+    * `git checkout release-notes-<version>`
+    * `git rebase master`
+    * Never run `git pull` on the release notes branch. The rebase deliberately
       diverges it from its remote counterpart, so a pull either duplicates the
       commits picked up from master, with `--rebase`, or creates a merge commit,
       without it. The force-push in step 8 brings the branch back in sync. If
@@ -206,32 +206,32 @@ the release is ready.
     that date avoids missing PRs merged later on the same day. Drop the PRs
     already in the list.
 6.  **Update the tracking list**:
-    - Never remove, reorder, or reset existing entries, to preserve their
+    * Never remove, reorder, or reset existing entries, to preserve their
       verification status. Only flip their marks during triage.
-    - Append new entries under their UTC date, add new date headings as
+    * Append new entries under their UTC date, add new date headings as
       needed, and keep the headings in chronological order with the most recent
       at the bottom.
-    - Mark new entries `❌ rn ❌ docs`, without titles. Use `-a` only for a
+    * Mark new entries `❌ rn ❌ docs`, without titles. Use `-a` only for a
       local working view with titles and resolved issues.
 7.  **Triage in batches**: Work through the `❌` entries in batches of three
     calendar days, oldest first, and publish after each batch with step 8.
     For each batch:
-    - Dump the PR details with
+    * Dump the PR details with
       `rn.py dump <from> <to-exclusive> [<numbers to skip>] > "$RN_WORK/bNN.txt"`.
       The dump shows the title, labels, closing issues, touched modules, and
       the trimmed description with the author's suggested release note.
       Dependency bump bodies are reduced to a marker. Use
       `gh pr view` or `gh pr diff` where the effect is still unclear.
-    - Decide each PR by the [Triage rules](#triage-rules) and write the
+    * Decide each PR by the [Triage rules](#triage-rules) and write the
       proposal as `$RN_WORK/proposal-bNN.json`, in the format described in
       `references/triage-guide.md`.
-    - Review it with `rn.py check bNN`, which also validates that every PR of
+    * Review it with `rn.py check bNN`, which also validates that every PR of
       the batch is listed exactly once and that sections, groups, and issue
       references are well formed.
-    - Tighten wording with `rn.py edit bNN`, which reads rules such as
+    * Tighten wording with `rn.py edit bNN`, which reads rules such as
       `[{"match": "<substring>", "text": "<new entry>", "group": 2}]` from
       standard input. A `"text": null` rule drops the entry.
-    - Apply it with `rn.py apply bNN`. This adds the entries, flips the marks,
+    * Apply it with `rn.py apply bNN`. This adds the entries, flips the marks,
       adds the pending questions, and renders the file.
 
     For a large backlog, delegate drafting the proposals to subagents running
@@ -268,24 +268,24 @@ days before the release.
 
 ### Triage rules
 
-- Release notes have a user focus. Only changes users notice get an entry:
+* Release notes have a user focus. Only changes users notice get an entry:
   features, SQL and function support, configuration properties, performance
   and memory improvements, bug fixes, security, breaking changes, client and
   Docker image changes, and SPI changes relevant to plugin authors.
-- If no entry is needed, still mark the PR `✅ rn` to record the review.
+* If no entry is needed, still mark the PR `✅ rn` to record the review.
   Dependency bumps, tests, build and CI changes, refactoring, internal
   cleanups, and log changes usually need no entry. A dependency bump that
   fixes a user-visible bug or a CVE in a shipped library may need one.
-- No entry for a fix to a regression or feature that another PR introduced in
+* No entry for a fix to a regression or feature that another PR introduced in
   the same cycle, since users of the previous release never saw it. Check the
   merge date of the PR that introduced the problem. A regression from an
   earlier release does get an entry.
-- Authors often mark "no release notes required" for changes users do notice,
+* Authors often mark "no release notes required" for changes users do notice,
   such as fixes for failures or performance gains. Judge independently.
-- Mark `✅ docs` when the needed documentation is merged or none is needed.
+* Mark `✅ docs` when the needed documentation is merged or none is needed.
   Leave `❌ docs` while it is missing and add a pending question so
   maintainers can chase it. The `needs-docs` label flags some of these.
-- When unsure about the effect, the breaking status, or the section, still
+* When unsure about the effect, the breaking status, or the section, still
   write the best entry and add a pending question rather than leaving the PR
   open. Leave `❌ rn` only when the PR genuinely cannot be assessed. Ask the
   user before commenting on the upstream PR.
@@ -300,29 +300,29 @@ connector or component that has no section in the template, add the section at
 the matching position among the connectors and mention it in the PR body so the
 template can be updated.
 
-- Component labels on the PR, such as `iceberg`, `hive`, `delta-lake`, or `ui`,
+* Component labels on the PR, such as `iceberg`, `hive`, `delta-lake`, or `ui`,
   hint at the section, but verify against the diff.
-- Duplicate entries on purpose. The release notes have a user focus, and many
+* Duplicate entries on purpose. The release notes have a user focus, and many
   users read only the section for the connector or plugin they run. When one
   change affects several connectors, add the same entry, with the same wording
   and the same issue reference, to every affected section. Never consolidate
   them into a single entry under General or one connector, and never write
   "see the Hive connector" or similar cross-references.
-- Look for these shared-code changes in particular, since one PR often reaches
+* Look for these shared-code changes in particular, since one PR often reaches
   many sections:
-  - Object storage and the shared file system support, such as S3, Azure
+  * Object storage and the shared file system support, such as S3, Azure
     Storage, Google Cloud Storage, HDFS, and the related `s3.*`, `azure.*`, and
     `gcs.*` configuration properties.
-  - File formats, such as Parquet, ORC, Avro, and text formats.
-  - The Hive metastore, AWS Glue, and other shared catalog code.
-  - Base JDBC code, which affects every JDBC-based connector, such as MySQL,
+  * File formats, such as Parquet, ORC, Avro, and text formats.
+  * The Hive metastore, AWS Glue, and other shared catalog code.
+  * Base JDBC code, which affects every JDBC-based connector, such as MySQL,
     PostgreSQL, Oracle, and SQL Server.
-- The Delta Lake, Hive, Hudi, Iceberg, and Lakehouse connectors share most of
+* The Delta Lake, Hive, Hudi, Iceberg, and Lakehouse connectors share most of
   the object storage and file format code. The Lakehouse connector wraps the
   other lakehouse connectors, so it repeats their entries as well.
-- To find every affected section, check which modules depend on the changed
+* To find every affected section, check which modules depend on the changed
   code, not only the component labels on the PR.
-- Changes to the engine, SQL support, functions, and the coordinator go into
+* Changes to the engine, SQL support, functions, and the coordinator go into
   General. Authentication and access control go into Security.
 
 ### Ordering within a section
@@ -340,32 +340,32 @@ Within each group, put the more significant or more widely used change first.
 
 ### Wording
 
-- Use the imperative present tense — `Add`, `Fix`, `Improve`, never `Added`,
+* Use the imperative present tense — `Add`, `Fix`, `Improve`, never `Added`,
   `Fixes`, or `Improved`.
-- Write for users and administrators, not for developers of the code. Describe
+* Write for users and administrators, not for developers of the code. Describe
   the visible effect, not the implementation. "Fix incorrect results for
   queries with a right or full outer join" rather than "Share rowId pool
   across AssignUniqueId duplicates".
-- Use precise phrasing that matches existing entries:
-  - `Add support for <feature>.` for new capabilities.
-  - ``Add the {func}`name` function.`` for a new function.
-  - `Improve performance of <queries or operation>.`
-  - `Reduce memory usage when <operation>.`
-  - `Fix incorrect results for <case>.` for correctness bugs.
-  - `Fix query failure when <condition>.` and `Fix failure of <statement>
+* Use precise phrasing that matches existing entries:
+  * `Add support for <feature>.` for new capabilities.
+  * ``Add the {func}`name` function.`` for a new function.
+  * `Improve performance of <queries or operation>.`
+  * `Reduce memory usage when <operation>.`
+  * `Fix incorrect results for <case>.` for correctness bugs.
+  * `Fix query failure when <condition>.` and `Fix failure of <statement>
     when <condition>.` for errors.
-- When a change adds configuration, name the property and its purpose after the
+* When a change adds configuration, name the property and its purpose after the
   description, for example "Add support for X, configurable with the
   `prop.name` configuration property." Mention catalog session properties
   explicitly as such.
-- Keep entries to one sentence where possible. Link to documentation for
+* Keep entries to one sentence where possible. Link to documentation for
   details instead of writing long entries.
-- Use lowercase, code-formatted SQL type names such as `varchar`, `json`, and
+* Use lowercase, code-formatted SQL type names such as `varchar`, `json`, and
   `row`, and uppercase, code-formatted SQL keywords and statements such as
   `MERGE`, `OPTIMIZE`, and `SHOW SESSION`.
-- Use the full product names, such as Trino and Trino Gateway, and keep the
+* Use the full product names, such as Trino and Trino Gateway, and keep the
   established connector names, such as Delta Lake connector.
-- Follow the Google developer documentation style guide used for all Trino
+* Follow the Google developer documentation style guide used for all Trino
   documentation, as described in the `trinodb` base skill.
 
 ### Syntax
@@ -374,23 +374,23 @@ The files are MyST Markdown rendered with Sphinx. Wrap entries at about 80
 characters, with continuation lines indented by two spaces. Existing files run
 a few characters over in places, so do not rewrap entries only for that.
 
-- Link each entry with the `{issue}` role at the end, inside parentheses:
+* Link each entry with the `{issue}` role at the end, inside parentheses:
   ``({issue}`30278`)``. The role links to `github.com/trinodb/trino/issues/<n>`,
   which GitHub redirects for pull requests, so the same role serves both. Use
   the issue number when the PR resolves an issue, and the PR number otherwise.
   List several numbers separated by commas,
   ``({issue}`29523`, {issue}`29524`)``.
-- Mark breaking changes with the `{{breaking}}` substitution at the start of
+* Mark breaking changes with the `{{breaking}}` substitution at the start of
   the entry: `* {{breaking}} Remove the ...`. Apply it to every change that
   matches the breaking changes definition in `release.md`, including removed or
   renamed configuration properties, changed defaults with significant effect,
   dropped support for external system versions, and incompatible SPI changes.
   For a breaking change, state what users must do instead.
-- Link functions with ``{func}`name` ``, documents with ``{doc}`/path` ``, and
+* Link functions with ``{func}`name` ``, documents with ``{doc}`/path` ``, and
   labeled sections with ``{ref}`text <label>` ``. Standard Markdown links work
   for documentation paths, for example
   `[dynamic filtering](/admin/dynamic-filtering)`.
-- Use backticks for property names, SQL, types, values, and file names.
+* Use backticks for property names, SQL, types, values, and file names.
 
 A filled-in excerpt from Trino 483:
 
@@ -432,19 +432,19 @@ The output of the skill is the filled-in copy, one file per release at
 is not a section appended to a shared page as with Trino Gateway, and the format
 differs:
 
-- The template heading `# Release xyz (dd MMM 2025)` becomes
+* The template heading `# Release xyz (dd MMM 2025)` becomes
   `# Release <version> (<d Mmm yyyy>)` — "Release", not "Trino", and the date
   without a leading zero. Both the version and the date, including the year,
   are placeholders in the template.
-- Each component is a `##` heading from the template, not a bold label. Keep the
+* Each component is a `##` heading from the template, not a bold label. Keep the
   heading text exactly as the template has it, for example
   `## Delta Lake connector`.
-- Entries are `*` bullets under their heading, each ending with its ``{issue}``
+* Entries are `*` bullets under their heading, each ending with its ``{issue}``
   reference.
-- There is no artifacts list, no "Changes:" label, and no milestone or GitHub
+* There is no artifacts list, no "Changes:" label, and no milestone or GitHub
   release footer. The file contains only the title, the sections, and the
   entries.
-- Only sections with entries remain in the finished file, and it ends with a
+* Only sections with entries remain in the finished file, and it ends with a
   single trailing newline.
 
 ### Tracking list template
@@ -517,8 +517,8 @@ with `No open questions.` rather than deleting the comment.
 
 ## Out of scope
 
-- Cutting the release, tagging, and publishing artifacts are the release
+* Cutting the release, tagging, and publishing artifacts are the release
   manager's tasks.
-- The Trino Helm chart in `trinodb/charts` is updated separately and
+* The Trino Helm chart in `trinodb/charts` is updated separately and
   irregularly, unlike the Trino Gateway chart.
-- Blog posts and announcements for a release use the `trinodb-website` skill.
+* Blog posts and announcements for a release use the `trinodb-website` skill.
