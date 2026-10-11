@@ -262,6 +262,11 @@ the release is ready.
       entries that only change an error message or error code, avoid "now",
       lead with the capability and name the property at the end, and describe
       the symptom users see rather than the mechanism.
+    * When the user wants missing documentation fixed in the release notes
+      PR itself, add it as a separate commit before the release notes commit.
+      Commit it on a branch from `master` and rebase the release notes branch
+      onto that branch. The release notes commit stays last, so `rn.py
+      publish` keeps amending it, and entries can link to the new section.
     * Ask the user before replying to or resolving review threads.
 9.  **Publish**: Run `rn.py publish`. It amends the single commit with its
     message unchanged, force-pushes with lease, publishes the tracking list
