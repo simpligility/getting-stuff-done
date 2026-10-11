@@ -22,6 +22,8 @@ Environment:
 
 Commands:
   render                      write release-<version>.md from entries.json
+  import                      rebuild entries.json from release-<version>.md,
+                              for a lost work directory
   mark rn|docs|both <n>...    flip tracking marks to ✅ in tracking.md
   pending <text>              add an item to the Pending comment in pending.md
   dump <from> <to> [<n>...]   print details of PRs merged in [from, to), UTC
@@ -105,6 +107,35 @@ def render():
             out.append('')
     with open(OUTPUT, 'w') as f:
         f.write('\n'.join(out).rstrip('\n') + '\n')
+
+
+GROUP_VERBS = {1: ('Add', 'Allow'), 3: ('Improve', 'Reduce'), 4: ('Fix', 'Prevent')}
+
+
+def import_entries():
+    """Rebuild entries.json from the release notes file.
+
+    The group of an entry follows from its first word, and never drops below
+    the group of the entry before it, so that render keeps the order of the file.
+    """
+    entries, section, current, group = [], None, None, 0
+    with open(OUTPUT) as f:
+        for line in f.read().split('\n'):
+            if line.startswith('## '):
+                section, current, group = line[3:].strip(), None, 0
+            elif line.startswith('* '):
+                text = line[2:]
+                verb = text.removeprefix('{{breaking}} ').split(' ')[0]
+                group = max(group, next((g for g, verbs in GROUP_VERBS.items()
+                                         if verb in verbs), 2))
+                current = {'section': section, 'group': group, 'text': text}
+                entries.append(current)
+            elif line.startswith('  ') and current:
+                current['text'] += ' ' + line.strip()
+            else:
+                current = None
+    save(ENTRIES, entries)
+    print(f'imported {len(entries)} entries')
 
 
 def mark(kind, numbers):
@@ -350,6 +381,8 @@ def main(args):
     cmd, rest = args[0], args[1:]
     if cmd == 'render':
         render()
+    elif cmd == 'import' and not rest:
+        import_entries()
     elif cmd == 'mark' and len(rest) >= 2 and rest[0] in ('rn', 'docs', 'both'):
         mark(rest[0], rest[1:])
     elif cmd == 'pending' and len(rest) == 1:

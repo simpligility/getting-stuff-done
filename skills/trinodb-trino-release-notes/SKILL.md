@@ -48,9 +48,10 @@ The skill bundles two scripts in `scripts/`:
 * `get_merged_prs.sh` creates the tracking list entries.
 * `rn.py` runs the cycle. It keeps the entries as structured data in
   `entries.json`, renders `release-<version>.md` from the authoritative
-  template, flips tracking marks, collects pending questions, dumps PR
-  details for triage, validates and applies triage proposals, and publishes
-  each update to the PR body and comments. Run `rn.py` without arguments for its usage.
+  template, rebuilds `entries.json` from that file, flips tracking marks,
+  collects pending questions, dumps PR details for triage, validates and
+  applies triage proposals, and publishes each update to the PR body and
+  comments. Run `rn.py` without arguments for its usage.
 
 Run `rn.py` from the root of the trino clone with these environment variables:
 
@@ -185,21 +186,26 @@ for the next version.
 Use this phase regularly, ideally daily as the website process describes, until
 the release is ready.
 
-1.  **Sync with upstream**: Same as phase 1, step 1.
+1.  **Sync with upstream**: Same as phase 1, step 1. In a git worktree
+    dedicated to the release notes branch, update `master` without checking it
+    out instead, with `git fetch upstream master:master` followed by
+    `git push origin master`.
 2.  **Rebase the release notes branch**:
     * `git checkout release-notes-<version>`
     * `git rebase master`
     * Never run `git pull` on the release notes branch. The rebase deliberately
       diverges it from its remote counterpart, so a pull either duplicates the
       commits picked up from master, with `--rebase`, or creates a merge commit,
-      without it. The force-push in step 8 brings the branch back in sync. If
+      without it. The force-push in step 9 brings the branch back in sync. If
       the remote branch may have changes made elsewhere, inspect them with
       `git fetch origin` and `git log origin/release-notes-<version>` first.
 3.  **Check the work directory**: `body.md`, `tracking.md`, and `pending.md`
     are the source of the PR body and comments. If the work directory is lost,
     rebuild `tracking.md` from the tracking list in the body or from the
     tracking comments in order, `pending.md` from the Pending comment, and
-    `body.md` from the PR body up to the line that ends the legend.
+    `body.md` from the PR body up to the line that ends the legend. Rebuild
+    `entries.json` with `rn.py import`, then run `rn.py render` and confirm
+    with `git diff` that the file is unchanged apart from line wrapping.
 4.  **Determine the last check date**: Use the most recent dated heading in the
     tracking list.
 5.  **Fetch new merges**: Run `get_merged_prs.sh` with the last check date. Including
@@ -214,7 +220,7 @@ the release is ready.
     * Mark new entries `❌ rn ❌ docs`, without titles. Use `-a` only for a
       local working view with titles and resolved issues.
 7.  **Triage in batches**: Work through the `❌` entries in batches of three
-    calendar days, oldest first, and publish after each batch with step 8.
+    calendar days, oldest first, and publish after each batch with step 9.
     For each batch:
     * Dump the PR details with
       `rn.py dump <from> <to-exclusive> [<numbers to skip>] > "$RN_WORK/bNN.txt"`.
@@ -240,7 +246,24 @@ the release is ready.
     all batch dumps first. Review and apply the proposals yourself, one batch
     at a time in date order, and publish after each. Subagents only write
     proposal files and never touch the repository, the PR, or GitHub.
-8.  **Publish**: Run `rn.py publish`. It amends the single commit with its
+8.  **Apply review feedback**: Reviewers comment on the release notes file in
+    the PR. List the comments with
+    `gh api --paginate repos/trinodb/trino/pulls/<PR>/comments` at the start of
+    each session and handle the ones added since the last publish:
+    * Apply accepted suggestions in `entries.json` and render, so that later
+      batches keep them. Apply a suggestion to every section that duplicates
+      the entry, and extend the reasoning of a comment to similar entries the
+      reviewer did not mark.
+    * A comment that answers a pending question resolves it. Remove the item
+      from `pending.md`.
+    * A comment that reports missing documentation resets the entry to
+      `❌ docs` in `tracking.md` and gets a pending item.
+    * Use the wording preferences from the review for new entries too. Drop
+      entries that only change an error message or error code, avoid "now",
+      lead with the capability and name the property at the end, and describe
+      the symptom users see rather than the mechanism.
+    * Ask the user before replying to or resolving review threads.
+9.  **Publish**: Run `rn.py publish`. It amends the single commit with its
     message unchanged, force-pushes with lease, publishes the tracking list
     from `$RN_WORK/tracking.md` in the PR body or, past the link limit, in
     tracking comments, creates or updates the Pending comment from
@@ -358,6 +381,25 @@ Within each group, put the more significant or more widely used change first.
   description, for example "Add support for X, configurable with the
   `prop.name` configuration property." Mention catalog session properties
   explicitly as such.
+* Name the symptom and the condition that triggers it, so that readers can
+  tell whether they are affected. "Fix query failure when reading
+  copy-on-write tables with pending clustering operations" rather than "Fix
+  failure when reading tables with pending clustering operations".
+* Add a short example where the trigger is abstract, introduced with "such
+  as", for example "such as `LEFT JOIN ... ON true`" or "such as `group` or
+  `order`".
+* Describe the capability rather than the statement or property that
+  provides it. "Add support for adding comments to materialized views with
+  [](/sql/comment)" rather than "Add support for the `COMMENT ON MATERIALIZED
+  VIEW` statement".
+* For an improvement that is enabled by default, describe the improvement and
+  add "This can be disabled with the `prop.name` configuration property." as a
+  second sentence.
+* Link the feature to its documentation where a page or labeled section
+  exists, as described in [Syntax](#syntax). Check that the page or label
+  exists in `docs/src/main/sphinx`.
+* Leave out the mechanism. "by pushing it down to the data source" and "by
+  caching namespace listings" add nothing users observe.
 * Keep entries to one sentence where possible. Link to documentation for
   details instead of writing long entries.
 * Use lowercase, code-formatted SQL type names such as `varchar`, `json`, and
@@ -389,7 +431,9 @@ a few characters over in places, so do not rewrap entries only for that.
 * Link functions with ``{func}`name` ``, documents with ``{doc}`/path` ``, and
   labeled sections with ``{ref}`text <label>` ``. Standard Markdown links work
   for documentation paths, for example
-  `[dynamic filtering](/admin/dynamic-filtering)`.
+  `[dynamic filtering](/admin/dynamic-filtering)`, and for labels, for example
+  `[table property](hive-table-properties)`. An empty link text, as in
+  `[](/sql/create-view)`, renders the title of the page.
 * Use backticks for property names, SQL, types, values, and file names.
 
 A filled-in excerpt from Trino 483:
