@@ -69,6 +69,17 @@ conventions, so activate this skill before writing one.
 * Follow the Google Developer Documentation Style Guide for technical writing
   and general documentation. Read the
   [Google Developer Documentation Style Guide](https://developers.google.com/style).
+* Do not use "disable" or "disabled". Write "deactivate" and "deactivated",
+  or "switch off" and "switched off" instead, following the Google style
+  guide word list.
+* For consistency, also avoid "enable" and "enabled", although the Google
+  style guide allows them. Write "activate" and "activated", or "switch on"
+  and "switched on" instead.
+* Use "switch on" and "switch off", not "turn on" and "turn off", which can
+  carry a sexual meaning.
+* Leave literal names such as configuration properties unchanged.
+* Do not use "whitelist" and "blacklist". Write "allowlist" and "denylist"
+  instead, as nouns only, following the Google style guide word list.
 
 
 ## Density and structure
