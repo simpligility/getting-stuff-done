@@ -418,12 +418,23 @@ Within each group, put the more significant or more widely used change first.
   add "This can be deactivated with the `prop.name` configuration property."
   as a second sentence.
 * Link the feature to its documentation where a page or labeled section
-  exists, as described in [Syntax](#syntax). Check that the page or label
-  exists in `docs/src/main/sphinx`. Put the link on the words in the sentence
-  that name the feature, for example
-  "with [`ALTER VIEW ... REFRESH`](/sql/alter-view)" or "a single [file system
-  cache](/object-storage/file-system-cache)". Never add a separate "See
-  [](/path)." sentence.
+  covers it, as described in [Syntax](#syntax). Read the target content
+  before linking, and link only when it explains what the entry describes:
+  * A match on a property name is not enough. Confirm that the text covers
+    the entry's subject. For example, `/sql/comment` documents the
+    `COMMENT ON MATERIALIZED VIEW` statement, but not access control rules
+    for it.
+  * Link a label or a focused page, such as the S3 file system page or a
+    property section. Do not link the top of a long connector page when no
+    label marks the relevant content. Leave the entry without a link
+    instead.
+  * When a feature has no documentation that covers it, mark the PR
+    `❌ docs` and add a pending question rather than linking a loosely
+    related page.
+* Put the link on the words in the sentence that name the feature, for
+  example "with [`ALTER VIEW ... REFRESH`](/sql/alter-view)" or "a single
+  [file system cache](/object-storage/file-system-cache)". Never add a
+  separate "See [](/path)." sentence.
 * Leave out the mechanism. "by pushing it down to the data source" and "by
   caching namespace listings" add nothing users observe.
 * Keep entries to one sentence where possible. Link to documentation for

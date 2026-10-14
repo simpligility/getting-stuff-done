@@ -55,6 +55,10 @@ repository files, do not commit, and do not post anything to GitHub. Read-only
   the PR, so add a short "such as" example when the condition is abstract.
   Leave out consequence clauses starting with "so". Put documentation links on
   the words that name the feature, never in a separate "See ..." sentence.
+* Link only after reading the target content and confirming that it covers
+  what the entry describes. Use a label or a focused page, never the top of a
+  long connector page. A matching property name alone is not enough. Without
+  covering documentation, leave the link out and report the docs gap.
 * Use the MyST syntax of the existing files: backticks for SQL, types, and
   properties, ``{func}`name` `` for documented functions, the `{{breaking}}`
   prefix for breaking changes, and ``({issue}`N`)`` at the end of each entry.
