@@ -27,8 +27,11 @@ fork-and-upstream contribution workflow — see the `trinodb` base skill.
 Both pull requests this skill opens go to public repositories, so treat their
 creation as an outward-facing action. Before running `gh pr create` — for the
 release notes PR in step 9 and the Helm chart PR in step 10 — show the user the
-drafted title and body and get approval before creating. The git sync, branch
-work, and read-only `gh` commands throughout need no confirmation.
+drafted title and body and get approval before creating. In phase 2, show the
+new entries and tracking changes and get approval before the first push of each
+maintenance session. Ask before commenting on upstream PRs, and before replying
+to or resolving review threads. The git sync, branch work, and read-only `gh`
+commands throughout need no confirmation.
 
 ### 1. Initialize release cycle
 
@@ -47,6 +50,9 @@ all changes for the next version.
 4.  **Identify the last release date**: Note the date of the latest release in
     `docs/release-notes.md`, for example 11 May 2026.
 5.  **Prepare the branch**:
+    * Check that nobody else started the cycle with
+      `gh pr list --repo trinodb/trino-gateway --state open --search "release notes in:title"`,
+      and stop to ask the user if a PR for the version already exists.
     * Create a new branch: `git checkout -b release-notes-<version>`.
 6.  **Update quickstart guide**: Update the VERSION property in
     `docs/quickstart.md` to the new version. Commit the change to main with
@@ -60,6 +66,13 @@ all changes for the next version.
       last release date, but it belongs to the preceding release and is never
       tracked again. The first entry of the new list is therefore the first PR
       merged after that release notes PR.
+    * Exclude PRs merged around the release day that are already part of the
+      previous release. Check each candidate's merge commit against the release
+      tag rather than relying on dates, for example
+      `git merge-base --is-ancestor <merge-commit-sha> <previous-version>`,
+      with the SHA from `gh pr view <n> --json mergeCommit`.
+    * The command returns at most 100 PRs. If the count reaches the limit,
+      raise `--limit` and run it again.
 8.  **Initialize docs/release-notes.md**:
     * Add a new section for the new version at the top of the current year
       section.
@@ -105,6 +118,10 @@ merged, to keep the release notes PR updated until the next release is ready.
     * Switch to the main branch: `git checkout main`.
     * Pull the latest changes from upstream: `git pull upstream main`.
     * Update your fork's main: `git push origin main`.
+    * In a git worktree where `main` is checked out in another worktree, skip
+      the checkout. Run `git fetch upstream main` and
+      `git push origin upstream/main:main` instead, and rebase onto
+      `upstream/main` in the next step.
 2.  **Prepare the release branch**:
     * Identify the release notes branch, for example `release-notes-<version>`.
     * Switch to the branch: `git checkout release-notes-<version>`.
@@ -113,7 +130,7 @@ merged, to keep the release notes PR updated until the next release is ready.
       deliberately diverges the branch from its remote counterpart, so a pull
       replays the commits picked up from main back onto the stale remote tip
       and duplicates them, with `--rebase`, or creates a merge commit without
-      it. The branch is brought back in sync by the force-push in step 8. If
+      it. The branch is brought back in sync by the force-push in step 9. If
       the remote branch may have changes made elsewhere, inspect them with
       `git fetch origin` and `git log origin/release-notes-<version>` instead.
 3.  **Locate the open PR**: Find the PR titled `Add Trino Gateway <version>
@@ -126,6 +143,7 @@ merged, to keep the release notes PR updated until the next release is ready.
     date. Do not use author or committer dates, which retain each contributor's
     timezone and can predate a delayed merge.
     * Command: `gh pr list --repo trinodb/trino-gateway --state merged --base main --limit 100 --json number,title,mergedAt --search "merged:>={last_check_date}"`
+    * Drop the PRs already in the tracking list.
 6.  **Update the PR tracking list**:
     * Do not edit the existing entries to preserve the verification status.
       Instead, add new entries for the newly merged PRs.
@@ -151,7 +169,8 @@ merged, to keep the release notes PR updated until the next release is ready.
     * Analyze the newly merged PRs.
     * Add descriptive entries to the **General** category and, when there are
       user-visible UI changes, the **UI** category in `docs/release-notes.md`.
-      Omit the **UI** heading when it has no entries.
+      Omit the **UI** heading when it has no entries. Follow
+      [Writing entries](#writing-entries) for triage, order, and wording.
     * The description of each PR should contain a suggestion for the release
       notes entry, which you can refine for clarity and consistency. If you
       insert a release notes entry or determine that no entry is needed, mark
@@ -168,10 +187,140 @@ merged, to keep the release notes PR updated until the next release is ready.
       `([#123](https://github.com/trinodb/trino-gateway/issues/123))`.
       Otherwise, link to the PR,
       `([#124](https://github.com/trinodb/trino-gateway/pull/124))`.
-8.  **Commit and push updates**:
+    * When unsure about the effect, the breaking status, or whether an entry is
+      needed, still write the best entry and add a pending question rather
+      than leaving the PR open.
+    * Keep open questions in a single PR comment that starts with
+      `### Pending`, one line per item in the form `#<PR> - <Question>.`,
+      written as a full sentence. Update that comment in place, never post a
+      second one, and remove items once they are answered.
+8.  **Apply review feedback**: When maintainers review the PR, apply their
+    suggestions to the entries and turn each comment into a rule for later
+    entries. Ask the user before replying to or resolving the review threads.
+9.  **Commit and push updates**:
     * Amend the existing commit with the changes to `docs/release-notes.md`.
       Leave the commit message unchanged.
+    * When an entry needs missing documentation that is small enough to add in
+      the release notes PR, add it as a separate commit before the release
+      notes commit. The release notes commit stays last, so it can keep being
+      amended. Mention the docs commit in the PR description.
     * Push or force-push the updates to the branch: `git push --force-with-lease origin release-notes-<version>`.
+
+### 3. Finalize for the release
+
+Use this phase once maintainers agree on the release date.
+
+1.  Run phase 2 one last time, up to the release.
+2.  Replace "Planned Date" with the release date, for example `25 Aug 2026`.
+3.  Remove the **UI** heading if it has no entries.
+4.  Re-read the whole release section for consistency of wording, order, and
+    duplicated entries.
+5.  Build the documentation in the project root with the `mkdocs-material`
+    setup described in `docs/docs.md`, for example with
+    `mkdocs build --strict`, and fix any warnings from the new section, such
+    as broken links. Warnings from other pages may predate the release notes
+    and need no fix in this PR.
+6.  Confirm every tracking entry is `✅ rn ✅ docs` or has an agreed exception
+    noted in the PR body, and the Pending comment has no open questions.
+7.  Request review from the release manager.
+
+## Writing entries
+
+The release notes have a user focus. Write for Trino Gateway administrators
+and users, not for developers of the code. Strive for consistency with recent
+releases in `docs/release-notes.md`.
+
+### Triage rules
+
+* Only changes users notice get an entry: features, routing and configuration
+  changes, performance improvements, bug fixes, security, breaking changes,
+  and UI, Docker image, and Helm chart relevant changes.
+* If no entry is needed, still mark the PR `✅ rn` to record the review.
+  Dependency bumps, tests, build and CI changes, refactoring, and internal
+  cleanups usually need no entry. A dependency bump that fixes a user-visible
+  bug or a CVE in a shipped library may need one.
+* No entry for a fix to a regression or feature that another PR introduced in
+  the same cycle, since users of the previous release never saw it. Check the
+  merge date of the PR that introduced the problem. A regression from an
+  earlier release does get an entry.
+* Authors often mark "no release notes required" for changes users do notice,
+  such as fixes for failures or performance gains. Judge independently.
+* Mark `✅ docs` when the needed documentation is merged or none is needed.
+  Leave `❌ docs` while it is missing and add a pending question.
+
+### Ordering
+
+Order entries within **General** and **UI** by type:
+
+1. New features, starting with `Add`, `Add support for`, `Allow`, or similar.
+2. Other behavior changes, such as `Require`, `Remove`, `Rename`, or
+   `Deprecate`. Most breaking changes land here.
+3. Performance and resource improvements, starting with `Improve` or `Reduce`.
+4. Bug fixes, starting with `Fix` or `Prevent`.
+
+Within each group, put the more significant or more widely used change first.
+
+### Breaking changes
+
+Mark breaking changes with the `[:warning: Breaking change:](#breaking)`
+prefix at the start of the entry. Apply it to every change that matches the
+definition in the "Breaking changes" section at the end of
+`docs/release-notes.md`, such as removed or renamed configuration properties,
+changed defaults with significant effect, new requirements for external
+systems, and incompatible changes for router modules. State what users must
+do instead. A fix that changes existing routing or results can also be
+breaking, so check each one against the definition and add a pending question
+when unsure.
+
+### Wording
+
+* Use the imperative present tense — `Add`, `Fix`, `Improve`, never `Added`,
+  `Fixes`, or `Improved`. Avoid "now".
+* Describe the visible effect, not the implementation, and leave out the
+  mechanism. Name the symptom and the condition that triggers it, so that
+  readers can tell whether they are affected.
+* Use precise phrasing that matches existing entries, such as
+  `Add support for <feature>.`, `Fix <symptom> when <condition>.`, and
+  `Prevent <harm> when <condition>.`. Use `Prevent` for avoided harm such as
+  routing to unhealthy backends or data loss.
+* When a change adds configuration, name the property after describing the
+  capability. For an improvement that is enabled by default, add "This can be
+  deactivated with the `<property>` configuration property." as a second
+  sentence.
+* Decide on examples by whether documentation carries the details:
+  * New features and other documented changes link to their documentation,
+    which shows one or ideally several examples. Leave examples out of the
+    entry itself.
+  * Fixes, and behavior changes without documentation, must be
+    understandable without opening the PR. Add a short example introduced
+    with "such as" when the condition is abstract.
+  * Choose an example that clarifies the condition. Leave it out when the
+    sentence is already clear, or when the example reads as contrived.
+* Do not add a consequence clause starting with "so" or "so that".
+* Make the scope explicit where a reader could misread it, and use plain words
+  over jargon.
+* Keep entries to one sentence where possible.
+* Use backticks for property names, values, SQL, paths, and endpoints.
+* Use the full product names Trino Gateway and Trino. Never shorten Trino
+  Gateway to "the gateway", as described in the `trinodb` base skill.
+* Follow the Google developer documentation style guide used for all Trino
+  documentation.
+
+### Documentation links
+
+The docs are Markdown rendered with MkDocs. Link other pages in `docs/` with a
+relative path, optionally with an anchor, for example
+`[routing rules](routing-rules.md)` or
+`[enable monitoring](operation.md#monitoring)`.
+
+* Link a feature to its documentation only where a page or section covers it.
+  Read the target content before linking, and link only when it explains what
+  the entry describes. A matching property name alone is not enough.
+* Link the section that covers the feature, not the top of a long page.
+  Without covering documentation, leave the link out, mark the PR `❌ docs`,
+  and add a pending question.
+* Put the link on the words in the sentence that name the feature. Never add a
+  separate "See ..." sentence.
 
 ---
 
