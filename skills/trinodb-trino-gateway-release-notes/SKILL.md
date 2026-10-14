@@ -215,11 +215,12 @@ Use this phase once maintainers agree on the release date.
 3.  Remove the **UI** heading if it has no entries.
 4.  Re-read the whole release section for consistency of wording, order, and
     duplicated entries.
-5.  Build the documentation in the project root with the `mkdocs-material`
-    setup described in `docs/docs.md`, for example with
-    `mkdocs build --strict`, and fix any warnings from the new section, such
-    as broken links. Warnings from other pages may predate the release notes
-    and need no fix in this PR.
+5.  Build the documentation with `mkdocs build --strict` in the project root,
+    which fails on warnings such as broken links. Use the `mkdocs` from the
+    pipx `mkdocs-material` setup described in `docs/docs.md`, usually in
+    `~/.local/bin`. A Homebrew `mkdocs` lacks the Material theme and fails
+    with `No module named 'material'`, as does a sandbox that cannot read
+    `~/.local/bin`.
 6.  Confirm every tracking entry is `✅ rn ✅ docs` or has an agreed exception
     noted in the PR body, and the Pending comment has no open questions.
 7.  Request review from the release manager.
