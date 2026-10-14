@@ -186,6 +186,13 @@ writing `Release v<version>` keeps the published identity explicit in history,
 because release commits are read in aggregated views where the repository name
 is not visible. Both npm packages in this family follow this convention.
 
+The release pull request also moves the worked example in the README release
+instructions to the version after the one being released, for example to 4.0.0
+when releasing 3.0.0, so it stays a template rather than a record of the
+version just shipped. Make that a separate commit ahead of the version bump, so
+the release commit touches only `package.json` and `package-lock.json`. Pull
+request #58 did this for 1.0.0, and #90 for 3.0.0.
+
 Opening the release pull request publishes nothing. The release workflow has a
 single trigger, a push to the default branch, and every publishing step is
 gated on the version in `package.json` having changed. The merge is

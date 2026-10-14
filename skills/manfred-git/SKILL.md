@@ -487,6 +487,36 @@ gh pr view <number> --repo <owner>/<repo> \
     --json headRefOid,commits
 ```
 
+### When maintainer edits are switched off
+
+When `maintainerCanModify` is false, nothing can be pushed to the contributor's
+branch. Expect this for forks owned by an organization, because GitHub only
+offers maintainer edits on forks owned by a personal account, as described in
+[allowing changes to a pull request branch created from a
+fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/allowing-changes-to-a-pull-request-branch-created-from-a-fork).
+Check before starting the work:
+
+```
+gh pr view <number> --repo <owner>/<repo> \
+    --json maintainerCanModify,headRepositoryOwner
+```
+
+Hand the changes to the contributor instead:
+
+1. Commit them as a separate commit on top of the pull request head rather than
+   amending the contributor's commit, so the result fast-forwards and the
+   commit link shows exactly what changed.
+2. Push that commit to a branch on Manfred's own fork.
+3. Comment on the pull request with the commit link and the command to take it
+   over, and ask the contributor to review, test, and squash with a commit
+   message that follows the repository style:
+
+   ```
+   git pull https://github.com/<own-fork>/<repo> <branch>
+   ```
+
+Delete the branch on the fork once the pull request is merged.
+
 ### Resolving stale review threads
 
 A rebase across a busy default branch often strands review comments on code
