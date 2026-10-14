@@ -390,11 +390,16 @@ Within each group, put the more significant or more widely used change first.
   tell whether they are affected. "Fix query failure when reading
   copy-on-write tables with pending clustering operations" rather than "Fix
   failure when reading tables with pending clustering operations".
-* Leave out examples of syntax, values, and queries, such as "such as
-  `INTERVAL DAY(4) TO SECOND(9)`" or "such as `group` or `order`". The
-  documentation covers them. Keep "such as" only where it tells readers whether
-  they are affected, for example "such as DuckDB" for other engines or "such as
-  files written by earlier Trino releases".
+* Decide on examples by whether documentation carries the details:
+  * New features and other documented changes link to their documentation,
+    which shows one or ideally several examples. Leave examples out of the
+    entry itself.
+  * Fixes, and behavior changes without documentation, must be understandable
+    without opening the PR. Add a short example introduced with "such as" when
+    the condition is abstract, for example "such as `LEFT JOIN ... ON true`",
+    "such as `group` or `order`", or "such as DuckDB".
+  * Choose an example that clarifies the condition. Leave it out when the
+    sentence is already clear, or when the example reads as contrived.
 * Do not add a consequence clause starting with "so" or "so that". State the
   change, and leave the consequence to the documentation.
 * Make the scope explicit where a reader could misread it. "Add support for a

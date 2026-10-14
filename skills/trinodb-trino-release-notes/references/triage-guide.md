@@ -50,10 +50,11 @@ repository files, do not commit, and do not post anything to GitHub. Read-only
   the effect for users, not the implementation. Name new configuration and
   session properties, for example "..., configurable with the `x.y`
   configuration property."
-* Leave out examples of syntax, values, and queries, and consequence clauses
-  starting with "so". Keep "such as" only where it tells readers whether they
-  are affected. Put documentation links on the words that name the feature,
-  never in a separate "See ..." sentence.
+* New features link to their documentation and carry no examples. Fixes,
+  and behavior changes without documentation, must be understandable without
+  the PR, so add a short "such as" example when the condition is abstract.
+  Leave out consequence clauses starting with "so". Put documentation links on
+  the words that name the feature, never in a separate "See ..." sentence.
 * Use the MyST syntax of the existing files: backticks for SQL, types, and
   properties, ``{func}`name` `` for documented functions, the `{{breaking}}`
   prefix for breaking changes, and ``({issue}`N`)`` at the end of each entry.
