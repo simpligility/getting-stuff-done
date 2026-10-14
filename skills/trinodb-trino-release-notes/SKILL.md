@@ -390,19 +390,35 @@ Within each group, put the more significant or more widely used change first.
   tell whether they are affected. "Fix query failure when reading
   copy-on-write tables with pending clustering operations" rather than "Fix
   failure when reading tables with pending clustering operations".
-* Add a short example where the trigger is abstract, introduced with "such
-  as", for example "such as `LEFT JOIN ... ON true`" or "such as `group` or
-  `order`".
+* Leave out examples of syntax, values, and queries, such as "such as
+  `INTERVAL DAY(4) TO SECOND(9)`" or "such as `group` or `order`". The
+  documentation covers them. Keep "such as" only where it tells readers whether
+  they are affected, for example "such as DuckDB" for other engines or "such as
+  files written by earlier Trino releases".
+* Do not add a consequence clause starting with "so" or "so that". State the
+  change, and leave the consequence to the documentation.
+* Make the scope explicit where a reader could misread it. "Add support for a
+  single file system cache shared by all catalogs on a node" rather than "a
+  file system cache shared by all catalogs".
+* Use plain words over jargon and awkward phrasing. "Fix excessive requests
+  from clients polling for results" rather than "polling in a tight loop", and
+  "Preserve the case of user names" rather than "the original case".
+* Use `Prevent` for avoided harm such as data or precision loss, for example
+  "Prevent precision loss when casting", rather than `Fix precision loss`.
 * Describe the capability rather than the statement or property that
   provides it. "Add support for adding comments to materialized views with
   [](/sql/comment)" rather than "Add support for the `COMMENT ON MATERIALIZED
   VIEW` statement".
 * For an improvement that is enabled by default, describe the improvement and
-  add "This can be disabled with the `prop.name` configuration property." as a
-  second sentence.
+  add "This can be deactivated with the `prop.name` configuration property."
+  as a second sentence.
 * Link the feature to its documentation where a page or labeled section
   exists, as described in [Syntax](#syntax). Check that the page or label
-  exists in `docs/src/main/sphinx`.
+  exists in `docs/src/main/sphinx`. Put the link on the words in the sentence
+  that name the feature, for example
+  "with [`ALTER VIEW ... REFRESH`](/sql/alter-view)" or "a single [file system
+  cache](/object-storage/file-system-cache)". Never add a separate "See
+  [](/path)." sentence.
 * Leave out the mechanism. "by pushing it down to the data source" and "by
   caching namespace listings" add nothing users observe.
 * Keep entries to one sentence where possible. Link to documentation for
@@ -432,14 +448,19 @@ a few characters over in places, so do not rewrap entries only for that.
   matches the breaking changes definition in `release.md`, including removed or
   renamed configuration properties, changed defaults with significant effect,
   dropped support for external system versions, and incompatible SPI changes.
-  For a breaking change, state what users must do instead.
+  For a breaking change, state what users must do instead. A correctness fix
+  that changes the results of existing valid queries can also be breaking, so
+  check each one against the definition, and add a pending question when
+  unsure.
 * Link functions with ``{func}`name` ``, documents with ``{doc}`/path` ``, and
   labeled sections with ``{ref}`text <label>` ``. Standard Markdown links work
   for documentation paths, for example
   `[dynamic filtering](/admin/dynamic-filtering)`, and for labels, for example
   `[table property](hive-table-properties)`. An empty link text, as in
   `[](/sql/create-view)`, renders the title of the page.
-* Use backticks for property names, SQL, types, values, and file names.
+* Use backticks for property names, SQL, types, values, file names, and file
+  and storage format names used as values, such as `TEXTFILE` and
+  `SEQUENCEFILE`.
 
 A filled-in excerpt from Trino 483:
 
@@ -466,6 +487,9 @@ A filled-in excerpt from Trino 483:
   ({issue}`27512`)
 * Improve performance of reading TEXTFILE and CSV data. ({issue}`30291`)
 ```
+
+The excerpt is quoted as released, and predates the rules on examples and
+format names in [Wording](#wording) and this section.
 
 ## Templates
 
