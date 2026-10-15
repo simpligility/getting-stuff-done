@@ -130,13 +130,13 @@ overrides an org-wide row.
 | Repo / organization | Style |
 |---|---|
 | Chainguard and Wolfi repos | Conventional commits — see [Detecting a Chainguard repo](#detecting-a-chainguard-repo). Covers repos owned by or forked from any Chainguard organization, including `chainguard-dev`, `chainguard-forks`, `chainguard-demo`, `wolfi-dev`, and `driftlessaf`, plus personal repos whose name matches, such as `mosabua/chainguard-libraries-{java,javascript,python}` |
-| Trino, Trino Gateway, Airlift | Chris Beams. For Trino project work, do not add `Co-authored-by:` or `Assisted-by:` footers to attribute AI tooling. |
+| Trino, Trino Gateway, Airlift | Chris Beams. Upstream work, so no AI tooling footers — see [AI tooling attribution](#ai-tooling-attribution). |
 | simpligility repos | Chris Beams |
 | Anything else | Chris Beams by default; if the repo clearly uses another convention, inspect history and `CONTRIBUTING` and follow that |
 
-The `Assisted-by:` trailer applies regardless of which style a repo uses, except
-for Trino project work. Trino prohibits AI tooling footers using either
-`Co-authored-by:` or `Assisted-by:`.
+Whether a commit carries the `Assisted-by:` trailer does not depend on the
+commit style. It depends on who owns the repository, as described in
+[AI tooling attribution](#ai-tooling-attribution).
 
 ### Trailer conventions
 
@@ -162,31 +162,44 @@ commits.
 
 ### AI tooling attribution
 
-For projects other than Trino project work, always include an `Assisted-by:`
-trailer when AI tooling was involved. Frame the AI as an assistant, not a
-co-author — attribute AI with `Assisted-by:` and never with `Co-authored-by:`,
-which is reserved for human collaborators. Do not add either footer for AI
-tooling to Trino commits.
+The repository a change lands in decides whether the commit attributes AI
+tooling:
 
-When the assistant drafts or suggests commit trailers for projects other than
-Trino project work, the AI attribution block must contain only `Assisted-by:`
-lines for AI tools. Never add a matching `Co-authored-by:` trailer for Copilot,
-Claude, GPT, Gemini, Ollama, or any other AI system. The invalid pattern to
-avoid is:
+* **Manfred's own repositories** — repositories in the `mosabua` account and
+  the `simpligility` organization. Include an `Assisted-by:` trailer when AI
+  tooling was involved.
+* **Chainguard repositories** — see
+  [Detecting a Chainguard repo](#detecting-a-chainguard-repo). Include an
+  `Assisted-by:` trailer when AI tooling was involved.
+* **Upstream contributions** — any other repository, owned by another person or
+  organization, such as Trino, Maven, or `sql-formatter`. Never add an
+  `Assisted-by:` or `Co-authored-by:` trailer, or any other footer, to attribute
+  AI tooling.
+
+A fork does not change this. A pull request from `mosabua/sql-formatter` or
+`simpligility/trino-query-ui` to the project it was forked from is an upstream
+contribution, so its commits carry no AI attribution.
+
+Where the trailer applies, frame the AI as an assistant, not a co-author —
+attribute AI with `Assisted-by:` and never with `Co-authored-by:`, which is
+reserved for human collaborators.
+
+When the assistant drafts or suggests commit trailers where the trailer applies,
+the AI attribution block must contain only `Assisted-by:` lines for AI tools.
+Never add a matching `Co-authored-by:` trailer for Copilot, Claude, GPT, Gemini,
+Ollama, or any other AI system. The invalid pattern to avoid is:
 
 ```
 Assisted-by: GPT-5.4 <https://github.com/copilot>
 Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
 ```
 
-For projects other than Trino project work, the correct form is the
-`Assisted-by:` line only.
+The correct form is the `Assisted-by:` line only.
 
-For projects other than Trino project work, fill in the trailer with the
-**actual AI tool and model doing the work** at commit time. Name the tool first,
-followed by the model and version. Use a sensible contact, no-reply address, or
-repo URL for that tool. Do **not** hardcode a single model or copy these
-examples blindly:
+Fill in the trailer with the **actual AI tool and model doing the work** at
+commit time. Name the tool first, followed by the model and version. Use a
+sensible contact, no-reply address, or repo URL for that tool. Do **not**
+hardcode a single model or copy these examples blindly:
 
 ```
 Assisted-by: GitHub Copilot GPT-5.6 Terra <https://github.com/copilot>
@@ -195,13 +208,12 @@ Assisted-by: Gemini CLI Gemini 2.5 Pro <noreply@google.com>
 Assisted-by: Ollama gemma3 <https://ollama.com>
 ```
 
-For projects other than Trino project work, format trailers as
-`Assisted-by: <Tool> <model and version> <email-or-url>`. If unsure of the exact
-model name or version, state what you can verify accurately rather than
-guessing. Place trailers at the end of the commit message, after the body,
-separated by a blank line.
+Format trailers as `Assisted-by: <Tool> <model and version> <email-or-url>`. If
+unsure of the exact model name or version, state what you can verify accurately
+rather than guessing. Place trailers at the end of the commit message, after the
+body, separated by a blank line.
 
-### Example commit for non-Trino work
+### Example commit with the trailer
 
 ```
 Add support for OAuth2 token refresh
@@ -459,9 +471,9 @@ resolving conflicts or reworking the change:
 Co-authored-by: Manfred Moser <manfred@simpligility.ca>
 ```
 
-This is a human co-author trailer, so it is allowed on Trino project work. The
-Trino prohibition covers AI tooling attribution through either
-`Co-authored-by:` or `Assisted-by:`, not human collaborators.
+This is a human co-author trailer, so it is allowed on upstream contributions,
+Trino included. The upstream prohibition covers AI tooling attribution through
+either `Co-authored-by:` or `Assisted-by:`, not human collaborators.
 
 ### Pushing back to the fork
 

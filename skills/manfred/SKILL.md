@@ -138,5 +138,6 @@ Add new entries to this table as new `manfred-*` skills are created.
 skill is active, before running any `git commit`, `git push`, `git rebase`, or
 PR-creating command, invoke `manfred-git` first — even when the git step is a
 minor tail-end of another task. Never commit with a tool's default author or
-footer; the trailer must follow `manfred-git` (`Assisted-by:`, never
-`Co-authored-by:` for AI).
+footer; AI attribution must follow `manfred-git`, which allows `Assisted-by:`
+only in Manfred's own and Chainguard repositories, never on upstream
+contributions, and never `Co-authored-by:` for AI.
