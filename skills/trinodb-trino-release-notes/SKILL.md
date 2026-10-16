@@ -405,9 +405,14 @@ Within each group, put the more significant or more widely used change first.
 * Make the scope explicit where a reader could misread it. "Add support for a
   single file system cache shared by all catalogs on a node" rather than "a
   file system cache shared by all catalogs".
-* Use plain words over jargon and awkward phrasing. "Fix excessive requests
-  from clients polling for results" rather than "polling in a tight loop", and
-  "Preserve the case of user names" rather than "the original case".
+* Use plain words over jargon and awkward phrasing, and name the concrete
+  symptom. "Fix excessive CPU usage in clients that poll for query results"
+  rather than "polling in a tight loop", and "Preserve the case of user names"
+  rather than "the original case".
+* When a fix turns incorrect results into a failure, say so in a second
+  sentence. "Fix incorrect results when adding an interval produces a value
+  outside the supported range. The query fails instead." rather than "Fix
+  incorrect results instead of a failure".
 * Use `Prevent` for avoided harm such as data or precision loss, for example
   "Prevent precision loss when casting", rather than `Fix precision loss`.
 * Describe the capability rather than the statement or property that
@@ -415,8 +420,13 @@ Within each group, put the more significant or more widely used change first.
   [](/sql/comment)" rather than "Add support for the `COMMENT ON MATERIALIZED
   VIEW` statement".
 * For an improvement that is enabled by default, describe the improvement and
-  add "This can be deactivated with the `prop.name` configuration property."
-  as a second sentence.
+  add "This can be deactivated by setting the `prop.name` configuration
+  property to `false`." as a second sentence.
+* Avoid "disable" and "disabled". Name the property and its value instead, for
+  example "when the `delta.enableDeletionVectors` table property is set to
+  `false`", or use "turn off" or "deactivate", for example "Add support for
+  turning off reporting of metrics by setting the `prop.name` configuration
+  property to `false`" or "when complex join pushdown is deactivated".
 * Link the feature to its documentation where a page or labeled section
   covers it, as described in [Syntax](#syntax). Read the target content
   before linking, and link only when it explains what the entry describes:
@@ -443,7 +453,8 @@ Within each group, put the more significant or more widely used change first.
   `row`, and uppercase, code-formatted SQL keywords and statements such as
   `MERGE`, `OPTIMIZE`, and `SHOW SESSION`.
 * Use the full product names, such as Trino and Trino Gateway, and keep the
-  established connector names, such as Delta Lake connector.
+  established connector names, such as Delta Lake connector. Use the full
+  names of external products too, such as AWS Glue rather than Glue.
 * Follow the Google developer documentation style guide used for all Trino
   documentation, as described in the `trinodb` base skill.
 
@@ -464,11 +475,16 @@ a few characters over in places, so do not rewrap entries only for that.
   matches the breaking changes definition in `release.md`, including removed or
   renamed configuration properties, changed defaults with significant effect,
   dropped support for external system versions, and incompatible SPI changes.
-  For a breaking change, state what users must do instead. A correctness fix
+  For a breaking change, state what users must do instead. Spell out the new
+  behavior and what stays unchanged, with a short example where it helps,
+  for example "User names are compared case-sensitively with the
+  authenticated user, so privileges granted to `Alice` only apply to the user
+  `Alice`. Role names are still converted to lowercase." A correctness fix
   that changes the results of existing valid queries can also be breaking, so
   check each one against the definition, and add a pending question when
   unsure.
-* Link functions with ``{func}`name` ``, documents with ``{doc}`/path` ``, and
+* Link functions with ``{func}`name` ``, including functions that read like
+  keywords, such as ``{func}`try` ``. Link documents with ``{doc}`/path` ``, and
   labeled sections with ``{ref}`text <label>` ``. Standard Markdown links work
   for documentation paths, for example
   `[dynamic filtering](/admin/dynamic-filtering)`, and for labels, for example

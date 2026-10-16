@@ -286,8 +286,13 @@ when unsure.
   routing to unhealthy backends or data loss.
 * When a change adds configuration, name the property after describing the
   capability. For an improvement that is enabled by default, add "This can be
-  deactivated with the `<property>` configuration property." as a second
-  sentence.
+  deactivated by setting the `<property>` configuration property to `false`."
+  as a second sentence.
+* Avoid "disable" and "disabled". Name the property and its value instead, or
+  use "turn off" or "deactivate", for example "Add support for turning off
+  <feature> by setting the `<property>` configuration property to `false`".
+* When a fix turns incorrect behavior into a failure, say so in a second
+  sentence, for example "The request fails instead."
 * Decide on examples by whether documentation carries the details:
   * New features and other documented changes link to their documentation,
     which shows one or ideally several examples. Leave examples out of the
@@ -298,12 +303,15 @@ when unsure.
   * Choose an example that clarifies the condition. Leave it out when the
     sentence is already clear, or when the example reads as contrived.
 * Do not add a consequence clause starting with "so" or "so that".
-* Make the scope explicit where a reader could misread it, and use plain words
-  over jargon.
+* Make the scope explicit where a reader could misread it, use plain words
+  over jargon, and name the concrete symptom, such as excessive CPU usage.
+* For a breaking change, spell out the new behavior and what stays unchanged,
+  with a short example where it helps.
 * Keep entries to one sentence where possible.
 * Use backticks for property names, values, SQL, paths, and endpoints.
 * Use the full product names Trino Gateway and Trino. Never shorten Trino
-  Gateway to "the gateway", as described in the `trinodb` base skill.
+  Gateway to "the gateway", as described in the `trinodb` base skill. Use the
+  full names of external products too, such as AWS Glue rather than Glue.
 * Follow the Google developer documentation style guide used for all Trino
   documentation.
 
