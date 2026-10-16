@@ -279,7 +279,10 @@ the release is ready.
 Use this phase once maintainers agree on the release date, typically in the
 days before the release.
 
-1.  Run phase 2 one last time, up to the release cut.
+1.  Run phase 2 one last time, up to the release cut. Confirm that the last
+    merged PRs are part of the release, for example with
+    `gh api repos/trinodb/trino/compare/<version>...<merge-commit-sha> --jq .status`,
+    which returns `behind` or `identical` for a commit in the release tag.
 2.  Replace the date placeholder with the release date, for example
     `# Release 484 (12 Aug 2026)`. Use the day without a leading zero and the
     three-letter month.
@@ -291,6 +294,23 @@ days before the release.
 6.  Confirm every tracking entry is `✅ rn ✅ docs` or has an agreed exception
     noted in the PR body, and the Pending comment has no open questions.
 7.  Request review from the release manager. The release manager merges the PR as part of the release.
+
+### Close out a superseded PR
+
+When another release notes PR for the same version merges instead, finish
+this one as a reference rather than leaving it open:
+
+1.  Update the tracking list up to the release cut, as in phase 3, step 1.
+    Mark the remaining PRs from the merged release notes.
+2.  Replace the date placeholder with the release date.
+3.  Reword the PR body to state that the PR is superseded by the merged PR
+    and that the tracking list remains as the complete list of merged PRs.
+4.  Publish, then close the PR with a comment that links the merged PR.
+5.  Comment on the merged PR with a link to the tracking list, since GitHub
+    shows the title of each linked PR there.
+6.  Compare the released file with the last draft for wording lessons, and
+    add them to this skill.
+7.  Remove the release notes branch and any worktree for it.
 
 ## Writing entries
 

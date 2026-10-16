@@ -210,7 +210,10 @@ merged, to keep the release notes PR updated until the next release is ready.
 
 Use this phase once maintainers agree on the release date.
 
-1.  Run phase 2 one last time, up to the release.
+1.  Run phase 2 one last time, up to the release cut. Once the release tag
+    exists, confirm that the last merged PRs are part of it, for example with
+    `gh api repos/trinodb/trino-gateway/compare/<version>...<merge-commit-sha> --jq .status`,
+    which returns `behind` or `identical` for a commit in the release tag.
 2.  Replace "Planned Date" with the release date, for example `25 Aug 2026`.
 3.  Remove the **UI** heading if it has no entries.
 4.  Re-read the whole release section for consistency of wording, order, and
@@ -224,6 +227,24 @@ Use this phase once maintainers agree on the release date.
 6.  Confirm every tracking entry is `✅ rn ✅ docs` or has an agreed exception
     noted in the PR body, and the Pending comment has no open questions.
 7.  Request review from the release manager.
+
+### Close out a superseded PR
+
+When another release notes PR for the same version merges instead, finish
+this one as a reference rather than leaving it open:
+
+1.  Update the tracking list up to the release cut, as in phase 3, step 1.
+    Mark the remaining PRs from the merged release notes.
+2.  Replace the date placeholder with the release date.
+3.  Reword the PR body to state that the PR is superseded by the merged PR
+    and that the tracking list remains as the complete list of merged PRs.
+4.  Publish, then close the PR with a comment that links the merged PR.
+5.  Comment on the merged PR with a link to the tracking list, since GitHub
+    shows the title of each linked PR there.
+6.  Compare the released file with the last draft for wording lessons, and
+    add them to this skill.
+7.  Remove the release notes branch and any worktree for it. The
+    Helm chart PR is not affected.
 
 ## Writing entries
 
@@ -284,8 +305,9 @@ when unsure.
   `Add support for <feature>.`, `Fix <symptom> when <condition>.`, and
   `Prevent <harm> when <condition>.`. Use `Prevent` for avoided harm such as
   routing to unhealthy backends or data loss.
-* When a change adds configuration, name the property after describing the
-  capability. For an improvement that is enabled by default, add "This can be
+* Describe the capability rather than the property or endpoint that provides
+  it. When a change adds configuration, name the property after describing
+  the capability. For an improvement that is enabled by default, add "This can be
   deactivated by setting the `<property>` configuration property to `false`."
   as a second sentence.
 * Avoid "disable" and "disabled". Name the property and its value instead, or
