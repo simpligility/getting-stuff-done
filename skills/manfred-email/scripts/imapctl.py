@@ -35,6 +35,8 @@ import subprocess
 import sys
 
 DEFAULT_CONFIG = os.path.expanduser("~/.config/manfred-email/config.ini")
+SANDBOX_HINT = (" — if this runs inside an agent sandbox, see the "
+                "'Sandboxed agents' section of the manfred-email skill")
 CHUNK = 200
 
 # Older Python versions do not know MOVE, and imaplib rejects unknown commands.
@@ -56,7 +58,7 @@ def load_config(path=None):
     path = path or os.environ.get("MANFRED_EMAIL_CONFIG", DEFAULT_CONFIG)
     if not os.path.exists(path):
         raise Error(f"config file not found: {path} — see the setup section "
-                    "of the manfred-email skill")
+                    "of the manfred-email skill" + SANDBOX_HINT)
     parser = configparser.ConfigParser()
     parser.read(path)
     if "imap" not in parser:
@@ -79,15 +81,19 @@ def read_password(cfg):
     result = subprocess.run(args, capture_output=True, text=True)
     if result.returncode != 0 or not result.stdout.strip():
         raise Error("could not read the password with: "
-                    f"{' '.join(args)} — is the Keychain entry set up?")
+                    f"{' '.join(args)} — is the Keychain entry set up?"
+                    + SANDBOX_HINT)
     return result.stdout.rstrip("\n")
 
 
 def connect(cfg):
     host = cfg["host"]
     port = cfg.getint("port", 993)
-    conn = imaplib.IMAP4_SSL(host, port,
-                             ssl_context=ssl.create_default_context())
+    try:
+        conn = imaplib.IMAP4_SSL(host, port,
+                                 ssl_context=ssl.create_default_context())
+    except OSError as e:
+        raise Error(f"could not connect to {host}:{port}: {e}" + SANDBOX_HINT)
     conn.login(cfg["user"], read_password(cfg))
     return conn
 

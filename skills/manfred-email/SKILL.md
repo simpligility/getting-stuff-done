@@ -161,6 +161,36 @@ message count. `MOVE` in the capabilities means moves are atomic. Without it,
 the tool falls back to copying, flagging the original as deleted, and removing
 only those exact messages with `UID EXPUNGE`.
 
+### Sandboxed agents
+
+The scripts need three things that agent sandboxes commonly block:
+
+* Read access to the config file under `~/.config/manfred-email/`.
+* Access to the secret store, the macOS Keychain under `~/Library/Keychains/`
+  by default.
+* A direct outbound TCP connection to the IMAP host on port 993. Sandboxes that
+  filter network traffic through an HTTP proxy do not carry raw IMAP, so
+  allowing the domain in the proxy is not enough.
+
+Inside such a sandbox the failures look like setup problems, but they are not:
+`config file not found` although the file exists, `could not read the password`
+with `security` exit code 44, and a DNS error such as
+`nodename nor servname provided`. The scripts point at this section when they
+hit one of these.
+
+Do not work around it by moving the config or the password. Run the scripts
+outside the sandbox with the harness's own mechanism, which asks Manfred for
+approval:
+
+* Claude Code — run the command with the sandbox disabled, or exempt the
+  scripts permanently with `sandbox.excludedCommands` in the user settings,
+  managed with `/sandbox`.
+* Other harnesses — use their equivalent escalation, such as an unsandboxed or
+  full access mode for the command.
+
+The `gh` calls in the Trino workflow go through HTTPS, so they can work inside a
+sandbox that allows `api.github.com`.
+
 ## Generic commands
 
 ```sh
@@ -328,6 +358,8 @@ Known subscriptions:
 
 * `announce.apache.org` — release announcements and CVE advisories.
 * `dev.maven.apache.org` — the Maven developer list.
+* `dev.community.apache.org` — the community development list, including the
+  ASF Local Community (ALC) chapter proposals.
 * `legal-discuss.apache.org` — the legal list, assumed list ID, not yet seen
   in the inbox.
 
