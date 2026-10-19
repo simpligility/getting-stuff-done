@@ -100,6 +100,15 @@ descriptions, review comments, and other on-his-behalf output, not only
 published posts and docs.
 
 
+## Documentation content
+
+* Describe only the current behavior. Never mention future plans, planned
+  features, or support that does not exist yet, such as "not supported yet"
+  or "planned for a later release".
+* When documentation claims more than the code does, correct it to match the
+  code rather than framing the gap as upcoming work.
+
+
 ## Author biography
 
 When a short description of the author is needed, use the canonical bio
