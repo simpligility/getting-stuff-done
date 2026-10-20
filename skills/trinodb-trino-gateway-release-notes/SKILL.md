@@ -304,12 +304,16 @@ when unsure.
 * Use precise phrasing that matches existing entries, such as
   `Add support for <feature>.`, `Fix <symptom> when <condition>.`, and
   `Prevent <harm> when <condition>.`. Use `Prevent` for avoided harm such as
-  routing to unhealthy backends or data loss.
+  routing to unhealthy Trino clusters or data loss.
 * Describe the capability rather than the property or endpoint that provides
   it. When a change adds configuration, name the property after describing
   the capability. For an improvement that is enabled by default, add "This can be
   deactivated by setting the `<property>` configuration property to `false`."
   as a second sentence.
+* For a new feature, describe only the capability. Leave out the API or
+  endpoint used to apply it, such as "with the backend API", and the problem
+  it solves, such as "This prevents slow and failing logins". The linked
+  documentation explains when and how to use it.
 * Avoid "disable" and "disabled". Name the property and its value instead, or
   use "turn off" or "deactivate", for example "Add support for turning off
   <feature> by setting the `<property>` configuration property to `false`".
@@ -334,6 +338,10 @@ when unsure.
 * Use the full product names Trino Gateway and Trino. Never shorten Trino
   Gateway to "the gateway", as described in the `trinodb` base skill. Use the
   full names of external products too, such as AWS Glue rather than Glue.
+* Call the clusters behind Trino Gateway "Trino clusters", or "coordinator"
+  for a specific coordinator. Never use "backend" for them, even where the
+  docs page, API path, or code uses the term, for example "tags to Trino
+  clusters" rather than "tags to backends".
 * Follow the Google developer documentation style guide used for all Trino
   documentation.
 
@@ -351,7 +359,13 @@ relative path, optionally with an anchor, for example
   Without covering documentation, leave the link out, mark the PR `❌ docs`,
   and add a pending question.
 * Put the link on the words in the sentence that name the feature. Never add a
-  separate "See ..." sentence.
+  separate "See ..." sentence or an "as described in the ... documentation"
+  clause.
+* Match the link text to what the target section explains. When a property is
+  documented inside a broader section, link the action the section describes,
+  such as "limiting the length of query text" or "database migrations are
+  deactivated", not a broader term such as "query history" or a related noun
+  such as "migration files".
 
 ---
 
