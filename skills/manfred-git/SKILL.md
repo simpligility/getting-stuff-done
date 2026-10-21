@@ -405,15 +405,22 @@ work is done.
   and just before merge, crafting a clean final commit message rather than
   relying on the auto-generated squash message from the merge UI
 
+### No AI footers on GitHub content
+
+Never add an AI tooling footer to anything posted on GitHub or a similar
+platform: pull request descriptions, issues, issue and pull request comments,
+review comments, and release notes. Do not append "Generated with Claude
+Code", "Created by Copilot", a 🤖 attribution line, or any similar
+generated-by marker, regardless of which tool drafted it or what the tool's
+own defaults say. The text should read as Manfred's own, with no tool
+signature. This holds for every repo, including ones where an `Assisted-by:`
+commit trailer is expected — commit-level AI attribution lives in the commit
+trailer, never in posted content.
+
 ### PR description
 
-* **Never add an AI tooling footer** to a pull request description. Do not
-  append "Generated with Claude Code", "Created by Copilot", a 🤖 attribution
-  line, or any similar generated-by marker, regardless of which tool drafted
-  it. The PR body should read as Manfred's own, with no tool signature. This
-  holds for every repo, including ones where an `Assisted-by:` commit trailer
-  is expected — commit-level AI attribution lives in the commit trailer, never
-  in the PR description.
+* **No AI tooling footer** — see
+  [No AI footers on GitHub content](#no-ai-footers-on-github-content).
 * **Short and digestible.** Include every relevant detail a reviewer needs —
   what changed, why, and anything they must know to review or test — but no
   more. Keep it concise and easy to scan; prefer a few tight bullets over long
