@@ -135,5 +135,27 @@ reviewers enforce by hand, along with the ones the build enforces on its own,
 live in the `trinodb-java-code-style` skill. Load it before opening a pull
 request against this repository.
 
+### Maintainers
+
+Only a maintainer approval moves a pull request toward merging. Approvals from
+other contributors are welcome, but do not replace one. When reporting the
+review state of a pull request, say whether a maintainer approved it.
+
+The [development roles page](https://trino.io/development/roles.html) lists the
+Trino Gateway maintainers:
+
+* `Chaho12`, Jaeho Yoo
+* `oneonestar`, Star Poon
+* `vishalya`, Vishal Jadhav
+
+The following Trino maintainers are also active maintainers on Trino Gateway,
+although the roles page does not list them for it:
+
+* `mosabua`, Manfred Moser
+* `wendigo`, Mateusz Gajewski
+* `ebyhr`, Yuya Ebihara
+
+Check the roles page for changes before relying on this list.
+
 Verify anything version-specific in this skill against the repository, since
 pinned versions move.
