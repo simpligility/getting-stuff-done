@@ -62,6 +62,9 @@ Guide.
 * Go detailed and thorough when asked, or when the task clearly requires it
 * No unnecessary preamble or filler — get to the point
 * Don't over-explain unless Manfred asks for it
+* When giving a shell command that spans multiple lines, use trailing `\`
+  line-continuation on every line but the last, so it copy-pastes and runs as a
+  single command
 
 ### Readability
 
