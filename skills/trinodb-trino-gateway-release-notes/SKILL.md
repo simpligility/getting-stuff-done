@@ -261,11 +261,11 @@ releases in `docs/release-notes.md`.
   Dependency bumps, tests, build and CI changes, refactoring, and internal
   cleanups usually need no entry. A dependency bump that fixes a user-visible
   bug or a CVE in a shipped library may need one.
-* A security fix in a dependency gets an entry only when Trino Gateway was
-  realistically affected. A potential issue in a library code path that Trino
-  Gateway is unlikely to hit needs no entry, even when the advisory is rated
-  and the code calls the affected API. For example, the java-jwt 4.6.2 fix for
-  an uncaught exception on out-of-range timestamp claims needed no entry.
+* Add an entry for a security fix in a dependency only when it is known to
+  affect Trino Gateway. That means a known exploit against Trino Gateway, or
+  at least a confirmed code path from Trino Gateway to the exact library
+  method that the fix changes. A potential issue in the library alone usually
+  needs no entry.
 * No entry for a fix to a regression or feature that another PR introduced in
   the same cycle, since users of the previous release never saw it. Check the
   merge date of the PR that introduced the problem. A regression from an
