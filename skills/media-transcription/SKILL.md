@@ -154,6 +154,11 @@ The two sources fail in different ways, so each catches errors the other makes:
   the better source for attributing statements to people. They garble names,
   terms, and numbers more than whisper-cpp does, and their timestamps at the
   start of a recording can run several seconds late.
+* For produced content such as a conference keynote or a published talk, the
+  YouTube captions alone are an acceptable result. One speaker, scripted
+  speech, and professional audio leave whisper-cpp little to correct, so skip
+  the local pass unless the captions turn out to be missing or the task needs
+  exact names and numbers.
 
 When both are available, analyze each transcript on its own first, then compare
 and merge the results:
