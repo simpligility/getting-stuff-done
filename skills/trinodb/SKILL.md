@@ -255,8 +255,16 @@ than only reading its `SKILL.md` file:
 | Trino Gateway release notes pull requests | `trinodb-trino-gateway-release-notes` |
 | Trino release notes pull requests | `trinodb-trino-release-notes` |
 | Processing Trino contributor call recordings from YouTube | `trinodb-contributor-call-processing` |
+| Preparing, announcing, and publishing a Trino Community Broadcast episode | `trinodb-community-broadcast` |
 | Content and changes on the trino.io website | `trinodb-website` |
 | Updating or debugging the MinIO test container image in core Trino | `trinodb-minio` |
 | JavaScript and TypeScript work in trino-query-ui, the Trino web UI, and trino-js-client | `trinodb-javascript` |
 
 Add new entries to this table as new `trinodb-*` skills are created.
+
+**Two of these are hard preconditions, not just topic matches.** While this
+skill is active, invoke `trinodb-java-code-style` before writing or reviewing
+any Java in a Trino, Airlift, or airbase-based project, and invoke
+`trinodb-trino-gateway-development` before building, testing, or changing
+tests in a Trino Gateway clone — even when that step is a minor tail-end of
+another task.
