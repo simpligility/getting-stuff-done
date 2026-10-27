@@ -77,6 +77,9 @@ gws <service> <resource> [sub-resource] <method> [flags]
   or PUT.
 * `--format json|table|yaml|csv` picks the output shape, with `json` the default.
 * `--output <path>` writes a binary response to a file.
+* `--upload <path>` attaches a local file as multipart media on a Drive upload,
+  with `--upload-content-type <mime>` for its MIME type; the type is detected from
+  the file extension when omitted.
 * `--page-all` auto-paginates as one JSON object per page, with `--page-limit`
   bounding it.
 
@@ -120,6 +123,8 @@ listed, read the shape with `gws schema` first.
 | Read a presentation | `gws slides presentations get --params '{"presentationId":"<id>"}'` |
 | List Drive files | `gws drive files list --params '{"pageSize":10}'` |
 | Get a Drive file's metadata | `gws drive files get --params '{"fileId":"<id>"}'` |
+| Upload a local file to Drive | `gws drive files create --upload <path> --upload-content-type <mime> --json '{"name":"<name>"}'` |
+| Delete a Drive file | `gws drive files delete --params '{"fileId":"<id>"}'` |
 | List Gmail messages | `gws gmail users messages list --params '{"userId":"me"}'` |
 
 Ranges, writes, and Slides editing:
@@ -133,6 +138,13 @@ Ranges, writes, and Slides editing:
   sheets.spreadsheets.values.update` before the first write.
 * Editing a deck in place — `batchUpdate`, placeholders, object IDs, autofit, and
   image backgrounds — lives in the `slides-prep` skill, which owns that workflow.
+* A Drive upload is `gws drive files create` with `--upload <path>`. Put the file
+  name, and any `"parents":["<folderId>"]`, in the `--json` body. The response is the
+  new file's metadata, so read its `id` back to confirm. A `files list` with a
+  read-only query is the safe way to check auth before an upload.
+* `gws drive files delete` removes a file by `fileId`. It succeeds with an empty
+  body, and as a quirk writes a stray `download.html` into the current directory;
+  delete that afterward.
 
 ## Growing this skill
 
