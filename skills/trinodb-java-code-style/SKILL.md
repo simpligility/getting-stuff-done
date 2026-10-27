@@ -21,10 +21,25 @@ in the canonical sources and drift over time:
   [Trino development guide](https://github.com/trinodb/trino/blob/master/.github/DEVELOPMENT.md)
   documents the code style, the commit conventions, and the review process.
 * The [development section of the website](https://trino.io/development/) covers
-  the contribution process, reviews, and the surrounding expectations.
+  the contribution process, reviews, and the surrounding expectations, through
+  three pages worth consulting when in doubt: the
+  [contribution process](https://trino.io/development/process) with the pull
+  request flow and the Contributor License Agreement requirement, the
+  [project vision](https://trino.io/development/vision), and the
+  [roles](https://trino.io/development/roles) that define the maintainers and how
+  one becomes a maintainer. Code style itself is documented in the
+  [code style section of DEVELOPMENT.md](https://github.com/trinodb/trino/blob/master/.github/DEVELOPMENT.md#code-style).
 * The [developer guide](https://trino.io/docs/current/develop.html) in the
   documentation covers the SPI, connectors, and the other extension points, and
   refers back to both of the preceding sources for style and process.
+* The [testing guide](https://trino.io/docs/current/develop/tests.html), part of
+  the developer guide, sets the test conventions a reviewer enforces by hand:
+  method and class naming, the stance on parametric tests, and the AssertJ
+  requirement.
+* The developer guide and testing guide render from
+  [docs/src/main/sphinx/develop](https://github.com/trinodb/trino/tree/master/docs/src/main/sphinx/develop)
+  in the trino repository. Go to that source when a rendered page is ambiguous or
+  when verifying a convention before citing it.
 * [airstyle](https://github.com/airlift/airstyle) holds the checkstyle
   configuration that encodes the mechanical rules.
 * [airbase](https://github.com/airlift/airbase) wires the verifiers into the
@@ -103,15 +118,38 @@ point to confirm and expand, not as a specification.
   flaky or non-deterministic does not survive review on its own. Reproduce the
   failure and cite it, then make the narrowest change that fixes it.
 
+## Test conventions
+
+The testing guide sets conventions the build does not enforce, so a reviewer
+catches a violation rather than the build. The
+[testing guide](https://trino.io/docs/current/develop/tests.html) is the canonical
+source; the points reviewers cite most on new tests:
+
+* **Test methods start with `test`**, for example `testExplain()`, and test classes
+  start with `Test`, for example `TestExample`.
+* **No data providers or parametric tests.** Avoid JUnit `@ParameterizedTest` and
+  `@ValueSource`. Write explicit test methods, and for a small dataset loop over an
+  inline list inside one test method rather than a parameter source. Avoid multiple
+  independent data providers and nested loops in a single test.
+* **AssertJ for assertions**, statically imported from
+  `org.assertj.core.api.Assertions`. Do not add a custom helper assertion where
+  AssertJ already covers the case.
+* **JUnit 5**, with test classes and test methods package-private and the test
+  class `final`.
+
+These are easy to miss because nothing fails the build on them. A reviewer caught
+the first two on a Trino Gateway pull request, which is what put them here.
+
 ## Extending this skill
 
 This skill is meant to grow, and to be built up with input from other
 maintainers rather than from a single reviewer's comments on a single pull
 request. Two known gaps:
 
-* Manfred has further code style resources beyond the Trino development guide
-  that belong here. Ask for them before treating the other guidelines as
-  complete.
+* The canonical sources are linked in the preceding list: the development guide,
+  the development-section pages for process, vision, and roles, the testing guide,
+  and the sphinx source the guides render from. Consult them when in doubt rather
+  than treating this skill's distilled list as complete.
 * The other guidelines should be validated against a sample of merged pull
   requests across more than one repository, so that they capture project
   convention rather than one reviewer's preference.
