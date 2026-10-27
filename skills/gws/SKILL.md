@@ -48,6 +48,21 @@ Set this up once per machine and account:
 
 Tokens are stored by the system keyring, not passed on the command line.
 
+## Re-authenticating
+
+A stored token expires or gets revoked over time. When it does, a call fails
+with an `invalid_grant` error, such as `reauth related error (invalid_rapt)`.
+Refresh it by logging in again:
+
+```
+gws auth login
+```
+
+This is distinct from `gws auth setup`. Use `login` to refresh an expired token
+on an already configured machine; reserve `setup` for the one-time project, API,
+and scope configuration. Re-running `setup` is not needed to recover from an
+expired token.
+
 ## Command pattern
 
 Every call has the same shape:
