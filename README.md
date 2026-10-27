@@ -86,6 +86,7 @@ General skills:
 
 | Skill | Purpose |
 |---|---|
+| [`gws`](./skills/gws) | Work with Google Workspace — Sheets, Docs, Slides, Drive, Gmail, and Calendar — from the command line through the gws CLI; base for the slides-prep deck editing. |
 | [`media-transcription`](./skills/media-transcription) | Transcribe a local video or audio file, or a YouTube video, with whisper-cpp and the YouTube captions, and shrink large videos. |
 | [`slides-prep`](./skills/slides-prep) | Prepare a talk from proposal through a slide-ready markdown outline, then generate a first deck; composes with `manfred-slides`. |
 | [`trinodb`](./skills/trinodb) | Shared reference facts about the Trino project for the `trinodb-*` family. |

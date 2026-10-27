@@ -254,19 +254,15 @@ first build. The rest of this section leads with that gws-driven approach.
 ### Driving Google Slides with gws
 
 Editing the live deck in place with `gws` is the preferred approach for any deck
-that already exists. `gws`, the Google Workspace CLI at
-https://github.com/googleworkspace/cli, reads and writes Google Docs and Slides
-through the Workspace REST APIs, so both directions are scriptable and you edit
-the deck directly without a regeneration. It is the established tool here, not
-the only one possible, but reach for it first once a deck exists.
+that already exists. `gws` reads and writes Google Docs and Slides through the
+Workspace REST APIs, so both directions are scriptable and you edit the deck
+directly without a regeneration. It is the established tool here, not the only one
+possible, but reach for it first once a deck exists.
 
-One-time setup:
-
-* Install the `gws` CLI and the Google Cloud CLI that `gws auth setup` needs.
-* Run `gws auth setup` as the account that owns the target files. Reuse an
-  existing GCP project you can already access to avoid org-policy limits on
-  creating projects, and enable the Docs, Slides, and Drive APIs on it.
-* Grant the Docs, Slides, and Drive scopes at the OAuth consent screen.
+The `gws` skill is the base for the tool: what it is, installing it, the one-time
+`gws auth setup`, the command pattern, and the stderr keyring gotcha. Follow it
+for setup, switching on the Docs, Slides, and Drive APIs and their scopes for
+deck work. The rest of this section is the Slides-specific usage.
 
 Core operations:
 
