@@ -133,10 +133,13 @@ before finalizing.
 ### YouTube description
 
 Create a text file named `tcc-{{compactdate}}-final-youtube-description.txt`,
-or the per-transcript variant from the table of files, with a list of the topics
-and their start time formatted in minutes and seconds:
+or the per-transcript variant from the table of files. Start with the video
+title in the form `Trino contributor call {{date}}`, then a blank line, then the
+list of the topics and their start time formatted in minutes and seconds:
 
 ```
+Trino contributor call {{date}}
+
 - mm:ss topic one
 - mm:ss topic two
 ```
