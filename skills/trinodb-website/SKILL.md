@@ -56,7 +56,12 @@ Three things the README does not spell out:
   the bundler version recorded at the end of `Gemfile.lock`. Skipping that step
   fails with a `cannot load such file` error naming a missing bundler
   executable, which reads like a broken Ruby install but is only a missing gem
-  version. Install the recorded version and run `bundle install` again.
+  version. Install the recorded version and run `bundle install` again. The
+  same error also appears when `gem list` shows the recorded version but its
+  gem directory is gone, an orphaned gemspec. Until
+  `gem install bundler -v <recorded-version>` repairs the install,
+  `bundle _<installed-version>_ exec jekyll build --future` with any installed
+  Bundler 4 version works around it.
 * **Plain Jekyll ignores redirects.** The helper script does not apply the
   redirects in `netlify.toml`. Verify anything that depends on a redirect
   through `netlify dev` instead.
@@ -173,7 +178,14 @@ and `testimonial` fields. `_data/sponsors.yml` drives the sponsor display and
 adds `highlight`, `position`, and `logobalanced`.
 
 Logos live in `assets/images/logos` as a matched pair, a full size image at
-500 by 400 pixels and a `-small` variant at 250 by 200 pixels, both PNG.
+500 by 400 pixels and a `-small` variant at 250 by 200 pixels, both PNG. The
+point of the size rule is to keep files small. A logo made from a Retina screen
+capture declares 144 dpi in its `pHYs` chunk and comes in at double the pixels,
+so a 144 dpi value is the tell for a capture that needs resizing. A missing
+chunk is fine, since browsers ignore DPI entirely. Check the pixel dimensions
+with `file` and compare the file size with the folder, where a 500 by 400 logo
+is typically around 20 KB. Note that `sips` reports 72 dpi when the chunk is
+absent, so it cannot distinguish a declared 72 dpi from no declaration.
 
 ## Trino Community Broadcast episodes
 
