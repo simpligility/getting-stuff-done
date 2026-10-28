@@ -187,23 +187,30 @@ with `file` and compare the file size with the folder, where a 500 by 400 logo
 is typically around 20 KB. Note that `sips` reports 72 dpi when the chunk is
 absent, so it cannot distinguish a declared 72 dpi from no declaration.
 
-### Reviewing a tool entry
+### Reviewing a tool or user entry
 
-Most new `tools.yml` entries come from the tool's own author. Check these
-before accepting one:
+Most new `tools.yml` and `users.yml` entries come from the tool's own author
+or the company's own staff. Check these before accepting one:
 
-* **Trino-specific content is required.** At least one link must point at
-  content about using the tool with Trino, such as a blog post, a demo video,
-  a documentation page, or a plugin page with connection instructions. A
-  product homepage and a generic source repository do not count. Ask the
-  contributor to add it rather than merging without one.
+* **No CLA is needed.** The CLA bot comments on every pull request, but Martin
+  Traverso has confirmed that pull requests which only add a tool or a user
+  entry can merge without a signed CLA. Do not hold one up for it.
+* **Trino-specific content is required.** A tool entry needs at least one link
+  to content about using the tool with Trino, such as a blog post, a demo
+  video, a documentation page, or a plugin page with connection instructions.
+  A product homepage and a generic source repository do not count. A user
+  entry needs the same evidence of actual Trino use, either as a link to a
+  public engineering post or, failing that, as concrete detail in the
+  testimonial about what the company queries with Trino. Ask the contributor
+  to add it rather than merging without it.
 * **The description says what works, not what does not.** Drop sentences
   listing unsupported features. A scope statement such as "read-only" is fine.
-* **The logo pair is correct**, as described above.
+* **The logo pair is correct**, as described above, with the logo filling the
+  canvas rather than floating in whitespace.
 * **One commit** with a subject in the repository style, such as
-  `Add Tabularis to ecosystem client applications`. Squash a multi-commit
-  contribution when maintainer edits are enabled, keeping the contributor as
-  author.
+  `Add Tabularis to ecosystem client applications` or
+  `Add Wordfully to Trino users list`. Squash a multi-commit contribution when
+  maintainer edits are enabled, keeping the contributor as author.
 
 ## Trino Community Broadcast episodes
 
