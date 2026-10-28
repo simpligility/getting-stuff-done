@@ -294,7 +294,7 @@ so it can be recorded on the tracking ticket.
 
 Each call has a tracking ticket in Manfred's [contributions
 tracker](https://github.com/simpligility/contributions). Find the open issue
-titled `Trino contributor call {{date}}` with the `Trino community` label using
+titled `Trino contributor call {{date}}` with the `trinodb-community` label using
 the `gh` command line tool.
 
 After the minutes are published to the wiki and the description is added to the
