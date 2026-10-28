@@ -187,6 +187,24 @@ with `file` and compare the file size with the folder, where a 500 by 400 logo
 is typically around 20 KB. Note that `sips` reports 72 dpi when the chunk is
 absent, so it cannot distinguish a declared 72 dpi from no declaration.
 
+### Reviewing a tool entry
+
+Most new `tools.yml` entries come from the tool's own author. Check these
+before accepting one:
+
+* **Trino-specific content is required.** At least one link must point at
+  content about using the tool with Trino, such as a blog post, a demo video,
+  a documentation page, or a plugin page with connection instructions. A
+  product homepage and a generic source repository do not count. Ask the
+  contributor to add it rather than merging without one.
+* **The description says what works, not what does not.** Drop sentences
+  listing unsupported features. A scope statement such as "read-only" is fine.
+* **The logo pair is correct**, as described above.
+* **One commit** with a subject in the repository style, such as
+  `Add Tabularis to ecosystem client applications`. Squash a multi-commit
+  contribution when maintainer edits are enabled, keeping the contributor as
+  author.
+
 ## Trino Community Broadcast episodes
 
 Episodes are a Jekyll collection in `_episodes`, one file per episode, named
