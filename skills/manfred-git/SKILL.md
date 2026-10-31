@@ -371,25 +371,109 @@ upstream owner needed to detect a Chainguard repo.
 ## Worktrees for pull requests
 
 To work on a pull request without disturbing the main clone, give it its own
-git worktree. Place the worktree in a sibling folder of the clone named
-`<repo>-pr-<number>`, never inside the clone itself. For example, pull request
-1323 in a `trino-gateway` clone goes to `../trino-gateway-pr-1323`.
+git worktree in a sibling folder of the clone. Keep the main clone on the
+default branch as a clean base, and let each worktree hold one pull request
+branch.
 
-Fetch the pull request head, create a detached worktree from it, then let `gh`
-switch it to the real branch:
+### Naming and placement
+
+Name the worktree `<repo>-<nnnn>-<branch>`, where `<nnnn>` is the pull request
+number and `<branch>` is its branch. Place it in a sibling folder of the clone,
+never inside the clone itself. For example, pull request 1374 on branch
+`mvel-routing-rule-reflection-guard` in a `trino-gateway` clone goes to
+`../trino-gateway-1374-mvel-routing-rule-reflection-guard`.
+
+The number sorts the worktrees and ties each one to its pull request at a
+glance, while the branch name says what the change does.
+
+### Starting work before a pull request exists
+
+When new work has no pull request yet, there is no number for the name. Use the
+no-number form `<repo>-<branch>` and add the number once the pull request opens.
 
 ```
-git fetch upstream pull/<number>/head
-git worktree add --detach ../<repo>-pr-<number> FETCH_HEAD
-cd ../<repo>-pr-<number>
-gh pr checkout <number> --repo <owner>/<repo>
+git worktree add -b <branch> ../<repo>-<branch>
+```
+
+After opening the pull request, read its number and rename the worktree:
+
+```
+num=$(gh pr create --fill --draft | grep -oE '[0-9]+$')
+git worktree move ../<repo>-<branch> ../<repo>-${num}-<branch>
+```
+
+When the pull request already exists, read the number with `gh pr view <branch>
+--json number -q .number` instead, then run the same `git worktree move`.
+
+Run the move from the base clone, not from inside the worktree. A session with
+its working directory set to the old path breaks after the move, so restart it
+or switch it to the new directory.
+
+The no-number form sorts worktrees with a pending pull request apart from the
+numbered ones, so unfinished work stays obvious at a glance.
+
+### Worktrees for all open pull requests
+
+To set up every open pull request at once, keep the main clone on the default
+branch as the base, then add one worktree per open pull request.
+
+List the open pull requests with their numbers and branches:
+
+```
+gh pr list --repo <owner>/<repo> --author "@me" --state open \
+    --json number,headRefName
+```
+
+For a branch that already exists locally, attach it:
+
+```
+git worktree add ../<repo>-<nnnn>-<branch> <branch>
+```
+
+For a branch that exists only on the fork, create a local branch that tracks it:
+
+```
+git worktree add --track -b <branch> ../<repo>-<nnnn>-<branch> origin/<branch>
+```
+
+A branch can be checked out in only one worktree. When a pull request is already
+checked out in the main clone, switch the main clone back to the default branch
+first to free the branch for its own worktree.
+
+### Checking out a single pull request
+
+For a one-off pull request, including a contributor's pull request from another
+fork, fetch the head, create a detached worktree, then let `gh` switch it to the
+real branch:
+
+```
+git fetch upstream pull/<nnnn>/head
+git worktree add --detach ../<repo>-<nnnn>-<branch> FETCH_HEAD
+cd ../<repo>-<nnnn>-<branch>
+gh pr checkout <nnnn> --repo <owner>/<repo>
 ```
 
 `gh pr checkout` names the local branch after the pull request branch and sets
 its push remote to the right fork, whether that is `origin` or a contributor's
 fork. A later push therefore lands on the pull request.
 
-Remove the worktree with `git worktree remove ../<repo>-pr-<number>` when the
+### One session per worktree
+
+Run a separate Claude Code session in each worktree for focused work on a single
+pull request, and keep the base clone's session for cross-cutting orchestration
+such as updating the default branch and rebasing every branch. A single session
+works one thing at a time, so a session per worktree keeps each pull request's
+context clean rather than mixing several changes together.
+
+Serialize heavy test runs across worktrees. A suite that starts Docker
+containers, such as a Testcontainers suite, contends for Docker, CPU, and ports
+when more than one worktree runs it at once, so run those one at a time even
+across separate sessions. Project-specific test cost lives in the matching
+development skill, such as `trinodb-trino-gateway-development`.
+
+### Removing a worktree
+
+Remove a worktree with `git worktree remove ../<repo>-<nnnn>-<branch>` when the
 work is done.
 
 ## PR preferences
