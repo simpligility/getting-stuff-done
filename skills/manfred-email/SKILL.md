@@ -60,7 +60,7 @@ The tooling lives in `scripts/` next to this file:
 
 * `imapctl.py` — generic mailbox commands: `check`, `folders`, `search`,
   `show`, `move`, and `trash`.
-* `trino_notifications.py` — the Trino notification cleanup, built on
+* `github_notifications.py` — the GitHub notification cleanup, built on
   `imapctl.py`.
 
 Both use only the Python standard library. Run them with `python3` and the path
@@ -260,7 +260,7 @@ Options:
    Manfred asks for:
 
    ```sh
-   python3 scripts/trino_notifications.py --markdown
+   python3 scripts/github_notifications.py --markdown
    ```
 
 2. Show Manfred the report in the reply, with the tables and links intact, so
@@ -286,7 +286,29 @@ Possible refinements as the workflow matures:
 
 * Treat `other` mail such as release announcements or CI notifications by age.
 * Include closed discussions.
-* Cover other organizations, with `--org`.
+
+## Workflow: Tessera GitHub notifications
+
+Goal: review the GitHub notification mail about pull requests and issues in the
+`wolfi-dev/tessera` repository as one list per item, so Manfred can scan the
+titles and decide what to trash.
+
+The GitHub notification script handles this with `--org wolfi-dev`, because the
+`List-ID` of these notifications ends in `wolfi-dev.github.com`. The
+`--show-open` option lists the open items as well, since Manfred wants the
+complete picture for this repository rather than only the closed items.
+
+1. Run the dry run:
+
+   ```sh
+   python3 scripts/github_notifications.py --org wolfi-dev --repo tessera \
+     --show-open --markdown
+   ```
+
+2. Show Manfred the tables with the links intact, including the open items.
+3. Trash what he picks. For closed and merged items, rerun with `--apply` and
+   any `--exclude` filters. For open items he names, add
+   `--item tessera#N --include-open`. Open items are never trashed in bulk.
 
 ## Workflow: Cowichan Lake Trail Blazers board mail
 
@@ -373,7 +395,7 @@ Known subscriptions:
 
 New cleanup tasks become new sections in this skill. Use `imapctl.py` commands
 directly when a search plus a move covers the task. Add a dedicated script next
-to `trino_notifications.py` only when the task needs external lookups or logic
+to `github_notifications.py` only when the task needs external lookups or logic
 beyond that. If the skill grows large, split workflows into child skills such
 as `manfred-email-trino`.
 

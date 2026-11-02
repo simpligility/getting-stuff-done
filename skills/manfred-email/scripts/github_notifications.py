@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""trino_notifications — trash GitHub notification mail about closed Trino work.
+"""github_notifications — trash GitHub notification mail about closed work.
 
-Finds GitHub notification mail in INBOX for repositories in the trinodb
-organization, looks up the state of each referenced pull request or issue with
-`gh`, and moves the mail about closed issues and closed or merged pull requests
-to the Trash folder. Mail about open items, and mail it cannot map to a pull
-request or issue, stays where it is.
+Finds GitHub notification mail in INBOX for repositories in one GitHub
+organization, trinodb by default, looks up the state of each referenced pull
+request or issue with `gh`, and moves the mail about closed issues and closed
+or merged pull requests to the Trash folder. Mail about open items, and mail it
+cannot map to a pull request or issue, stays where it is.
 
 The report groups the removable mail by pull request or issue, one row per
 item with a link, its state, and its message count, both for the dry run and
@@ -14,7 +14,7 @@ when applying.
 Dry run unless --apply is passed.
 
 Usage:
-  trino_notifications.py [--repo NAME]... [--item REPO#N]...
+  github_notifications.py [--repo NAME]... [--item REPO#N]...
                          [--exclude REPO#N]...
                          [--state merged|closed]... [--show-open]
                          [--include-open] [--show-other]
@@ -282,7 +282,7 @@ def main(argv=None):
             except Exception:
                 pass
     except (imapctl.Error, imapctl.imaplib.IMAP4.error, OSError) as e:
-        print(f"trino_notifications: {e}", file=sys.stderr)
+        print(f"github_notifications: {e}", file=sys.stderr)
         return 1
     return 0
 
