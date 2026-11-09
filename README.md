@@ -86,7 +86,9 @@ General skills:
 
 | Skill | Purpose |
 |---|---|
+| [`asana`](./skills/asana) | Work with Asana tasks — list, read, create, update, and comment — through the aslan CLI; base for the weekly Asana recap. |
 | [`gws`](./skills/gws) | Work with Google Workspace — Sheets, Docs, Slides, Drive, Gmail, and Calendar — from the command line through the gws CLI; base for the slides-prep deck editing. |
+| [`linear`](./skills/linear) | Work with Linear issues, teams, projects, and initiatives through the go-linear CLI and the GraphQL API; base for the weekly Linear recap. |
 | [`media-transcription`](./skills/media-transcription) | Transcribe a local video or audio file, or a YouTube video, with whisper-cpp and the YouTube captions, and shrink large videos. |
 | [`slides-prep`](./skills/slides-prep) | Prepare a talk from proposal through a slide-ready markdown outline, then generate a first deck; composes with `manfred-slides`. |
 | [`trinodb`](./skills/trinodb) | Shared reference facts about the Trino project for the `trinodb-*` family. |
