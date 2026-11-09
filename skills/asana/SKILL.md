@@ -73,6 +73,11 @@ resolution and secret manager options, read the
 secret and is needed by commands that list or search across a workspace, so it
 can also be set as a default in the wrapper if preferred.
 
+If `aslan whoami` fails with `HTTP 401 ... Not Authorized`, the token is
+invalid, expired, or revoked, for example after an Asana account reset. Create
+a new Personal Access Token in the Asana developer console and replace the old
+one in the secret store or `~/.env`.
+
 ## Security
 
 * `aslan` is a single file with no third-party dependencies. It talks only to
@@ -127,6 +132,9 @@ every name resolves before any write, so one bad name fails the whole call.
   locally and fails before sending, so a malformed fragment surfaces a clear
   error rather than an opaque Asana rejection. The older `--html-notes` flag
   still works as a deprecated alias for `--notes`.
+* `aslan set --notes` replaces the whole description. To add to it, read the
+  current `html_notes` with `aslan task <gid> --json` first and send the
+  combined text.
 * Use a task's `permalink_url`, available with `aslan task <gid> --json`, when
   you need a shareable link to a task.
 * When creating a task from another system, put a backlink to the source in the
