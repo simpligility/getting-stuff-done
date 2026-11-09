@@ -124,6 +124,10 @@ listed, read the shape with `gws schema` first.
 | List Drive files | `gws drive files list --params '{"pageSize":10}'` |
 | Get a Drive file's metadata | `gws drive files get --params '{"fileId":"<id>"}'` |
 | Upload a local file to Drive | `gws drive files create --upload <path> --upload-content-type <mime> --json '{"name":"<name>"}'` |
+| Import a markdown file as a Google Doc | `gws drive files create --upload <file>.md --upload-content-type text/markdown --json '{"name":"<name>","mimeType":"application/vnd.google-apps.document"}'` |
+| Replace a Google Doc's content from markdown | `gws drive files update --upload <file>.md --upload-content-type text/markdown --params '{"fileId":"<id>"}' --json '{}'` |
+| List comments on a Drive file | `gws drive comments list --params '{"fileId":"<id>","fields":"comments(id)"}'` |
+| List sharing on a Drive file | `gws drive permissions list --params '{"fileId":"<id>","fields":"permissions(type,role,domain)"}'` |
 | Delete a Drive file | `gws drive files delete --params '{"fileId":"<id>"}'` |
 | List Gmail messages | `gws gmail users messages list --params '{"userId":"me"}'` |
 
@@ -145,6 +149,22 @@ Ranges, writes, and Slides editing:
 * `gws drive files delete` removes a file by `fileId`. It succeeds with an empty
   body, and as a quirk writes a stray `download.html` into the current directory;
   delete that afterward.
+
+Markdown to Google Docs:
+
+* Drive converts a markdown upload into a native Google Doc when the upload
+  type is `text/markdown` and the `--json` body sets the Google Docs
+  `mimeType`. Headings, bold text, links, lists, and code come through.
+  Confirm the conversion by reading the document back with
+  `gws docs documents get` and checking its headings.
+* `gws drive files update` with `--upload` replaces the whole document from
+  the markdown file and keeps the file ID, URL, and sharing. The `--json '{}'`
+  body is required even when no metadata changes.
+* The replacement discards anything edited directly in the Google Doc, and
+  comments can lose their anchors. Before each update, check `modifiedTime`
+  and `lastModifyingUser` with `gws drive files get`, and list the comments.
+  Once people edit or comment in the document, edit it there instead of
+  syncing from markdown.
 
 ## Growing this skill
 
