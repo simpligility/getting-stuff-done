@@ -135,6 +135,10 @@ every name resolves before any write, so one bad name fails the whole call.
 * `aslan set --notes` replaces the whole description. To add to it, read the
   current `html_notes` with `aslan task <gid> --json` first and send the
   combined text.
+* Write literal characters inside rich text, not HTML entities. aslan escapes
+  `&` itself, so an apostrophe pre-escaped as `&#x27;` shows up literally in
+  the task. When generating the markup with Python, escape only `<`, `>`, and
+  `&`, for example with `html.escape(text, quote=False)`.
 * Use a task's `permalink_url`, available with `aslan task <gid> --json`, when
   you need a shareable link to a task.
 * When creating a task from another system, put a backlink to the source in the
