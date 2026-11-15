@@ -1,6 +1,6 @@
 ---
 name: gws
-description: Work with Google Workspace from the command line through the gws CLI — read and write Google Sheets, Docs, Slides, Drive, Gmail, and Calendar as your own Google account. Covers installing gws, the gws auth setup flow that needs the Google Cloud CLI and a Google Cloud project with the right APIs switched on, the command pattern, and the keyring line on stderr that corrupts JSON when merged into stdout. Base skill for any Google, Google Cloud, Google Workspace, or gws work, including the slides-prep deck editing that drives Google Slides through it. Use for any gws or Google Workspace interaction.
+description: Work with Google Workspace from the command line through the gws CLI — read and write Google Sheets, Docs, Slides, Drive, Gmail, and Calendar as your own Google account. Covers installing gws, the gws auth setup flow that needs the Google Cloud CLI and a Google Cloud project with the right APIs switched on, the command pattern, editing Google Docs in place including documents with tabs, and the keyring line on stderr that corrupts JSON when merged into stdout. Base skill for any Google, Google Cloud, Google Workspace, or gws work, including the slides-prep deck editing that drives Google Slides through it. Use for any gws or Google Workspace interaction.
 ---
 
 # gws — Google Workspace from the command line
@@ -76,7 +76,10 @@ gws <service> <resource> [sub-resource] <method> [flags]
 * `--json '<JSON>'` carries the request body for a write, that is a POST, PATCH,
   or PUT.
 * `--format json|table|yaml|csv` picks the output shape, with `json` the default.
-* `--output <path>` writes a binary response to a file.
+* `--output <path>` writes a binary response to a file. The path must be inside
+  the current directory. `gws` rejects any other path with a validation error,
+  even an absolute one, so write into a folder in the working directory rather
+  than a system temporary directory.
 * `--upload <path>` attaches a local file as multipart media on a Drive upload,
   with `--upload-content-type <mime>` for its MIME type; the type is detected from
   the file extension when omitted.
@@ -119,7 +122,11 @@ listed, read the shape with `gws schema` first.
 |------|---------|
 | Spreadsheet metadata and tab list | `gws sheets spreadsheets get --params '{"spreadsheetId":"<id>"}'` |
 | Read a tab's cells | `gws sheets spreadsheets values get --params '{"spreadsheetId":"<id>","range":"<range>"}'` |
+| Show the signed-in account | `gws drive about get --params '{"fields":"user(emailAddress)"}'` |
 | Read a document | `gws docs documents get --params '{"documentId":"<id>"}'` |
+| Read a document with all its tabs | `gws docs documents get --params '{"documentId":"<id>","includeTabsContent":true}'` |
+| Export a Google Doc as markdown | `gws drive files export --params '{"fileId":"<id>","mimeType":"text/markdown"}' --output <path>.md` |
+| Edit a document in place | `gws docs documents batchUpdate --params '{"documentId":"<id>"}' --json '{"requests":[...]}'` |
 | Read a presentation | `gws slides presentations get --params '{"presentationId":"<id>"}'` |
 | List Drive files | `gws drive files list --params '{"pageSize":10}'` |
 | Get a Drive file's metadata | `gws drive files get --params '{"fileId":"<id>"}'` |
@@ -146,6 +153,10 @@ Ranges, writes, and Slides editing:
   name, and any `"parents":["<folderId>"]`, in the `--json` body. The response is the
   new file's metadata, so read its `id` back to confirm. A `files list` with a
   read-only query is the safe way to check auth before an upload.
+* A new file lands in the Drive of the account `gws` is signed in to. Check
+  that account with `gws drive about get` before creating a file. Drive cannot
+  transfer ownership across domains, so a file meant for another account, such
+  as a personal one, is better created by signing in as that account.
 * `gws drive files delete` removes a file by `fileId`. It succeeds with an empty
   body, and as a quirk writes a stray `download.html` into the current directory;
   delete that afterward.
@@ -165,6 +176,38 @@ Markdown to Google Docs:
   and `lastModifyingUser` with `gws drive files get`, and list the comments.
   Once people edit or comment in the document, edit it there instead of
   syncing from markdown.
+
+Editing a Google Doc in place:
+
+* `gws docs documents batchUpdate` changes a document without replacing it, so
+  other people's edits, comments, and formatting survive. Prefer it over a
+  markdown update for any shared document.
+* A document with tabs returns only its first tab in `body` by default. Pass
+  `"includeTabsContent":true` to get a `tabs` list instead, where each tab has
+  `tabProperties.tabId`, its content under `documentTab.body`, and any nested
+  tabs under `childTabs`. A markdown export includes all tabs, so content found
+  in the export but missing from `body` points at tabs.
+* Writes to a tab need its `tabId` in every `location` and `range`.
+  `replaceAllText` takes `"tabsCriteria":{"tabIds":["<tabId>"]}`. Expect it to
+  apply to all tabs when that is omitted, so pass it on a document with tabs.
+* For small text changes, use `replaceAllText` with `"matchCase":true` and a
+  phrase long enough to be unique. Each reply reports `occurrencesChanged`, so
+  check for exactly 1. A 0 means the text did not match and nothing changed.
+  Text outside the match keeps its formatting, so matching around a
+  code-formatted word leaves that word as it was.
+* `insertText` takes the style of the text next to it, including a link. Text
+  inserted at the start of a paragraph also takes that paragraph's named style
+  and bullet, so expect text inserted before a heading to become heading
+  paragraphs too.
+  Follow it with `updateTextStyle` to clear or set `link`, `underline`, and
+  `foregroundColor`, `updateParagraphStyle` to set `namedStyleType`, and
+  `createParagraphBullets` for a list. Copy the styles to match from a
+  neighboring paragraph in the `documents get` output rather than guessing.
+* Indexes come from a fresh `documents get`. Requests in one batch apply in
+  order, and each insertion shifts every later index, so place requests for
+  later positions first or account for the shift.
+* Read the changed passages back after every edit, and re-export the local copy
+  if one is kept.
 
 ## Growing this skill
 
