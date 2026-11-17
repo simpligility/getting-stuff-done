@@ -65,6 +65,9 @@ Guide.
 * When giving a shell command that spans multiple lines, use trailing `\`
   line-continuation on every line but the last, so it copy-pastes and runs as a
   single command
+* Make every mention of a pull request or issue a clickable link to it, for
+  example [PR 1374](https://github.com/trinodb/trino-gateway/pull/1374), not a
+  bare number
 
 ### Readability
 
