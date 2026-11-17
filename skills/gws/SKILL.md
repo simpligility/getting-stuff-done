@@ -133,7 +133,7 @@ listed, read the shape with `gws schema` first.
 | Upload a local file to Drive | `gws drive files create --upload <path> --upload-content-type <mime> --json '{"name":"<name>"}'` |
 | Import a markdown file as a Google Doc | `gws drive files create --upload <file>.md --upload-content-type text/markdown --json '{"name":"<name>","mimeType":"application/vnd.google-apps.document"}'` |
 | Replace a Google Doc's content from markdown | `gws drive files update --upload <file>.md --upload-content-type text/markdown --params '{"fileId":"<id>"}' --json '{}'` |
-| List comments on a Drive file | `gws drive comments list --params '{"fileId":"<id>","fields":"comments(id)"}'` |
+| List comments with author, text, and anchor | `gws drive comments list --params '{"fileId":"<id>","fields":"comments(id,author(displayName),content,resolved,createdTime,quotedFileContent(value),replies(author(displayName),content))"}'` |
 | List sharing on a Drive file | `gws drive permissions list --params '{"fileId":"<id>","fields":"permissions(type,role,domain)"}'` |
 | Delete a Drive file | `gws drive files delete --params '{"fileId":"<id>"}'` |
 | List Gmail messages | `gws gmail users messages list --params '{"userId":"me"}'` |
@@ -176,6 +176,12 @@ Markdown to Google Docs:
   and `lastModifyingUser` with `gws drive files get`, and list the comments.
   Once people edit or comment in the document, edit it there instead of
   syncing from markdown.
+* A newer `modifiedTime` does not always mean a content edit. Sharing and
+  comments also change it. To check for real text edits, export the Doc with
+  `"mimeType":"text/plain"` and compare its words against the markdown with
+  punctuation and link targets stripped. The plain-text export includes comment
+  markers and comment text at the end, so expect those as the only differences
+  when nobody edited the content.
 
 Editing a Google Doc in place:
 
