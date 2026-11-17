@@ -340,6 +340,9 @@ when unsure.
   with a short example where it helps.
 * Keep entries to one sentence where possible.
 * Use backticks for property names, values, SQL, paths, and endpoints.
+* Put the PR or issue link of each entry on its own line in the source, after
+  the entry text, even when the text leaves room for it on its last line. This
+  keeps the source easy to read.
 * Use the full product names Trino Gateway and Trino. Never shorten Trino
   Gateway to "the gateway", as described in the `trinodb` base skill. Use the
   full names of external products too, such as AWS Glue rather than Glue.
