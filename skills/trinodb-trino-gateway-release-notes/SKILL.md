@@ -336,6 +336,11 @@ when unsure.
 * Do not add a consequence clause starting with "so" or "so that".
 * Make the scope explicit where a reader could misread it, use plain words
   over jargon, and name the concrete symptom, such as excessive CPU usage.
+* For security hardening, describe what the change protects users from, not
+  the mechanism, such as a cookie attribute or a header. Write "Prevent other
+  websites from using the web UI login session of a user to send requests to
+  Trino Gateway" rather than "Add the `SameSite=Lax` attribute to the session
+  cookie".
 * For a breaking change, spell out the new behavior and what stays unchanged,
   with a short example where it helps.
 * Keep entries to one sentence where possible.
