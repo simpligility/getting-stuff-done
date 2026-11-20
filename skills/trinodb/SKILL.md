@@ -189,6 +189,20 @@ trino-gateway, and aws-proxy, and to every surface, not only commit messages:
 pull request descriptions, pull request and review comments, and issues and
 issue comments must likewise carry no AI attribution.
 
+The pull request templates of Trino and Trino Gateway end with a release notes
+section that offers a choice of options. Keep only the option that applies.
+When no release notes are required, check that option and remove the other
+options and the example code block, so the section reads as follows:
+
+```markdown
+## Release notes
+
+(x) This is not user-visible or is docs only, and no release notes are required.
+```
+
+When release notes are required, keep the checked option with the suggested
+entry, and remove the unchecked options.
+
 First-time contributors must sign the
 [Trino Contributor License Agreement](https://github.com/trinodb/cla) before a
 pull request can be merged. A bot verifies the signature automatically on the
