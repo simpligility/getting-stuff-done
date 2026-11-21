@@ -287,28 +287,35 @@ Possible refinements as the workflow matures:
 * Treat `other` mail such as release announcements or CI notifications by age.
 * Include closed discussions.
 
-## Workflow: Tessera GitHub notifications
+## Workflow: notifications from Manfred's own pushes
 
-Goal: review the GitHub notification mail about pull requests and issues in the
-`wolfi-dev/tessera` repository as one list per item, so Manfred can scan the
-titles and decide what to trash.
+Goal: trash the GitHub notification mail that Manfred triggered himself by
+pushing commits to a pull request. He already knows what he pushed.
 
-The GitHub notification script handles this with `--org wolfi-dev`, because the
-`List-ID` of these notifications ends in `wolfi-dev.github.com`. The
-`--show-open` option lists the open items as well, since Manfred wants the
-complete picture for this repository rather than only the closed items.
+GitHub names the reason for a notification in the `Cc` header. The address
+`push@noreply.github.com` marks mail sent because someone pushed to a pull
+request Manfred is subscribed to. That someone can be anyone, so the `From`
+name is what identifies his own pushes. The `--to` filter matches `Cc` as well:
 
-1. Run the dry run:
+```sh
+python3 scripts/imapctl.py search --list-id trinodb.github.com \
+  --to push@noreply.github.com --from "Manfred Moser" --json
+```
 
-   ```sh
-   python3 scripts/github_notifications.py --org wolfi-dev --repo tessera \
-     --show-open --markdown
-   ```
+Narrow `--list-id` to one repository when Manfred asks for that, for example
+`trino-gateway.trinodb.github.com`.
 
-2. Show Manfred the tables with the links intact, including the open items.
-3. Trash what he picks. For closed and merged items, rerun with `--apply` and
-   any `--exclude` filters. For open items he names, add
-   `--item tessera#N --include-open`. Open items are never trashed in bulk.
+Other reason addresses do not identify his own actions. Mail with
+`comment@noreply.github.com` is a reply from someone else on a thread he
+commented on, so keep it unless he asks otherwise.
+
+1. Run the search and present the result per pull request with the message
+   count, as described in Summaries. The mail covers open pull requests too,
+   so say that.
+2. Report the push mail from other people as a separate count, by running the
+   search without `--from`. Keep that mail unless Manfred asks to trash it.
+3. After confirmation, pass the UIDs to `trash`, first without and then with
+   `--apply`.
 
 ## Workflow: Cowichan Lake Trail Blazers board mail
 
@@ -380,10 +387,13 @@ Known subscriptions:
 
 * `announce.apache.org` — release announcements and CVE advisories.
 * `dev.maven.apache.org` — the Maven developer list.
+* `users.maven.apache.org` — the Maven users list.
+* `announce.maven.apache.org` — the Maven announcement list. A Maven release
+  announcement arrives once per Maven list, so three copies are normal.
 * `dev.community.apache.org` — the community development list, including the
   ASF Local Community (ALC) chapter proposals.
-* `legal-discuss.apache.org` — the legal list, assumed list ID, not yet seen
-  in the inbox.
+* `legal-discuss.apache.org` — the legal list, which also carries commit
+  notifications for the `www-site` repository.
 
 1. Run the search and present the result per list, with the subject of every
    thread as described in Summaries. Call out any list not named above, since
