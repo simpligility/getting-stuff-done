@@ -189,18 +189,37 @@ trino-gateway, and aws-proxy, and to every surface, not only commit messages:
 pull request descriptions, pull request and review comments, and issues and
 issue comments must likewise carry no AI attribution.
 
-Follow the
-[pull request and commit guidelines](https://trino.io/development/process.html#commit)
-for all trinodb projects. In short, each commit is one self-contained logical
-change that builds and passes the tests on its own, mechanical changes such as
-renames go in separate commits, and a small pull request usually has a single
-commit. Rewriting and reordering commits during review is expected, and
-maintainers merge with **Rebase and merge**.
+The [contribution page](https://trino.io/development/process.html) of the
+website defines the process for all trinodb projects. Read the whole page
+before contributing, reviewing, or merging. The points that come up most:
 
-When updating someone else's pull request, for example with a small wording or
-documentation fix, fold the change into the matching commit instead of adding a
-fixup commit, keep the original author on the commit, and say what changed in a
-pull request comment.
+* Start with an issue or a Slack discussion unless the change is trivial, and
+  mark a large pull request in progress as a draft with a `[WIP]` title.
+* Follow the
+  [pull request and commit guidelines](https://trino.io/development/process.html#commit).
+  A pull request holds one logical change. Each commit is self-contained, and
+  builds and passes the tests on its own. Mechanical changes such as renames go
+  in separate commits. A small pull request usually has a single commit.
+* Include tests and documentation in the pull request, and request a review
+  from an expert in the area.
+* Address review comments in a `fixup!` commit after the commit they belong to,
+  so reviewers see what changed, and squash the fixups before merging. Then add
+  a pull request comment that mentions the reviewers by name and says that the
+  comments are addressed, which is how they learn that the pull request is
+  ready again.
+* A maintainer approval is required to merge, and a pull request authored by a
+  maintainer needs the approval of another maintainer. Merge with **Rebase and
+  merge** by default. With **Squash and merge**, remove the pull request number
+  that GitHub adds to the commit message.
+* As a reviewer, review the commit content, order, and messages, not only the
+  code. Maintainers can run the tests that need external services with a
+  `/test-with-secrets sha=<full-sha>` comment after checking the pull request
+  for malicious code, and re-check the CLA with `@cla-bot check`.
+
+When a maintainer makes a small change to someone else's pull request, for
+example a wording or documentation fix before merging, fold it into the
+matching commit instead of adding a commit, keep the original author on the
+commit, and say what changed in a pull request comment.
 
 The pull request templates of Trino and Trino Gateway end with a release notes
 section that offers a choice of options. Keep only the option that applies.
