@@ -226,11 +226,12 @@ up most:
   in separate commits. A small pull request usually has a single commit.
 * Include tests and documentation in the pull request, and request a review
   from an expert in the area.
-* Address review comments in a `fixup!` commit after the commit they belong to,
-  so reviewers see what changed, and squash the fixups before merging. Then add
-  a pull request comment that mentions the reviewers by name and says that the
-  comments are addressed, which is how they learn that the pull request is
-  ready again.
+* Address review comments by amending the commits they belong to. Use a
+  `fixup!` commit after the matching commit only when a reviewer has already
+  reviewed the code and wants to see what changed since, and squash the fixups
+  before merging. Then add a pull request comment that mentions the reviewers
+  by name and says that the comments are addressed, which is how they learn
+  that the pull request is ready again.
 * A maintainer approval is required to merge, and a pull request authored by a
   maintainer needs the approval of another maintainer. Merge with **Rebase and
   merge** by default. With **Squash and merge**, remove the pull request number
