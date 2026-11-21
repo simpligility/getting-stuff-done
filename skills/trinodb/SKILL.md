@@ -37,12 +37,33 @@ complete set.
 
 ## Website and governance
 
-The project website is [trino.io](https://trino.io). Project governance and the
-roles that make up the community, including the current maintainers and the
-BDFLs, are described on the
-[development roles page](https://trino.io/development/roles.html). The wider
-[development section](https://trino.io/development/) covers the contribution
-process. The project is overseen by the Trino Software Foundation.
+The project website is [trino.io](https://trino.io). The project is overseen by
+the Trino Software Foundation.
+
+The [development section](https://trino.io/development/) of the website applies
+to all trinodb projects. Read all of its pages before contributing, reviewing,
+or merging, and take them into account together:
+
+* The [overview](https://trino.io/development/) covers the license, the code
+  style, and links to the other pages.
+* The [vision and philosophy](https://trino.io/development/vision.html) page
+  sets the values that reviews measure a change against. Trino is correct,
+  secure, built for the long term, standards based, and just works, and
+  everything it ships is supported. It is a trusted environment that performs
+  authentication and authorization. Development favors readability, a high
+  quality bar, and a balance between the value of a feature and the complexity
+  it adds.
+* The [contribution page](https://trino.io/development/process.html) defines the
+  contribution process, the pull request and commit guidelines, the release
+  note guidelines, and the maintainer processes. The contribution workflow in
+  this skill summarizes it.
+* The [roles page](https://trino.io/development/roles.html) describes the
+  community roles and their duties, and lists the current maintainers, the
+  subproject maintainers of repositories such as trino-gateway, aws-proxy, and
+  charts, and the BDFLs. Reviewers are empathetic, re-review after changes, say
+  clearly which changes are suggestions and which are necessary, and let the
+  contributor know what is going on. Maintainers merge only thoroughly reviewed
+  changes that fit the vision, and assist with the release notes.
 
 The website also documents the wider
 [Trino ecosystem](https://trino.io/ecosystem/), organized into client drivers,
@@ -110,7 +131,9 @@ version tracks the Trino release, so a Trino bump often carries an airbase bump,
 which can update verifiers such as `sortpom`.
 
 Code style follows the Airlift conventions and is enforced with
-[airstyle](https://github.com/airlift/airstyle). The
+[airstyle](https://github.com/airlift/airstyle), which also provides an IntelliJ
+configuration. Run `mvn airstyle:format` to fix style errors. Code in other
+languages follows the style of the existing code in that language. The
 [Trino development guide](https://github.com/trinodb/trino/blob/master/.github/DEVELOPMENT.md)
 documents the code style along with the rest of the contribution details, and
 the [development section of the website](https://trino.io/development/) covers
@@ -189,9 +212,10 @@ trino-gateway, and aws-proxy, and to every surface, not only commit messages:
 pull request descriptions, pull request and review comments, and issues and
 issue comments must likewise carry no AI attribution.
 
-The [contribution page](https://trino.io/development/process.html) of the
-website defines the process for all trinodb projects. Read the whole page
-before contributing, reviewing, or merging. The points that come up most:
+The [contribution page](https://trino.io/development/process.html) defines the
+process for all trinodb projects, together with the other pages of the
+development section described in Website and governance. The points that come
+up most:
 
 * Start with an issue or a Slack discussion unless the change is trivial, and
   mark a large pull request in progress as a draft with a `[WIP]` title.
