@@ -189,6 +189,19 @@ trino-gateway, and aws-proxy, and to every surface, not only commit messages:
 pull request descriptions, pull request and review comments, and issues and
 issue comments must likewise carry no AI attribution.
 
+Follow the
+[pull request and commit guidelines](https://trino.io/development/process.html#commit)
+for all trinodb projects. In short, each commit is one self-contained logical
+change that builds and passes the tests on its own, mechanical changes such as
+renames go in separate commits, and a small pull request usually has a single
+commit. Rewriting and reordering commits during review is expected, and
+maintainers merge with **Rebase and merge**.
+
+When updating someone else's pull request, for example with a small wording or
+documentation fix, fold the change into the matching commit instead of adding a
+fixup commit, keep the original author on the commit, and say what changed in a
+pull request comment.
+
 The pull request templates of Trino and Trino Gateway end with a release notes
 section that offers a choice of options. Keep only the option that applies.
 When no release notes are required, check that option and remove the other
