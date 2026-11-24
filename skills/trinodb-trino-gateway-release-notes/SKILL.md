@@ -261,6 +261,9 @@ releases in `docs/release-notes.md`.
   Dependency bumps, tests, build and CI changes, refactoring, and internal
   cleanups usually need no entry. A dependency bump that fixes a user-visible
   bug or a CVE in a shipped library may need one.
+* Minor web UI text changes, such as a new tooltip, a reworded label, or a
+  help text, need no entry, even though users see them. A change to what the
+  web UI shows or does still gets one.
 * Add an entry for a security fix in a dependency only when it is known to
   affect Trino Gateway. That means a known exploit against Trino Gateway, or
   at least a confirmed code path from Trino Gateway to the exact library

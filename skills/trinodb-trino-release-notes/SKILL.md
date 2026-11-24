@@ -324,6 +324,9 @@ this one as a reference rather than leaving it open:
   Dependency bumps, tests, build and CI changes, refactoring, internal
   cleanups, and log changes usually need no entry. A dependency bump that
   fixes a user-visible bug or a CVE in a shipped library may need one.
+* Minor web UI text changes, such as a new tooltip, a reworded label, or a
+  help text, need no entry, even though users see them. A change to what the
+  web UI shows or does still gets one.
 * No entry for a fix to a regression or feature that another PR introduced in
   the same cycle, since users of the previous release never saw it. Check the
   merge date of the PR that introduced the problem. A regression from an
