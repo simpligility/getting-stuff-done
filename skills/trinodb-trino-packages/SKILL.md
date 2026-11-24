@@ -220,6 +220,36 @@ Open a pull request against the upstream default branch once the build passes.
 Use the pull request template from the target `trino-packages` repository for
 the PR body.
 
+## Status after the 484 update — Corretto switch pending
+
+Trino 484 is the last release that uses Eclipse Temurin. Upstream Trino
+switched to Amazon Corretto, and the change ships with Trino 485. The 484 state
+of this project still uses Temurin everywhere, so the 485 bump is not routine.
+
+Facts verified on the upstream `master` branch after the 484 release:
+
+* The root pom replaces the `temurin.release` property with
+  `corretto.release`, for example `25.0.5.1.2`. The Step 1 search for `temurin`
+  or `jdk-` finds nothing, so search for `corretto` instead.
+* `core/docker/build.sh` downloads the JDK from
+  `https://corretto.aws/downloads/resources/<release>/amazon-corretto-<release>-linux-<arch>.tar.gz`.
+
+Work to do as part of the 485 bump:
+
+* In `ServerIT.java`, replace the Adoptium API download link in
+  `temurinDownloadLink` with the Corretto URL, rename the Temurin-named methods
+  and parameters, and pass the `corretto.release` value and a matching Java
+  home, such as `/usr/lib/jvm/corretto-25`, in `testInstallUninstall`. Confirm
+  the architecture names the Corretto URL expects against the upstream
+  `corretto_download_uri` function.
+* In `trino-server-rpm/README.md`, update the Temurin references.
+* In `.github/workflows/ci.yml`, decide whether to change the `setup-java`
+  distribution from `temurin` to `corretto` to match upstream.
+* Keep the Corretto change in its own commit, separate from the version bump.
+
+Once the switch is done, update the Temurin wording in Step 1 and Step 3 of
+this skill and remove this section.
+
 ## Gotchas from the 481 update
 
 * The `trino-server-core` `<dependency>` was removed from
