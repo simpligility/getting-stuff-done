@@ -120,6 +120,8 @@ extra changes. Cite what you find.
 * In `trino-server-custom/README.md`, update all version references: the
   configured-version line, the example tarball filename, the Java version when
   it changed, and the installation example directory.
+* In `trino-server-custom/src/main/script/prefetch.sh`, bump the example
+  version in the header comment.
 * Only touch `src/main/provisio/trino-custom.xml` when adding or removing
   plugins.
 * Only touch the `src/main/resources/etc/*.properties` files when the
@@ -141,6 +143,8 @@ extra changes. Cite what you find.
 * Leave `trino-server-rpm/src/main/resources/dist/config/log.properties` as is
   normally. It keeps the `io.trino.server.Server=INFO` override.
 * In `trino-server-rpm/README.md`, update the version and Java references.
+* In `trino-server-rpm/src/main/script/prefetch.sh`, bump the example version
+  in the header comment.
 * Check the direct `docker-java-api` and `testcontainers` test dependencies
   against the `docker-java-bom` and `testcontainers-bom` versions in the
   upstream Trino root pom. Update both together when upstream changes them.
@@ -219,6 +223,28 @@ intentionally left on the old version to be updated in a later commit.
 Open a pull request against the upstream default branch once the build passes.
 Use the pull request template from the target `trino-packages` repository for
 the PR body.
+
+## Step 8 — tag the release
+
+Tag the result once the pull request is merged. The top-level `README.md`
+links each supported version to its tag, so the link is broken until the tag
+exists.
+
+Work in a clone of upstream `trinodb/trino-packages`, not in a fork, since the
+tag has to land in the upstream repository:
+
+```bash
+git pull --ff-only origin main
+git tag <VERSION>
+git push origin <VERSION>
+```
+
+* Use a lightweight tag named after the plain Trino version, such as `484`,
+  matching the existing tags.
+* Tag the tip of `main` after confirming it contains the merged update.
+* Confirm that
+  `https://github.com/trinodb/trino-packages/releases/tag/<VERSION>` from the
+  README resolves.
 
 ## Status after the 484 update — Corretto switch pending
 
