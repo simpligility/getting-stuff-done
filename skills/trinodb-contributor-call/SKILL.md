@@ -25,16 +25,17 @@ Each call moves through the same steps:
 5. Post the agenda topics on the wiki.
 6. Announce the call on Trino Slack and LinkedIn a few days before the call,
    with a link to the agenda on the wiki, and remind the maintainers to attend.
-7. Host the call. Manfred records the attendees and further topics in the
-   draft notes and saves the screenshot.
-8. Process the recording into the YouTube description and the minutes.
-9. Paste the description into the video and the minutes into the wiki.
-10. Announce the recording and the minutes.
-11. Comment on the tracking issue and close it, only when Manfred runs the
+7. Create the thumbnail image for the call from the slide deck.
+8. Host the call. Manfred records the attendees and further topics in the
+   draft notes.
+9. Process the recording into the YouTube description and the minutes.
+10. Paste the description into the video and the minutes into the wiki.
+11. Announce the recording and the minutes.
+12. Comment on the tracking issue and close it, only when Manfred runs the
     skill.
 
-Steps one to six are the [preparation](#preparation) and happen in the days
-before the call. Steps eight to eleven follow the upload of the recording and
+Steps one to seven are the [preparation](#preparation) and happen in the days
+before the call. Steps nine to twelve follow the upload of the recording and
 are described in [Processing the recording](#processing-the-recording).
 
 ## Local call folder
@@ -54,7 +55,7 @@ merged final output files:
 | File | Content |
 | --- | --- |
 | `tcc-{{compactdate}}.md` | Draft notes |
-| `tcc-{{compactdate}}.png` | Screenshot for the run of show, the video edit, and the YouTube thumbnail |
+| `tcc-{{compactdate}}.png` | Thumbnail image for the live call, the video edit, and the YouTube thumbnail |
 | `tcc-{{compactdate}}-transcript-whisper.vtt` | Raw whisper-cpp transcript |
 | `tcc-{{compactdate}}-transcript-whisper.txt` | Condensed whisper-cpp transcript |
 | `tcc-{{compactdate}}-transcript-youtube.vtt` | Raw YouTube captions |
@@ -66,8 +67,8 @@ merged final output files:
 | `tcc-{{compactdate}}-final-minutes.md` | Merged final minutes |
 | `tcc-{{compactdate}}-final-youtube-description.txt` | Merged final description |
 
-The screenshot belongs to the user and is not part of the processing. Leave it
-in place.
+The thumbnail image is created during the preparation and is not part of the
+processing. Leave it in place.
 
 ## Preparation
 
@@ -232,10 +233,48 @@ each one as it arrives:
   receive or from their own ideas. Read the section for {{date}} on the wiki
   again before the call and copy any new topics into the draft notes.
 
-### Screenshot
+### Thumbnail image
 
-Remind the user to save the screenshot of the call as `tcc-{{compactdate}}.png`
-in the call folder.
+Each call has a thumbnail image, `tcc-{{compactdate}}.png` in the call folder.
+Manfred shows it in the live call, and it is used again for the video edit and
+as the thumbnail of the recording on YouTube. It is the title slide of his
+slide deck with the Trino logo, the title `Trino Contributor Call`, and the
+date of the call written out, for example `28 October 2026`.
+
+Manfred creates the image from the slide deck by hand:
+
+1. Change the date on the title slide to the date of the call.
+2. Take a rough screenshot of the slide and save it as
+   `tcc-{{compactdate}}.png` in the call folder. The size, the exact cut, and
+   the resolution do not matter.
+
+Remind the user of these two steps. Once the file exists, bring it to 1080p,
+which is 1920 by 1080 pixels, at 72 dpi. The following commands crop the
+screenshot from the center to a 16:9 aspect ratio, so nothing gets stretched,
+then resize it and set the resolution. They use `sips`, which is part of macOS:
+
+```
+f=tcc-{{compactdate}}.png
+w=$(sips -g pixelWidth "$f" | awk '/pixelWidth/{print $2}')
+h=$(sips -g pixelHeight "$f" | awk '/pixelHeight/{print $2}')
+if [ $((w * 9)) -gt $((h * 16)) ]; then
+  w=$((h * 16 / 9))
+else
+  h=$((w * 9 / 16))
+fi
+sips -c "$h" "$w" "$f"
+sips -z 1080 1920 -s dpiWidth 72 -s dpiHeight 72 "$f"
+sips -g pixelWidth -g pixelHeight -g dpiWidth -g dpiHeight "$f"
+```
+
+The commands change the file in place. Afterwards, look at the image and
+confirm with the user that the crop cut off nothing that matters. The crop is
+centered, so a screenshot with an uneven border, such as a window title bar on
+one side only, needs a retake. Tell the user when the screenshot is smaller
+than 1920 by 1080 pixels, since scaling it up blurs the text.
+
+In a sandboxed session `sips` fails with `Error 13`, because it writes through
+the system temporary folder. Run it outside the sandbox.
 
 ## Processing the recording
 
