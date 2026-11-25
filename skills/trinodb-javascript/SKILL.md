@@ -7,9 +7,9 @@ description: JavaScript and TypeScript work across the Trino frontend projects â
 
 Three repositories in the trinodb organization are JavaScript or TypeScript
 rather than Java. They share a stack, a Trino REST API, and a recurring task of
-keeping dependency versions aligned, so one skill covers all three. It builds on
-the shared context in the `trinodb` skill, which covers the organization, the
-release cadence, and the contribution workflow.
+keeping dependency versions aligned, so one skill covers all three.
+
+It builds on the shared context in the `trinodb` skill. Load that skill first.
 
 Verify anything version-specific against the upstream repository. These projects
 move faster than the engine and the numbers here go stale.

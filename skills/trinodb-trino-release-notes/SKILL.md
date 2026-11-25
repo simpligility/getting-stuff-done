@@ -10,10 +10,9 @@ Use this skill to manage the release notes process for
 `trinodb-trino-gateway-release-notes` skill instead. The two processes share the
 same living-PR approach, but the file layout, sections, and syntax differ.
 
-For shared Trino facts — the trinodb organization, versioning, product names,
-the documentation style guide, and the fork-and-upstream contribution
-workflow — see the `trinodb` base skill. It also states that Trino commits, PR
-descriptions, and comments carry no AI attribution of any kind.
+It builds on the shared context in the `trinodb` skill. Load that skill first.
+The `trinodb` skill also states that Trino commits, PR descriptions, and
+comments carry no AI attribution of any kind.
 
 ## Sources
 

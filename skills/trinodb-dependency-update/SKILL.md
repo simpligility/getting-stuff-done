@@ -9,8 +9,10 @@ Use this skill to keep the Java and Maven Trino projects up to date — the core
 [trinodb/trino](https://github.com/trinodb/trino),
 [trinodb/trino-gateway](https://github.com/trinodb/trino-gateway),
 [trinodb/aws-proxy](https://github.com/trinodb/aws-proxy), and similar
-repositories or their forks. It builds on the shared context in the `trinodb`
-skill and defers MinIO specifics to the `trinodb-minio` skill.
+repositories or their forks.
+
+It builds on the shared context in the `trinodb` skill. Load that skill first.
+It defers MinIO specifics to the `trinodb-minio` skill.
 
 These repositories typically run Dependabot, which opens most routine dependency
 bumps automatically. Treat this skill as a periodic sweep to catch what

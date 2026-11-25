@@ -14,6 +14,8 @@ projects in the [airlift organization](https://github.com/airlift), and any
 other Maven project built on airbase. Airlift, airbase, and Trino are run by
 the same core team, which is why the conventions carry across all of them.
 
+It builds on the shared context in the `trinodb` skill. Load that skill first.
+
 This skill deliberately does not restate the upstream style rules. Those live
 in the canonical sources and drift over time:
 

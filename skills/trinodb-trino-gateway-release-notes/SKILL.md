@@ -8,8 +8,7 @@ description: Create and maintain release notes pull requests for Trino Gateway. 
 Use this skill to manage the release notes process for
 [trinodb/trino-gateway](https://github.com/trinodb/trino-gateway).
 
-For shared Trino facts — the trinodb organization, versioning, and the
-fork-and-upstream contribution workflow — see the `trinodb` base skill.
+It builds on the shared context in the `trinodb` skill. Load that skill first.
 
 ## Prerequisites
 

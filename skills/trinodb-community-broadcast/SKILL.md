@@ -7,10 +7,9 @@ description: Run the mechanics of a Trino Community Broadcast episode — the lo
 
 Use this skill for the mechanics of an episode of the [Trino Community
 Broadcast](https://trino.io/broadcast/), the live stream show of the Trino
-project, usually shortened to TCB. It builds on these skills:
+project, usually shortened to TCB. It builds on these skills. Load them first:
 
-* `trinodb` for the organization and the fork-and-upstream contribution
-  workflow that every pull request in this skill follows.
+* `trinodb` for the shared context of the project.
 * `trinodb-website` for the local build of the
   [trinodb/trino.io](https://github.com/trinodb/trino.io) repository, the
   writing style for site content, and the linking traps.

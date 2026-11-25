@@ -7,10 +7,11 @@ description: Update and troubleshoot the MinIO test container image in the core 
 
 Use this skill when updating or debugging the MinIO container image used by the
 Trino test suites in the core [trinodb/trino](https://github.com/trinodb/trino)
-repository. It builds on the shared context in the `trinodb` skill. To bump the
-MinIO digest alongside many other dependencies at once, see the
-`trinodb-dependency-update` skill, which scans a whole repository for available
-updates.
+repository. To bump the MinIO digest alongside many other dependencies at once,
+see the `trinodb-dependency-update` skill, which scans a whole repository for
+available updates.
+
+It builds on the shared context in the `trinodb` skill. Load that skill first.
 
 ## The image and its fork
 

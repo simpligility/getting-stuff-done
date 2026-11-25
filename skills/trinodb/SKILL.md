@@ -70,6 +70,49 @@ The website also documents the wider
 client applications, data lake components, data sources, and add-ons. It is a
 good reference for the tools and integrations that surround the core engine.
 
+## Maintainers
+
+The [roles page](https://trino.io/development/roles.html) is the source of
+truth for the current maintainers. Use the following tables to match a name to
+a GitHub account, for example when requesting a review or attributing a
+comment, and check the roles page when a name is missing.
+
+Trino maintainers:
+
+| Name | GitHub |
+| --- | --- |
+| Chen Jian | [chenjian2664](https://github.com/chenjian2664) |
+| Dain Sundstrom | [dain](https://github.com/dain) |
+| Yuya Ebihara | [ebyhr](https://github.com/ebyhr) |
+| David Phillips | [electrum](https://github.com/electrum) |
+| Piotr Findeisen | [findepi](https://github.com/findepi) |
+| Ashhar Hasan | [hashhar](https://github.com/hashhar) |
+| Kasia Findeisen | [kasiafi](https://github.com/kasiafi) |
+| Grzegorz Kokosiński | [kokosing](https://github.com/kokosing) |
+| Łukasz Osipiuk | [losipiuk](https://github.com/losipiuk) |
+| Martin Traverso | [martint](https://github.com/martint) |
+| James Petty | [pettyjamesm](https://github.com/pettyjamesm) |
+| Praveen Krishna | [Praveen2112](https://github.com/Praveen2112) |
+| Raunaq Morarka | [raunaqmorarka](https://github.com/raunaqmorarka) |
+| Karol Sobczak | [sopel39](https://github.com/sopel39) |
+| Mateusz Gajewski | [wendigo](https://github.com/wendigo) |
+
+Maintainers of the subprojects aws-proxy, charts, grafana-trino, trino.io,
+trino-gateway, trino-go-client, trino-js-client, and trino-odbc:
+
+| Name | GitHub |
+| --- | --- |
+| Jaeho Yoo | [Chaho12](https://github.com/Chaho12) |
+| Cole Bowden | [colebow](https://github.com/colebow) |
+| Erik Anderson | [dprophet](https://github.com/dprophet) |
+| Jan Waś | [nineinchnick](https://github.com/nineinchnick) |
+| Star Poon | [oneonestar](https://github.com/oneonestar) |
+| Jordan Zimmerman | [Randgalt](https://github.com/Randgalt) |
+| Filipe Regadas | [regadas](https://github.com/regadas) |
+| Riley McDowell | [rileymcdowell](https://github.com/rileymcdowell) |
+| Pablo Arteaga | [vagaerg](https://github.com/vagaerg) |
+| Vishal Jadhav | [vishalya](https://github.com/vishalya) |
+
 ## Product names
 
 Always use the full product name. This applies everywhere, including
@@ -325,7 +368,7 @@ than only reading its `SKILL.md` file:
 | Building and testing the Trino Gateway repository | `trinodb-trino-gateway-development` |
 | Trino Gateway release notes pull requests | `trinodb-trino-gateway-release-notes` |
 | Trino release notes pull requests | `trinodb-trino-release-notes` |
-| Processing Trino contributor call recordings from YouTube | `trinodb-contributor-call-processing` |
+| Preparing a Trino contributor call and processing its recording from YouTube | `trinodb-contributor-call` |
 | Preparing, announcing, and publishing a Trino Community Broadcast episode | `trinodb-community-broadcast` |
 | Content and changes on the trino.io website | `trinodb-website` |
 | Updating or debugging the MinIO test container image in core Trino | `trinodb-minio` |

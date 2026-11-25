@@ -7,9 +7,9 @@ description: Development context for the trinodb/trino-gateway repository — th
 
 Development context for
 [trinodb/trino-gateway](https://github.com/trinodb/trino-gateway), the load
-balancer and proxy that sits in front of Trino clusters. Load the `trinodb` base
-skill first for project-wide facts such as the contribution workflow and the
-commit message conventions.
+balancer and proxy that sits in front of Trino clusters.
+
+It builds on the shared context in the `trinodb` skill. Load that skill first.
 
 This skill covers building and testing the repository. For release notes work,
 use the `trinodb-trino-gateway-release-notes` skill instead.

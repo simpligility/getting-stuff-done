@@ -23,9 +23,7 @@ from GitHub releases, the move to Java 25, and the prefetch mechanism. A routine
 bump to the next version is mostly version-string changes plus the per-version
 upstream checks in Step 1.
 
-For shared Trino facts — the versioning scheme, release-artifact distribution,
-the Java version policy, and the contribution workflow — see the `trinodb`
-base skill.
+It builds on the shared context in the `trinodb` skill. Load that skill first.
 
 ## How the artifacts are fetched
 

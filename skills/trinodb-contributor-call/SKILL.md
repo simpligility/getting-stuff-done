@@ -1,35 +1,50 @@
 ---
-name: trinodb-contributor-call-processing
-description: Process the recording of a Trino contributor call from YouTube into a timestamped topic list for the video description and an expanded summary for the contributor meetings wiki. Use after the recording is uploaded, when it needs to be made consumable for the community.
+name: trinodb-contributor-call
+description: Prepare a Trino contributor call and process its recording — the local call folder with the draft notes, the tracking issue, the agenda topics from the contributor meetings wiki and recent releases, and after the call the processing of the YouTube recording into a timestamped topic list for the video description and expanded minutes for the wiki. Child skill of the trinodb family. Use when preparing an upcoming Trino contributor call, or after the recording is uploaded and needs to be made consumable for the community.
 ---
 
-# Trino contributor call processing
+# Trino contributor call
 
-Use this skill to process the video recording from a [Trino contributor
+Use this skill to prepare a [Trino contributor
 call](https://www.youtube.com/playlist?list=PLFnr63che7wYkKTBWGulzVbzLSV_wrSBq)
-recording available on YouTube to create time stamped list of topics for the
-video description and expanded summary for [the contributor meetings wiki
+and to process its recording on YouTube into a timestamped list of topics for
+the video description and expanded minutes for [the contributor meetings wiki
 page](https://github.com/trinodb/trino/wiki/Contributor-meetings).
 
-It builds on the shared context in the `trinodb` skill, which covers the
-organization and points at the development roles page that lists the
-maintainers by name.
+It builds on the shared context in the `trinodb` skill. Load that skill first.
 
-## Processing steps
+## Call lifecycle
 
-Ask the user to provide the URL to the video recording on YouTube and remember
-it as {{url}}.
+Each call moves through the same steps:
 
-Ask the user for the date of the meeting in the format YYYY-MM-DD and remember
-it as {{date}}. This will be used to locate the section in the wiki for the
-meeting and to create a new section if it does not exist. Also remember the
+1. Create the local call folder and the draft notes.
+2. File or find the tracking issue.
+3. Collect the agenda topics in the draft notes.
+4. Check the calendar entry and post the reminder.
+5. Host the call. Manfred records the attendees and further topics in the
+   draft notes and saves the screenshot.
+6. Process the recording into the YouTube description and the minutes.
+7. Paste the description into the video and the minutes into the wiki.
+8. Announce the recording and the minutes.
+9. Comment on the tracking issue and close it.
+
+Steps one to four are the [preparation](#preparation) and happen in the days
+before the call. Steps six to nine follow the upload of the recording and
+are described in [Processing the recording](#processing-the-recording).
+
+## Local call folder
+
+Ask the user for the date of the call in the format YYYY-MM-DD and remember it
+as {{date}}. It locates the section for the call in the wiki. Also remember the
 date without dashes in the format YYYYMMDD as {{compactdate}} for the names of
-the output files.
+the folder and the files. When the current working directory is already named
+`tcc-YYYYMMDD`, take the date from the name and confirm it with the user.
 
 Keep all files for the call in a folder named `tcc-{{compactdate}}` in the
-current working directory, and create it if it does not exist. The folder holds
-the draft notes, both transcripts, the output files from each transcript,
-and the merged final output files:
+current working directory, and create it if it does not exist. When the current
+working directory is that folder already, use it as is. The folder holds the
+draft notes, both transcripts, the output files from each transcript, and the
+merged final output files:
 
 | File | Content |
 | --- | --- |
@@ -48,6 +63,111 @@ and the merged final output files:
 
 The screenshot belongs to the user and is not part of the processing. Leave it
 in place.
+
+## Preparation
+
+### Draft notes
+
+Create the draft notes file `tcc-{{compactdate}}.md` in the call folder, unless
+it exists already. Use the same markdown formatting as the wiki page the notes
+are later published on, as described in [Minutes](#minutes), with a hard wrap
+at 80 characters. Before the call there is no recording, so leave out the video
+link and the timestamps:
+
+```
+# Trino contributor call {{date}}
+
+**Attendees**
+
+* Manfred Moser ([mosabua](https://github.com/mosabua), host and organizer)
+
+**Topics**
+
+**{{topic title}}**
+
+{{short note with markdown links to pull requests, issues, and release notes}}
+
+```
+
+Manfred types into the file during the call. Attendees go under **Attendees**
+as described in [Attendees list](#attendees-list). Topics raised in the call go
+under **Topics** with a title, the name of the person, a short note, and the
+links to any pull requests and issues. Lines typed in a hurry during the call
+are fine, and the processing tidies them up.
+
+### Tracking issue
+
+File or find the tracking issue for the call as described in [Tracking
+issue](#tracking-issue).
+
+### Agenda topics
+
+Collect the topics for the call under **Topics** in the draft notes, each with
+a short note and the relevant links. Only results count as topics. Do not carry
+over follow-ups from the previous call. An open pull request without news is
+left out unless someone brings it up again in the call, and a merged pull
+request shows up as part of a release anyway. Check these sources:
+
+* The [wiki page](https://github.com/trinodb/trino/wiki/Contributor-meetings),
+  where contributors suggest topics ahead of the call. Read it without cloning
+  from
+  `https://raw.githubusercontent.com/wiki/trinodb/trino/Contributor-meetings.md`
+  and look for a section for {{date}}.
+* The releases since the previous call. Calls open with the new releases, so
+  list each one with its version, date, and a link to the release notes. Check
+  the GitHub releases of at least these repositories in the `trinodb`
+  organization: `trino`, `trino-gateway`, `charts`, `trino-python-client`,
+  `trino-go-client`, `trino-js-client`, `trino-query-ui`, and `grafana-trino`.
+  Also check `trino-csharp-client`, `trino-odbc`, and `aws-proxy`. The
+  `aws-proxy` repository tags versions without always publishing a release, so
+  compare its tags as well. Do not mention that the next version of a project
+  is in the works, since that is always implied.
+* The tags of
+  [trinodb/trino-packages](https://github.com/trinodb/trino-packages), which
+  publishes no GitHub releases. A new tag named after a Trino version
+  means the packages were updated to that version, so check the tags and the
+  commits since the previous call instead of the releases.
+* The changes to the website since the previous call, from the commits in the
+  [trinodb/trino.io](https://github.com/trinodb/trino.io) repository. Do not
+  add these to the draft notes. List them for the user, who decides whether
+  any is worth a topic. Typically only new user testimonials and new tools on
+  the ecosystem pages are.
+* Any further topics from the user, such as requests received on Trino Slack.
+
+Summarize the collected topics for the user and ask what to add, drop, or
+reorder.
+
+When the wiki has no section for {{date}} yet, offer the content of the draft
+notes for the user to paste into the wiki in the browser as the section for the
+call. Do not clone the wiki or push to it from the command line.
+
+### Calendar entry and reminder
+
+Calls are virtual and typically take place on the fourth Wednesday of the
+month. Each call is listed on the Trino events Google Calendar, which the
+[community page](https://trino.io/community.html#events) embeds. Ask the user
+to confirm that the entry for {{date}} exists with the title `Trino contributor
+call`, the start time, and a link to the wiki page.
+
+Draft a short reminder for the user to post on [Trino
+Slack](https://trino.io/slack) and LinkedIn before the call. It names the date
+and time, invites anyone to join, lists the main agenda topics, and links to
+the wiki page for topic suggestions. Manfred adds the connection details and
+posts it himself. The calendar and the wiki are public, so keep the connection
+details out of both unless the user asks to include them.
+
+### Screenshot
+
+Remind the user to save the screenshot of the call as `tcc-{{compactdate}}.png`
+in the call folder.
+
+## Processing the recording
+
+Use the {{date}}, the {{compactdate}}, and the folder from [Local call
+folder](#local-call-folder).
+
+Ask the user to provide the URL to the video recording on YouTube and remember
+it as {{url}}.
 
 Ask the user for the path to the local file with the rough meeting notes
 markdown file and remember it as {{draftnotes}}. Suggest
@@ -89,8 +209,9 @@ YouTube automatic captions and a local whisper-cpp transcription. Create both
 with the `media-transcription` skill, using {{url}} as the source,
 `tcc-{{compactdate}}` as the output folder, and `tcc-{{compactdate}}` as the
 base name. Start the whisper-cpp prompt with `Trino contributor call.` and add
-the expected attendee names from the draft notes, the wiki, and the tables in
-[Attendees list](#attendees-list), and the project terms from the draft notes.
+the expected attendee names from the draft notes, the wiki, the maintainers in
+the `trinodb` skill, and the table in [Attendees list](#attendees-list), and
+the project terms from the draft notes.
 
 The transcription steps come from the `media-transcription` skill. If it is not
 installed, ask the user to install it from the [getting-stuff-done
@@ -200,43 +321,12 @@ role:
 
 Attendees introduce themselves and are announced by their full name, and the
 transcript often garbles those names, so match what you hear against the
-full names in the following tables and use the matching GitHub account.
+full names of the maintainers and in the following table, and use the matching
+GitHub account.
 
-Trino maintainers are frequent attendees:
-
-| Name | GitHub |
-| --- | --- |
-| Chen Jian | [chenjian2664](https://github.com/chenjian2664) |
-| Dain Sundstrom | [dain](https://github.com/dain) |
-| Yuya Ebihara | [ebyhr](https://github.com/ebyhr) |
-| David Phillips | [electrum](https://github.com/electrum) |
-| Piotr Findeisen | [findepi](https://github.com/findepi) |
-| Ashhar Hasan | [hashhar](https://github.com/hashhar) |
-| Kasia Findeisen | [kasiafi](https://github.com/kasiafi) |
-| Grzegorz Kokosiński | [kokosing](https://github.com/kokosing) |
-| Łukasz Osipiuk | [losipiuk](https://github.com/losipiuk) |
-| Martin Traverso | [martint](https://github.com/martint) |
-| James Petty | [pettyjamesm](https://github.com/pettyjamesm) |
-| Praveen Krishna | [Praveen2112](https://github.com/Praveen2112) |
-| Raunaq Morarka | [raunaqmorarka](https://github.com/raunaqmorarka) |
-| Karol Sobczak | [sopel39](https://github.com/sopel39) |
-| Mateusz Gajewski | [wendigo](https://github.com/wendigo) |
-
-The maintainers of the subprojects aws-proxy, charts, grafana-trino, trino.io,
-trino-gateway, trino-go-client, trino-js-client, and trino-odbc attend as well:
-
-| Name | GitHub |
-| --- | --- |
-| Jaeho Yoo | [Chaho12](https://github.com/Chaho12) |
-| Cole Bowden | [colebow](https://github.com/colebow) |
-| Erik Anderson | [dprophet](https://github.com/dprophet) |
-| Jan Waś | [nineinchnick](https://github.com/nineinchnick) |
-| Star Poon | [oneonestar](https://github.com/oneonestar) |
-| Jordan Zimmerman | [Randgalt](https://github.com/Randgalt) |
-| Filipe Regadas | [regadas](https://github.com/regadas) |
-| Riley McDowell | [rileymcdowell](https://github.com/rileymcdowell) |
-| Pablo Arteaga | [vagaerg](https://github.com/vagaerg) |
-| Vishal Jadhav | [vishalya](https://github.com/vishalya) |
+Trino maintainers and the maintainers of the subprojects are frequent
+attendees. Their names and GitHub accounts are in the maintainers section of
+the `trinodb` skill.
 
 Other contributors who attended recent calls:
 
@@ -251,8 +341,9 @@ Other contributors who attended recent calls:
 | Roey Ogen | [RoeyoOgen](https://github.com/RoeyoOgen) |
 | Sajumon Joseph | [sajjoseph](https://github.com/sajjoseph) |
 | Tony Baeg | [tbaeg](https://github.com/tbaeg) |
+| Darin Chandler | none known |
 
-These tables are references for matching names heard in the video to GitHub
+These lists are references for matching names heard in the video to GitHub
 accounts. Only list people who actually attended the call.
 
 If you can't determine the GitHub details, just use the full name on its own,
@@ -291,14 +382,27 @@ Once the video description and the wiki page are updated, Manfred announces the
 recording and the meeting notes on LinkedIn and in the `#announcements` channel
 on [Trino Slack](https://trino.io/slack), which he has official access to post
 in. Ask him for the URL of the LinkedIn post and remember it as {{linkedinurl}}
-so it can be recorded on the tracking ticket.
+so it can be recorded on the tracking issue.
 
-### Tracking ticket
+## Tracking issue
 
-Each call has a tracking ticket in Manfred's [contributions
-tracker](https://github.com/simpligility/contributions). Find the open issue
-titled `Trino contributor call {{date}}` with the `trinodb-community` label using
-the `gh` command line tool.
+Each call has a tracking issue in Manfred's [contributions
+tracker](https://github.com/simpligility/contributions). Follow the
+`manfred-contributions` skill for the title form, the labels, the body, the
+assignment, and the manual step that adds the issue to the project board. Skip
+this section when working for anyone else.
+
+As part of the preparation, look for the open issue titled `Trino contributor
+call {{date}}` with the `trinodb-community` label:
+
+```
+gh issue list --repo simpligility/contributions \
+  --label trinodb-community --state open \
+  --search "Trino contributor call {{date}} in:title"
+```
+
+When none matches, draft one with that title and label, and confirm it with the
+user before creating it.
 
 After the minutes are published to the wiki and the description is added to the
 video, add a comment to the issue that states what was done and links to the

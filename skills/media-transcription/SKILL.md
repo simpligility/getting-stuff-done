@@ -1,6 +1,6 @@
 ---
 name: media-transcription
-description: Transcribe a local video or audio file, or a YouTube video, into timestamped text — the YouTube automatic captions when the recording is on YouTube, a local whisper-cpp transcription, condensed text versions of both, and the rules for combining the two sources. Also shrinks a large video file while keeping the audio unchanged. Use whenever a recording needs a transcript, on its own or from a skill that processes recordings, such as trinodb-contributor-call-processing or trinodb-community-broadcast.
+description: Transcribe a local video or audio file, or a YouTube video, into timestamped text — the YouTube automatic captions when the recording is on YouTube, a local whisper-cpp transcription, condensed text versions of both, and the rules for combining the two sources. Also shrinks a large video file while keeping the audio unchanged. Use whenever a recording needs a transcript, on its own or from a skill that processes recordings, such as trinodb-contributor-call or trinodb-community-broadcast.
 ---
 
 # Media transcription

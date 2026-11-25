@@ -99,7 +99,7 @@ General skills:
 | [`trinodb-trino-gateway-development`](./skills/trinodb-trino-gateway-development) | Build and test Trino Gateway, including the Testcontainers setup and database behavior. |
 | [`trinodb-trino-gateway-release-notes`](./skills/trinodb-trino-gateway-release-notes) | Create and maintain Trino Gateway release notes pull requests. |
 | [`trinodb-trino-release-notes`](./skills/trinodb-trino-release-notes) | Create and maintain Trino release notes pull requests. |
-| [`trinodb-contributor-call-processing`](./skills/trinodb-contributor-call-processing) | Turn a Trino contributor call recording into topics and a wiki summary. |
+| [`trinodb-contributor-call`](./skills/trinodb-contributor-call) | Prepare a Trino contributor call and turn its recording into topics and a wiki summary. |
 | [`trinodb-community-broadcast`](./skills/trinodb-community-broadcast) | Announce, prepare, and publish Trino Community Broadcast episodes on trino.io. |
 | [`trinodb-website`](./skills/trinodb-website) | Add and edit content on the trino.io website, including the Jekyll setup and blog post conventions. |
 | [`trinodb-javascript`](./skills/trinodb-javascript) | JavaScript and TypeScript work across trino-query-ui, the Trino web UI, and trino-js-client. |
@@ -163,7 +163,7 @@ npx skills add simpligility/getting-stuff-done
 ```
 
 Skills have no dependency management, so installing a single skill does not
-pull in the skills it uses. The `trinodb-contributor-call-processing` and
+pull in the skills it uses. The `trinodb-contributor-call` and
 `trinodb-community-broadcast` skills need `media-transcription`, so install it
 along with them:
 

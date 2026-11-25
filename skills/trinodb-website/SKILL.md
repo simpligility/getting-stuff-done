@@ -7,9 +7,9 @@ description: Work on the Trino project website in the trinodb/trino.io repositor
 
 Use this skill when working in a clone of
 [trinodb/trino.io](https://github.com/trinodb/trino.io), the source of the
-[Trino website](https://trino.io). It builds on the shared context in the
-`trinodb` skill, which covers the organization, the contribution workflow,
-and the documentation style guide that applies to website content as well.
+[Trino website](https://trino.io).
+
+It builds on the shared context in the `trinodb` skill. Load that skill first.
 
 Writing style for all site content follows the
 [Google developer documentation style guide](https://developers.google.com/style),
