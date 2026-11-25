@@ -183,9 +183,15 @@ point of the size rule is to keep files small. A logo made from a Retina screen
 capture declares 144 dpi in its `pHYs` chunk and comes in at double the pixels,
 so a 144 dpi value is the tell for a capture that needs resizing. A missing
 chunk is fine, since browsers ignore DPI entirely. Check the pixel dimensions
-with `file` and compare the file size with the folder, where a 500 by 400 logo
-is typically around 20 KB. Note that `sips` reports 72 dpi when the chunk is
-absent, so it cannot distinguish a declared 72 dpi from no declaration.
+with `file` and compare the file size with the folder. The median is around
+22 KB for a 500 by 400 logo and 13 KB for the small variant, and nine out of
+ten full size logos stay under 60 KB. Accept anything up to that size, and ask
+for an optimized file beyond it. Note that `sips` reports 72 dpi when the chunk
+is absent, so it cannot distinguish a declared 72 dpi from no declaration.
+
+Entries in `tools.yml` are in alphabetical order by `name`, ignoring case, so
+a new entry goes in at its sorted position. A handful of older entries are out
+of place and are not a precedent.
 
 ### Reviewing a tool or user entry
 
@@ -205,12 +211,27 @@ or the company's own staff. Check these before accepting one:
   to add it rather than merging without it.
 * **The description says what works, not what does not.** Drop sentences
   listing unsupported features. A scope statement such as "read-only" is fine.
-* **The logo pair is correct**, as described above, with the logo filling the
-  canvas rather than floating in whitespace.
+* **The description is factual, not marketing.** Write "open source" without a
+  hyphen, which is the dominant form in the file. Replace a count such as
+  "130+" with "more than 130", or drop the claim when it says nothing about
+  Trino.
+* **The entry is at its alphabetical position** in the file.
+* **The logo pair is correct**, as described in
+  [Data-driven pages](#data-driven-pages), with the logo filling the canvas
+  rather than floating in whitespace.
 * **One commit** with a subject in the repository style, such as
   `Add Tabularis to ecosystem client applications` or
   `Add Wordfully to Trino users list`. Squash a multi-commit contribution when
   maintainer edits are enabled, keeping the contributor as author.
+
+To inspect the files of a pull request without credentials, which also works
+where `gh` cannot reach GitHub, fetch its head over HTTPS into the clone. The
+logos are then available with `git show FETCH_HEAD:<path>`:
+
+```
+git fetch https://github.com/trinodb/trino.io.git pull/<number>/head
+git diff master...FETCH_HEAD -- _data
+```
 
 ## Trino Community Broadcast episodes
 
