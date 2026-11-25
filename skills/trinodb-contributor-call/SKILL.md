@@ -1,6 +1,6 @@
 ---
 name: trinodb-contributor-call
-description: Prepare a Trino contributor call and process its recording — the local call folder with the draft notes, the tracking issue, the agenda topics from the contributor meetings wiki and recent releases, and after the call the processing of the YouTube recording into a timestamped topic list for the video description and expanded minutes for the wiki. Child skill of the trinodb family. Use when preparing an upcoming Trino contributor call, or after the recording is uploaded and needs to be made consumable for the community.
+description: Prepare a Trino contributor call and process its recording — the calendar entry with the Google Meet link, the local call folder with the draft notes, the tracking issue, the announcement on Trino Slack and LinkedIn, the agenda topics from the contributor meetings wiki and recent releases, and after the call the processing of the YouTube recording into a timestamped topic list for the video description and expanded minutes for the wiki. Child skill of the trinodb family. Use when preparing an upcoming Trino contributor call, or after the recording is uploaded and needs to be made consumable for the community.
 ---
 
 # Trino contributor call
@@ -17,20 +17,24 @@ It builds on the shared context in the `trinodb` skill. Load that skill first.
 
 Each call moves through the same steps:
 
-1. Create the local call folder and the draft notes.
-2. File or find the tracking issue, only when Manfred runs the skill.
-3. Collect the agenda topics in the draft notes.
-4. Check the calendar entry and post the reminder.
-5. Host the call. Manfred records the attendees and further topics in the
+1. Confirm the date and ensure the calendar entry with the Google Meet link
+   exists.
+2. Create the local call folder and the draft notes.
+3. File or find the tracking issue, only when Manfred runs the skill.
+4. Collect the agenda topics in the draft notes.
+5. Post the agenda topics on the wiki.
+6. Announce the call on Trino Slack and LinkedIn a few days before the call,
+   with a link to the agenda on the wiki, and remind the maintainers to attend.
+7. Host the call. Manfred records the attendees and further topics in the
    draft notes and saves the screenshot.
-6. Process the recording into the YouTube description and the minutes.
-7. Paste the description into the video and the minutes into the wiki.
-8. Announce the recording and the minutes.
-9. Comment on the tracking issue and close it, only when Manfred runs the
-   skill.
+8. Process the recording into the YouTube description and the minutes.
+9. Paste the description into the video and the minutes into the wiki.
+10. Announce the recording and the minutes.
+11. Comment on the tracking issue and close it, only when Manfred runs the
+    skill.
 
-Steps one to four are the [preparation](#preparation) and happen in the days
-before the call. Steps six to nine follow the upload of the recording and
+Steps one to six are the [preparation](#preparation) and happen in the days
+before the call. Steps eight to eleven follow the upload of the recording and
 are described in [Processing the recording](#processing-the-recording).
 
 ## Local call folder
@@ -67,13 +71,29 @@ in place.
 
 ## Preparation
 
+### Date and calendar entry
+
+Calls are virtual and typically take place on the fourth Wednesday of the
+month. Confirm the {{date}} with the user first, since everything else depends
+on it.
+
+Each call needs an entry on the Trino events Google Calendar, which the
+[community page](https://trino.io/community#events) embeds. Manfred creates
+the entry in Google Calendar. Ask the user to confirm that the entry for
+{{date}} exists, shows up on the community page, and has these details:
+
+* The title `Trino contributor call`.
+* The start time and the duration.
+* A Google Meet link, which is how attendees join.
+* A link to the wiki page for the agenda and topic suggestions.
+
 ### Draft notes
 
 Create the draft notes file `tcc-{{compactdate}}.md` in the call folder, unless
 it exists already. Use the same markdown formatting as the wiki page the notes
-are later published on, as described in [Minutes](#minutes), with a hard wrap
-at 80 characters. Before the call there is no recording, so leave out the video
-link and the timestamps:
+are published on, with a hard wrap at 80 characters. Before the call there is
+no recording, so leave out the video link and the timestamps. The topics are a
+flat list with one short sentence per topic and a link where one helps:
 
 ```
 # Trino contributor call {{date}}
@@ -84,17 +104,31 @@ link and the timestamps:
 
 **Topics**
 
-**{{topic title}}**
-
-{{short note with markdown links to pull requests, issues, and release notes}}
-
+* [trino-go-client](https://github.com/trinodb/trino-go-client/releases) 1.5.0
+  shipped on November 8 and 1.6.0 on November 20.
+* No new Trino and Trino Gateway release since last call.
 ```
 
-Manfred types into the file during the call. Attendees go under **Attendees**
-as described in [Attendees list](#attendees-list). Topics raised in the call go
-under **Topics** with a title, the name of the person, a short note, and the
-links to any pull requests and issues. Lines typed in a hurry during the call
-are fine, and the processing tidies them up.
+Keep each topic concise. The list is only a placeholder, in the draft notes
+and on the wiki alike. The details emerge in the call, and the processing
+afterwards replaces the whole list with the topics from the transcript, with
+titles and timestamps as described in [Minutes](#minutes).
+
+The file serves two purposes. Before the call it is the local agenda. During
+the call Manfred takes notes in it while hosting, and afterwards it is an
+input for the processing of the recording.
+
+Hosting leaves little time for notes, so expect them to be rough and
+incomplete. Typically Manfred adds the following as time allows:
+
+* Attendees, often with partial names or only a first name.
+* Links that attendees post in the chat of the call, cut and pasted over as
+  they are. The chat exists nowhere else after the call ends.
+* Topics raised in the call, with the name of the person and a short note.
+* Other remarks, such as follow-up tasks for himself.
+
+Do not tidy up or reformat the notes from the call. The processing resolves
+the partial names and turns the notes into the final minutes.
 
 ### Tracking issue
 
@@ -103,11 +137,11 @@ described in [Tracking issue](#tracking-issue). Skip this step for anyone else.
 
 ### Agenda topics
 
-Collect the topics for the call under **Topics** in the draft notes, each with
-a short note and the relevant links. Only results count as topics. Do not carry
-over follow-ups from the previous call. An open pull request without news is
-left out unless someone brings it up again in the call, and a merged pull
-request shows up as part of a release anyway. Check these sources:
+Collect the topics for the call under **Topics** in the draft notes, each as
+one short list item with the relevant link. Only results count as topics. Do
+not carry over follow-ups from the previous call. An open pull request without
+news is left out unless someone brings it up again in the call, and a merged
+pull request shows up as part of a release anyway. Check these sources:
 
 * The [wiki page](https://github.com/trinodb/trino/wiki/Contributor-meetings),
   where contributors suggest topics ahead of the call. Read it without cloning
@@ -140,24 +174,63 @@ request shows up as part of a release anyway. Check these sources:
 Summarize the collected topics for the user and ask what to add, drop, or
 reorder.
 
-When the wiki has no section for {{date}} yet, offer the content of the draft
-notes for the user to paste into the wiki in the browser as the section for the
-call. Do not clone the wiki or push to it from the command line.
+### Agenda on the wiki
 
-### Calendar entry and reminder
+The agenda has to be on the wiki before the call is announced, since the
+announcement links to it. Once the user agrees on the topics, offer the content
+of the draft notes for the user to paste into the wiki in the browser as the
+section for {{date}}, at the top of the list of calls. When the section exists
+already, offer only the topics that are missing from it. Do not clone the wiki
+or push to it from the command line.
 
-Calls are virtual and typically take place on the fourth Wednesday of the
-month. Each call is listed on the Trino events Google Calendar, which the
-[community page](https://trino.io/community.html#events) embeds. Ask the user
-to confirm that the entry for {{date}} exists with the title `Trino contributor
-call`, the start time, and a link to the wiki page.
+Ask the user to confirm that the section is published at
+`https://github.com/trinodb/trino/wiki/Contributor-meetings#trino-contributor-call-{{date}}`.
 
-Draft a short reminder for the user to post on [Trino
-Slack](https://trino.io/slack) and LinkedIn before the call. It names the date
-and time, invites anyone to join, lists the main agenda topics, and links to
-the wiki page for topic suggestions. Manfred adds the connection details and
-posts it himself. The calendar and the wiki are public, so keep the connection
-details out of both unless the user asks to include them.
+The page holds the calls of the current year. Earlier years live on their own
+pages, such as `Contributor-meetings-2025`. The general information section at
+the top of the page tells the community how the calls work, so keep the skill
+and that section consistent with each other.
+
+### Call announcement
+
+A few days before the call, and only after the agenda is on the wiki, draft a
+short announcement for the user to post on [Trino
+Slack](https://trino.io/slack) and on LinkedIn. It names the date and the time,
+invites anyone to join, and contains these links:
+
+* The agenda in the section for {{date}} on the wiki, which is also the place
+  for further topic suggestions.
+* The [community page](https://trino.io/community#events) with the calendar
+  entry and its Google Meet link.
+
+Manfred posts it himself, on LinkedIn from the Trino page.
+
+At the same time, draft a short reminder for the private `maintainers` channel
+on Trino Slack that asks the maintainers to attend, with the date, the time,
+and the link to the agenda on the wiki. Contributors come to the call for
+answers and reviews from maintainers, so their attendance matters. Manfred
+posts the reminder himself. The channel is private, so do not link to it or
+mention it in the public announcement.
+
+On the day, just before the call, the connection details are announced on
+Trino Slack or on the wiki page, so that anyone can join without an invite.
+Remind the user to post the Google Meet link.
+
+### Requests before the call
+
+Anyone can attend, and requests come in at any time before the call. Handle
+each one as it arrives:
+
+* A request to be invited reaches Manfred on Trino Slack or by email. He adds
+  the person as a guest to the calendar entry, so they receive the invite with
+  the Google Meet link.
+* A request for a topic reaches Manfred or another maintainer on Trino Slack
+  or by email, or the person adds it to the wiki page directly. Add the topic
+  to the draft notes and to the section for {{date}} on the wiki, with the name
+  of the person and any links. Topics can also come up during the call itself.
+* Other maintainers add topics to the wiki themselves, from requests they
+  receive or from their own ideas. Read the section for {{date}} on the wiki
+  again before the call and copy any new topics into the draft notes.
 
 ### Screenshot
 
@@ -178,9 +251,15 @@ markdown file and remember it as {{draftnotes}}. Suggest
 from another location into the folder after confirming with the user. If there
 is no file, proceed without it.
 
-Ingest the meeting notes markdown file.
+Ingest the meeting notes markdown file. It holds the agenda from before the
+call and the notes Manfred took while hosting, as described in [Draft
+notes](#draft-notes).
 
-Take note of the attendees and any topics that were discussed.
+Take note of the attendees and any topics that were discussed. Resolve partial
+names to full names and GitHub accounts as described in [Attendees
+list](#attendees-list). Treat the links in the notes as valuable, since those
+from the chat of the call are not in the recording or the transcripts, and
+match each one to the topic it belongs to.
 
 Ingest the [wiki
 page](https://github.com/trinodb/trino/wiki/Contributor-meetings) and locate the
@@ -190,8 +269,14 @@ meeting date.
 
 Analyze the video to create a list of attendees, a time-stamped list of
 sections that discuss different topics, and a short description for each topic.
-Use the content from the {{draftnotes}} as suggestions and further details for
-the topics. Also take note of the title of the video as {{title}}.
+Also take note of the title of the video as {{title}}.
+
+The topics in the {{draftnotes}} and in the section on the wiki are the
+placeholder agenda from before the call. Use them as a guide to what should
+have happened and been discussed, and for links and further details. The
+transcript decides what was actually discussed, so the final topics replace
+the placeholder list and do not have to match it. Tell the user about any
+placeholder topic that does not show up in the transcript.
 
 Run the analysis twice, once for each of the two transcripts described in the
 following section, write the output files for each transcript, and merge the
