@@ -1,6 +1,6 @@
 ---
 name: trinodb-contributor-call
-description: Prepare a Trino contributor call and process its recording — the calendar entry with the Google Meet link, the local call folder with the draft notes, the tracking issue, the announcement on Trino Slack and LinkedIn, the agenda topics from the contributor meetings wiki and recent releases, and after the call the processing of the YouTube recording into a timestamped topic list for the video description and expanded minutes for the wiki. Child skill of the trinodb family. Use when preparing an upcoming Trino contributor call, or after the recording is uploaded and needs to be made consumable for the community.
+description: Prepare a Trino contributor call and process its recording — the calendar entry with the Google Meet link, the local call folder with the draft notes, the tracking issue, the announcement on Trino Slack and LinkedIn, the agenda topics from the contributor meetings wiki and recent releases, and after the call the processing of the YouTube recording into a timestamped topic list for the video description and expanded minutes for the wiki. Child skill of the trinodb family. Use when preparing an upcoming Trino contributor call, on the day of the call to be prompted through the setup and the run of show, or after the recording is uploaded and needs to be made consumable for the community.
 ---
 
 # Trino contributor call
@@ -26,8 +26,8 @@ Each call moves through the same steps:
 6. Announce the call on Trino Slack and LinkedIn a few days before the call,
    with a link to the agenda on the wiki, and remind the maintainers to attend.
 7. Create the thumbnail image for the call from the slide deck.
-8. Host the call. Manfred records the attendees and further topics in the
-   draft notes.
+8. On the day, set up the studio and the recording, and host the call along
+   the run of show.
 9. Process the recording into the YouTube description and the minutes.
 10. Paste the description into the video and the minutes into the wiki.
 11. Announce the recording and the minutes.
@@ -35,8 +35,9 @@ Each call moves through the same steps:
     skill.
 
 Steps one to seven are the [preparation](#preparation) and happen in the days
-before the call. Steps nine to twelve follow the upload of the recording and
-are described in [Processing the recording](#processing-the-recording).
+before the call. Step eight is described in [On the day](#on-the-day). Steps
+nine to twelve follow the upload of the recording and are described in
+[Processing the recording](#processing-the-recording).
 
 ## Local call folder
 
@@ -213,10 +214,6 @@ answers and reviews from maintainers, so their attendance matters. Manfred
 posts the reminder himself. The channel is private, so do not link to it or
 mention it in the public announcement.
 
-On the day, just before the call, the connection details are announced on
-Trino Slack or on the wiki page, so that anyone can join without an invite.
-Remind the user to post the Google Meet link.
-
 ### Requests before the call
 
 Anyone can attend, and requests come in at any time before the call. Handle
@@ -275,6 +272,105 @@ than 1920 by 1080 pixels, since scaling it up blurs the text.
 
 In a sandboxed session `sips` fails with `Error 13`, because it writes through
 the system temporary folder. Run it outside the sandbox.
+
+## On the day
+
+Manfred hosts and records the call himself. The setup is proven, and the
+following lists exist as a reminder, so that no step gets missed. Walk the user
+through the setup before the call starts, then use the run of show as the
+checklist for the call.
+
+When the user asks to be prompted through the day, give one step at a time,
+keep each prompt to a line or two, and wait for the user to confirm before
+moving to the next step. The user is busy with the setup or with hosting, so
+do not explain the reasons unless asked. Start by reading the section for
+{{date}} on the wiki again and report any topic that is missing from the draft
+notes.
+
+### Screens
+
+The setup uses two screens:
+
+* The main screen is resized to 1080p, which is 1920 by 1080 pixels, and is the
+  only screen that OBS records. It shows the Google Meet window with the
+  attendees and anything that is shared. A recording at exactly this size cuts
+  cleanly in Blender afterwards without scaling or cropping.
+* The second screen is the laptop screen and is not recorded. It holds the
+  editor with the draft notes and the browser window with the content to share.
+
+Arrange the laptop screen with the browser window across the top at full width
+and about two thirds of the height, and the editor in the remaining third. A
+wide window fills the shared area in Meet, while a tall and narrow one ends up
+with black bars on both sides.
+
+### Sharing the screen
+
+To show content to the attendees, present the browser window from the laptop
+screen in Meet. Present the window, not a single tab and not the entire
+screen. The Meet window on the main screen then shows the shared content next
+to the attendees, so the recording contains both, each of them once.
+
+Manfred follows links from the wiki to pull requests and other pages during
+the call, which opens further tabs. A shared window carries all of its tabs
+along, while a shared tab stays on the one page. Keep the shared browser window
+separate from the window that runs Meet.
+
+* Presenting the entire main screen makes Meet show its own picture again and
+  again.
+* Presenting the entire laptop screen shares the notes as well.
+* A smaller browser window shows less content at a larger size. Zoom the page
+  in the browser when small text, such as a diff, has to be readable in the
+  recording.
+
+### Setup
+
+Go through this list in order:
+
+1. Set up the green screen, the lights, and the camera.
+2. Resize the main screen to 1080p and arrange the two screens as described in
+   [Screens](#screens).
+3. Start OBS and set up the recording of the main screen. It has to capture
+   two audio sources, the audio output with the voices of the attendees, and
+   the microphone input with the voice of the host. Check that both show a
+   signal before the call starts, since a missing source cannot be recovered
+   afterwards.
+4. Open the draft notes `tcc-{{compactdate}}.md` in the editor on the laptop
+   screen, ready for typing.
+5. In the browser window for sharing on the laptop screen, load the slide deck
+   and start the slide show on the title slide that shows the date of the
+   call. Open the section for {{date}} on the wiki in a second tab of the same
+   window, so the list of proposed topics is one switch of tabs away. Use the
+   slide show and do not open the thumbnail image as a file in the browser,
+   since that shows the borders and the controls of the browser around it.
+6. Join the Google Meet from the calendar entry and place its window on the
+   main screen.
+7. Present the browser window in Meet with the title slide showing, so anyone
+   who comes in sees the title of the call and the date.
+8. Announce the connection details just before the call on Trino Slack or on
+   the wiki page, so that anyone can join without an invite. Remind the user
+   to post the Google Meet link.
+
+### Run of show
+
+1. Start the recording in OBS once attendees have joined, with the title
+   slide still showing.
+2. Welcome everyone, then stop the slide show and switch to the tab with the
+   proposed topics on the wiki.
+3. Note the attendees in the draft notes as they introduce themselves.
+4. Go through the new releases since the previous call.
+5. Go through the remaining topics from the agenda, and hand over to the
+   person who suggested each one.
+6. Ask for further topics from the attendees.
+7. Wrap up with the date of the next call and a pointer to the wiki for the
+   minutes and for topic suggestions.
+8. Stop the recording in OBS.
+
+During the call Manfred takes notes as described in [Draft
+notes](#draft-notes), including the links from the chat, which is gone once
+the call ends.
+
+After the call Manfred cuts the video in Blender and uploads it to YouTube.
+The processing starts once the recording is on YouTube.
 
 ## Processing the recording
 
