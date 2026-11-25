@@ -18,7 +18,7 @@ It builds on the shared context in the `trinodb` skill. Load that skill first.
 Each call moves through the same steps:
 
 1. Create the local call folder and the draft notes.
-2. File or find the tracking issue.
+2. File or find the tracking issue, only when Manfred runs the skill.
 3. Collect the agenda topics in the draft notes.
 4. Check the calendar entry and post the reminder.
 5. Host the call. Manfred records the attendees and further topics in the
@@ -26,7 +26,8 @@ Each call moves through the same steps:
 6. Process the recording into the YouTube description and the minutes.
 7. Paste the description into the video and the minutes into the wiki.
 8. Announce the recording and the minutes.
-9. Comment on the tracking issue and close it.
+9. Comment on the tracking issue and close it, only when Manfred runs the
+   skill.
 
 Steps one to four are the [preparation](#preparation) and happen in the days
 before the call. Steps six to nine follow the upload of the recording and
@@ -97,8 +98,8 @@ are fine, and the processing tidies them up.
 
 ### Tracking issue
 
-File or find the tracking issue for the call as described in [Tracking
-issue](#tracking-issue).
+When Manfred runs the skill, file or find the tracking issue for the call as
+described in [Tracking issue](#tracking-issue). Skip this step for anyone else.
 
 ### Agenda topics
 
@@ -131,7 +132,9 @@ request shows up as part of a release anyway. Check these sources:
   [trinodb/trino.io](https://github.com/trinodb/trino.io) repository. Do not
   add these to the draft notes. List them for the user, who decides whether
   any is worth a topic. Typically only new user testimonials and new tools on
-  the ecosystem pages are.
+  the ecosystem pages are. A new file in `_episodes` means a Trino Community
+  Broadcast episode ran since the previous call. Point it out, and link its
+  topic to the episode page at `https://trino.io/episodes/<number>`.
 * Any further topics from the user, such as requests received on Trino Slack.
 
 Summarize the collected topics for the user and ask what to add, drop, or
@@ -381,16 +384,20 @@ the info you already have and any further details received.
 Once the video description and the wiki page are updated, Manfred announces the
 recording and the meeting notes on LinkedIn and in the `#announcements` channel
 on [Trino Slack](https://trino.io/slack), which he has official access to post
-in. Ask him for the URL of the LinkedIn post and remember it as {{linkedinurl}}
-so it can be recorded on the tracking issue.
+in. When Manfred runs the skill, ask him for the URL of the LinkedIn post and
+remember it as {{linkedinurl}} so it can be recorded on the tracking issue.
 
 ## Tracking issue
+
+This section applies only when Manfred runs the skill, which is the case when
+the `manfred` skill is active in the session. For anyone else, skip every
+tracking issue step in this skill. Do not look up, create, comment on, or close
+issues in the tracker.
 
 Each call has a tracking issue in Manfred's [contributions
 tracker](https://github.com/simpligility/contributions). Follow the
 `manfred-contributions` skill for the title form, the labels, the body, the
-assignment, and the manual step that adds the issue to the project board. Skip
-this section when working for anyone else.
+assignment, and the manual step that adds the issue to the project board.
 
 As part of the preparation, look for the open issue titled `Trino contributor
 call {{date}}` with the `trinodb-community` label:
