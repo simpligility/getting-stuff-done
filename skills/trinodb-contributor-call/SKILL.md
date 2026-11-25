@@ -607,6 +607,12 @@ on [Trino Slack](https://trino.io/slack), which he has official access to post
 in. When Manfred runs the skill, ask him for the URL of the LinkedIn post and
 remember it as {{linkedinurl}} so it can be recorded on the tracking issue.
 
+Draft both posts for him. In each one, thank the maintainers and subproject
+maintainers who attended the call by name, taken from the attendees list in the
+minutes and matched against the maintainers section of the `trinodb` skill.
+Include Manfred in that list, since he hosts the call and provides input and
+feedback as a maintainer.
+
 ## Tracking issue
 
 This section applies only when Manfred runs the skill, which is the case when
