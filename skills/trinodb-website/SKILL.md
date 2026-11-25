@@ -168,10 +168,11 @@ Every entry has `name`, `anchor`, `category`, `owner`, `logo`, `logosmall`,
 
 The `category` value must be one of `client-driver`, `client-application`,
 `data-lake`, `data-source`, or `add-on`, which selects the page the entry
-appears on. The `owner` value is `trinodb` for anything the Trino community
-maintains and `other` for everything else, which splits each page into an
-official and a third-party section. The `anchor` value is the URL fragment, so
-keep it stable once published.
+appears on. A Model Context Protocol server for Trino is a
+`client-application`. The `owner` value is `trinodb` for anything the Trino
+community maintains and `other` for everything else, which splits each page
+into an official and a third-party section. The `anchor` value is the URL
+fragment, so keep it stable once published.
 
 `_data/users.yml` drives the home page and the users page, and adds `highlight`
 and `testimonial` fields. `_data/sponsors.yml` drives the sponsor display and
