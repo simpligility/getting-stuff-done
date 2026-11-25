@@ -28,7 +28,7 @@ unlink_ours() {
   local dest="$1"
   if [ ! -L "$dest" ]; then
     [ -e "$dest" ] && echo "  skip  $dest (not a symlink — left untouched)"
-    return
+    return 0
   fi
   local target
   target="$(readlink "$dest")"
