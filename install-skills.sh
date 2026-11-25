@@ -4,13 +4,18 @@
 # directory of each supported AI tool.
 #
 # Usage:
-#   ./install-skills.sh                 # every skill in the repo
+#   ./install-skills.sh                 # every skill under skills/
 #   ./install-skills.sh 'trinodb*'      # only skills matching a glob
-#   ./install-skills.sh manfred 'weekly-*'
+#   ./install-skills.sh manfred 'trinodb-*'
 #
 # Patterns are shell globs matched against the directory names under skills/.
 # A pattern that matches nothing is an error, so a typo never silently installs
 # an empty set. install-trinodb-skills.sh is a wrapper around the glob form.
+#
+# The skills under depot/ are never installed. The skills-depot skill loads
+# them on demand. To retire a skill into the depot, move its folder from
+# skills/ to depot/ and run this script again: it removes the symlinks that the
+# move left dangling.
 #
 # All skills use the open SKILL.md format, so one source tree feeds every tool.
 # Editing happens only here in the repo; the symlinks point back at these files,
@@ -48,11 +53,25 @@ link_skill() {
   echo "  link  $dest"
 }
 
+# Remove symlinks in a tool directory that point into this repo at a skill that
+# no longer exists there, for example one that moved to depot/. Links to
+# anywhere else, and real files, are left alone.
+prune_dangling() {
+  local dir="$1" dest
+  for dest in "$dir"/*; do
+    [ -L "$dest" ] && [ ! -e "$dest" ] || continue
+    [[ "$(readlink "$dest")" == "$SCRIPT_DIR"/* ]] || continue
+    rm "$dest"
+    echo "  prune $dest"
+  done
+}
+
 for entry in "${SKILL_TARGETS[@]}"; do
   name="${entry%%:*}"
   dir="${entry#*:}"
   echo "$name -> $dir"
   mkdir -p "$dir"
+  prune_dangling "$dir"
   for pattern in "${PATTERNS[@]}"; do
     matched=0
     # Unquoted on purpose: this is where the glob expands.

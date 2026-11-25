@@ -4,7 +4,7 @@
 # the user-level skills directory of each supported AI tool.
 #
 # This is the entry point for anyone who wants the trinodb-* family without the
-# personal manfred-* skills or the weekly recap skills. It installs the base
+# personal manfred-* skills or the skills-depot skill. It installs the base
 # trinodb skill and every child skill in the family, which belong together: the
 # child skills reference the shared facts in the base skill. It also installs
 # media-transcription, which the recording processing skills depend on.

@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 #
 # install-all.sh — install everything this repo provides: the canonical global
-# instructions file and every skill, symlinked into each supported AI tool.
+# instructions file and every skill under skills/, symlinked into each
+# supported AI tool. The skills under depot/ are not installed; the skills-depot
+# skill loads them on demand.
 #
 # A thin orchestrator over install-instructions.sh and install-skills.sh. Run
 # those directly for a subset — install-skills.sh takes globs, and

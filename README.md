@@ -9,7 +9,7 @@ myself.
 ## Install or remove everything
 
 To install everything this repo provides — the canonical global instructions
-file and every skill — into each supported AI tool at once:
+file and every skill in `skills/` — into each supported AI tool at once:
 
 ```bash
 cd getting-stuff-done
@@ -51,7 +51,9 @@ cd getting-stuff-done
 ```
 
 The script is idempotent — run it again any time to pick up newly added skills
-or repair links on a fresh machine. It installs into:
+or repair links on a fresh machine. It also removes its own symlinks to skills
+that no longer exist in `skills/`, such as a skill that moved to the
+[skills depot](#skills-depot). It installs into:
 
 | Tool | Skills directory |
 |------|------------------|
@@ -72,7 +74,9 @@ single `"name:$HOME/path/skills"` entry to the `TOOLS` array in the script.
 
 ### Skill catalog
 
-The repository holds two kinds of skills. General skills are useful to anyone
+The repository holds two kinds of installed skills, listed in the following
+tables. The skills that are loaded on demand are listed in the
+[skills depot](#skills-depot) section. General skills are useful to anyone
 working on the same tools or projects. Personal skills carry Manfred's identity,
 preferences, and conventions, and double as a worked example of a personal
 context skill family.
@@ -86,9 +90,7 @@ General skills:
 
 | Skill | Purpose |
 |---|---|
-| [`asana`](./skills/asana) | Work with Asana tasks — list, read, create, update, and comment — through the aslan CLI; base for the weekly Asana recap. |
 | [`gws`](./skills/gws) | Work with Google Workspace — Sheets, Docs, Slides, Drive, Gmail, and Calendar — from the command line through the gws CLI; base for the slides-prep deck editing. |
-| [`linear`](./skills/linear) | Work with Linear issues, teams, projects, and initiatives through the go-linear CLI and the GraphQL API; base for the weekly Linear recap. |
 | [`media-transcription`](./skills/media-transcription) | Transcribe a local video or audio file, or a YouTube video, with whisper-cpp and the YouTube captions, and shrink large videos. |
 | [`slides-prep`](./skills/slides-prep) | Prepare a talk from proposal through a slide-ready markdown outline, then generate a first deck; composes with `manfred-slides`. |
 | [`trinodb`](./skills/trinodb) | Shared reference facts about the Trino project for the `trinodb-*` family. |
@@ -103,9 +105,6 @@ General skills:
 | [`trinodb-community-broadcast`](./skills/trinodb-community-broadcast) | Announce, prepare, and publish Trino Community Broadcast episodes on trino.io. |
 | [`trinodb-website`](./skills/trinodb-website) | Add and edit content on the trino.io website, including the Jekyll setup and blog post conventions. |
 | [`trinodb-javascript`](./skills/trinodb-javascript) | JavaScript and TypeScript work across trino-query-ui, the Trino web UI, and trino-js-client. |
-| [`weekly-asana-task-recap`](./skills/weekly-asana-task-recap) | Assemble a weekly progress summary from Asana task updates. |
-| [`weekly-github-issue-recap`](./skills/weekly-github-issue-recap) | Assemble a weekly progress summary from GitHub issue updates. |
-| [`weekly-linear-issue-recap`](./skills/weekly-linear-issue-recap) | Assemble a weekly progress summary from Linear issue updates. |
 
 Personal skills:
 
@@ -116,7 +115,41 @@ Personal skills:
 | [`manfred-writing`](./skills/manfred-writing) | Writing voice, audience, and markdown formatting conventions. |
 | [`manfred-slides`](./skills/manfred-slides) | Presentation slide deck structure and content conventions. |
 | [`manfred-contributions`](./skills/manfred-contributions) | Track open source work as issues in `simpligility/contributions` as evidence for GitHub sponsors. |
+| [`skills-depot`](./skills/skills-depot) | Find and load skills that are not installed from depot folders, by exact or approximate name. |
 | [`manfred-email`](./skills/manfred-email) | Mailbox cleanup over IMAP, including trashing notifications about closed Trino pull requests and issues. |
+
+### Skills depot
+
+Every installed skill adds its description to the context of each request. The
+[`skills-depot`](./skills/skills-depot) skill avoids that cost for skills that
+are needed only now and then. It stays installed, and loads other skills on
+demand from folders on disk, by exact or approximate name, after confirmation.
+
+It searches two places:
+
+* The [`depot/`](./depot) directory in this repository. The install scripts
+  ignore it.
+* Every folder listed in `~/.config/skills-depot/folders`, one absolute path
+  per line. Add the clone of a skills repository from another author there to
+  try its skills without installing them, and remove the line afterwards.
+
+Ask the agent to "add `/path/to/clone` to the skills depot", "list the skills
+depot", or "use the depot test hello skill".
+
+The depot in this repository holds the following skills, along with the
+`depot-test-*` fixtures for trying out the lookup:
+
+| Skill | Purpose |
+|---|---|
+| [`asana`](./depot/asana) | Work with Asana tasks — list, read, create, update, and comment — through the aslan CLI; base for the weekly Asana recap. |
+| [`linear`](./depot/linear) | Work with Linear issues, teams, projects, and initiatives through the go-linear CLI and the GraphQL API; base for the weekly Linear recap. |
+| [`weekly-asana-task-recap`](./depot/weekly-asana-task-recap) | Assemble a weekly progress summary from Asana task updates. |
+| [`weekly-github-issue-recap`](./depot/weekly-github-issue-recap) | Assemble a weekly progress summary from GitHub issue updates. |
+| [`weekly-linear-issue-recap`](./depot/weekly-linear-issue-recap) | Assemble a weekly progress summary from Linear issue updates. |
+
+To move a skill into the depot, move its folder from `skills/` to `depot/` and
+run `./install-skills.sh`, which removes the symlinks the move left dangling.
+To install a depot skill again, move its folder back and run the script.
 
 ### Installing only the Trino skills
 
@@ -137,7 +170,7 @@ same way. Any other subset works by passing one or more globs to the main script
 directly:
 
 ```bash
-./install-skills.sh 'manfred*' 'weekly-*'
+./install-skills.sh 'manfred*' 'trinodb*'
 ```
 
 A glob that matches no skill directory is an error rather than a silent no-op,
@@ -145,9 +178,9 @@ so a typo never installs an empty set.
 
 ### Installing individual skills
 
-The `install-skills.sh` script installs every skill for the tools listed
-preceding. To install a single skill instead, and for anyone who prefers a
-package-manager style workflow, the skills are also installable with the
+The `install-skills.sh` script installs every skill in `skills/` for the tools
+listed preceding. To install a single skill instead, and for anyone who prefers
+a package-manager style workflow, the skills are also installable with the
 [skills CLI](https://github.com/vercel-labs/skills). It installs a skill
 directly from any public GitHub repository. Install a single skill with the
 `owner/repo@skill` shorthand:
