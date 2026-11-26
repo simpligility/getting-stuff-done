@@ -201,6 +201,17 @@ Editing a Google Doc in place:
   check for exactly 1. A 0 means the text did not match and nothing changed.
   Text outside the match keeps its formatting, so matching around a
   code-formatted word leaves that word as it was.
+* A `replaceAllText` match that spans several links merges them into one
+  link, with the URL of the first one. To add text next to a link, such as a
+  "(merged)" mark after a linked pull request number, insert it with
+  `insertText` at the index after the link and clear `link`, `underline`, and
+  `foregroundColor` on the inserted text. To replace a passage that contains
+  links, delete the range, insert the new text, and set each link with
+  `updateTextStyle`. Then check every link against its text in a fresh
+  `documents get`.
+* The text of a paragraph ends at the `endIndex` of its last element, minus 1
+  for the newline. The first element ends after the first text run, which is
+  often a link, so inserting at its end lands inside the paragraph text.
 * `insertText` takes the style of the text next to it, including a link. Text
   inserted at the start of a paragraph also takes that paragraph's named style
   and bullet, so expect text inserted before a heading to become heading
