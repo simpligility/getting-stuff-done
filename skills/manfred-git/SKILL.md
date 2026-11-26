@@ -310,12 +310,25 @@ get wrong when re-staging files.
 
 Some AI agent environments, including the default Claude Code shell, block
 interactive git flags such as `git rebase -i`, and autosquash depends on an
-interactive rebase. When the assistant cannot run one, it should either reset
-to the base with `git reset --mixed <base>` and re-commit the changes in the
-intended order, or hand the rebase to Manfred to run himself — for example
-through the `!` command prefix in Claude Code, so the result lands in the
-session. State which fallback is in use rather than silently rewriting
-history.
+interactive rebase. A command guard can also block `git reset --hard`. When
+the assistant cannot run an interactive rebase, it uses one of these
+fallbacks:
+
+* **Rebuild with cherry-picks** to fold a change into an earlier commit while
+  keeping every later commit intact. Commit the change as a temporary commit,
+  run `git switch --detach <target>`, apply the change with
+  `git cherry-pick -n <temporary>`, and run `git commit --amend`, editing the
+  message if needed. Then cherry-pick the later commits in order and move the
+  branch with `git switch -C <branch>`. Check with `git diff <temporary> HEAD`
+  that the tree is unchanged before pushing. To squash fixup commits that
+  are already at the top, `git reset --soft HEAD~<n>` followed by
+  `git commit --amend --no-edit` is enough.
+* **Reset and re-commit** with `git reset --mixed <base>`, then commit the
+  changes again in the intended order.
+* **Hand the rebase to Manfred** to run himself, for example through the `!`
+  command prefix in Claude Code, so the result lands in the session.
+
+State which fallback is in use rather than silently rewriting history.
 
 ## Default branch
 
