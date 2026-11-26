@@ -294,6 +294,37 @@ Surgical edits and sync:
   affected boxes and re-add them from scratch, keying them by a stable id such as
   `pgnumNNN` or `fnNNN` so they are easy to find and replace.
 
+Text edits and indexes:
+
+* For a wording change, use `replaceAllText` scoped with `pageObjectIds` to the
+  one slide, with `"matchCase":true`. It keeps the surrounding formatting, such
+  as bold runs and bullets. Check that the reply reports `occurrencesChanged`
+  of exactly 1.
+* Take text indexes from the `startIndex` and `endIndex` values in a fresh
+  `presentations get`, not from the length of a local string. A local count
+  drifts on non-ASCII characters such as em dashes, and the insert then fails
+  or lands in the wrong place. To append to a shape or to speaker notes, insert
+  at the last `endIndex` minus 1, before the final newline.
+* Inserted paragraphs take the bullet and style of the paragraph they land in.
+  For a line without a bullet, follow the insert with `deleteParagraphBullets`
+  and an `updateParagraphStyle` that sets `indentStart` and `indentFirstLine`
+  to 0. Copy the style from an existing line without a bullet in the deck
+  when there is one.
+* Deleting text to the end of a shape with `FROM_START_INDEX` leaves an empty
+  bulleted paragraph behind. Delete the newline before it afterwards, and
+  read the shape back to confirm.
+
+Checking the rendered slide:
+
+* After a text change on a busy slide, render it to check for overflow and
+  layout. `gws slides presentations pages getThumbnail` with the
+  `presentationId`, the `pageObjectId`, and
+  `"thumbnailProperties.thumbnailSize":"LARGE"` returns a short-lived
+  `contentUrl`. Download it with `curl -sL` into a scratch folder in the
+  working directory and view the PNG.
+* This is the reliable way to see whether text still fits beside an image, at
+  the size the audience sees, without opening the deck in a browser.
+
 Turning off autofit:
 
 * Auto shrink-to-fit resizes body text per slide and makes font sizes look

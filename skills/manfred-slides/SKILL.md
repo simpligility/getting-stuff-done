@@ -110,3 +110,27 @@ alone — the presenter delivers the substance, and the slides reinforce it.
 * In a markdown outline, capture each diagram, chart, or image in a `## Visual`
   section (see `slides-prep`) describing what it shows, since visuals do not
   survive a text export.
+
+### Generated image sets
+
+When a themed deck uses a set of AI-generated images, for example from Gemini,
+keep them consistent as one family:
+
+* Make one style-anchor image first, usually for the title slide, and settle
+  the look there.
+* Generate every later image in the same chat thread. Open each prompt with
+  "Create a new image in the same style, lighting, and color palette as the
+  previous images" and restate the key style words, so the style holds even
+  when the thread drifts.
+* Keep each prompt to one visual metaphor for the slide's single point, and
+  map each element of the image to a part of the message.
+* End every prompt with "No text, no letters, no title, no labels, no logos".
+  Image generators garble lettering, and the slide text carries the words.
+  Add "no human figures" when a literal reading would put people or angels in
+  the scene.
+* Ask for a vertical 3:4 portrait composition for an image beside the text,
+  and a wide 16:9 composition only for a full-bleed image.
+* Reuse one rich image across related slides by cropping it in the deck
+  rather than generating near-duplicates.
+* Commit the source images to an `assets/` folder in the event directory, and
+  record crops in the matching `## Visual` sections.
