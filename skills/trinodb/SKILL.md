@@ -127,6 +127,9 @@ The rule also covers the name used as a modifier. Write "Trino Gateway
 metadata", not "gateway metadata". When a change touches a line that already
 uses a shortened name, fix that line in the same change.
 
+For a deployment that runs several Trino Gateway processes, write "Trino
+Gateway servers", not "gateway instances" or "Trino Gateway instances".
+
 The same rule applies to the other products in the project. Write **Trino**
 rather than "the query engine" or "the server" when the product is meant.
 
