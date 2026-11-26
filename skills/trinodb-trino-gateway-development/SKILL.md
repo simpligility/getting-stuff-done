@@ -35,6 +35,16 @@ Docker containers, and it rebuilds the frontend from scratch.
 and Ory Hydra containers. Without a Docker daemon the vast majority of the
 suite fails rather than skips.
 
+**Testcontainers does not follow the Docker CLI context.** With OrbStack as
+the active context, `docker info` works while the tests fail with `Could not
+find a valid Docker environment`. Point the build at the OrbStack socket:
+
+```
+DOCKER_HOST=unix://$HOME/.orbstack/run/docker.sock \
+    TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock \
+    ./mvnw install
+```
+
 The `clean` lifecycle phase deletes the frontend `dist`, `node`, and
 `node_modules` directories, so every clean build reinstalls the frontend
 dependencies. When iterating, drop `clean` and let the frontend build stay
