@@ -60,8 +60,10 @@ Three things the README does not spell out:
   same error also appears when `gem list` shows the recorded version but its
   gem directory is gone, an orphaned gemspec. Until
   `gem install bundler -v <recorded-version>` repairs the install,
-  `bundle _<installed-version>_ exec jekyll build --future` with any installed
-  Bundler 4 version works around it.
+  `bundle _<installed-version>_ exec jekyll build --future` with another
+  installed Bundler 4 version works around it. More than one version can be
+  orphaned at the same time, so probe with
+  `bundle _<installed-version>_ --version` and use one that answers.
 * **Plain Jekyll ignores redirects.** The helper script does not apply the
   redirects in `netlify.toml`. Verify anything that depends on a redirect
   through `netlify dev` instead.
@@ -191,8 +193,12 @@ for an optimized file beyond it. Note that `sips` reports 72 dpi when the chunk
 is absent, so it cannot distinguish a declared 72 dpi from no declaration.
 
 Entries in `tools.yml` are in alphabetical order by `name`, ignoring case, so
-a new entry goes in at its sorted position. A handful of older entries are out
-of place and are not a precedent.
+a new entry goes in at its sorted position. The sort key is the visible `name`
+and never the `anchor`, since several anchors differ from the name, such as
+`sql-server` for Microsoft SQL Server and `opa` for Open Policy Agent. The
+comparison is character by character, so a space sorts before a letter or a
+hyphen: Open Policy Agent comes before OpenAPI, and Trino Gateway before
+Trino-lb.
 
 ### Reviewing a tool or user entry
 
